@@ -10,8 +10,9 @@ WORKDIR ${HOME}
 
 COPY Gemfile* ./
 
-RUN apt-get update -qq && \
-    bundle install -j4
+RUN apt-get update -qq 
+RUN apt-get install -y default-mysql-client
+RUN bundle install -j4
 
 COPY . ./
 
