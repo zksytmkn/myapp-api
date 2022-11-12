@@ -54,7 +54,6 @@ services:
       context: .
       dockerfile: ./infra/web/Dockerfile
     volumes:
-      - ./infra/web/nginx.conf:/etc/nginx/nginx.conf
       - public:/app/public
       - tmp:/app/tmp
     ports:
