@@ -1,13 +1,5 @@
 version: "3.8"
 
-volumes:
-  tmp:
-  public:
-  data:
-networks:
-  web:
-    driver: bridge
-
 services:
   db:
     container_name: db
@@ -18,13 +10,12 @@ services:
       MYSQL_PASSWORD: $MYSQL_PASSWORD
     command: --default-authentication-plugin=mysql_native_password
     volumes:
-      # - ./tmp/db:/var/lib/mysql
-      - data:/var/lib/mysql
+      - ./tmp/db:/var/lib/mysql
       - ./infra/db/my.cnf:/etc/mysql/conf.d/my.cnf
     ports:
       - 3306:3306
     networks:
-      - web
+      - internal
 
   app:
     container_name: app
@@ -38,15 +29,16 @@ services:
       API_DOMAIN: "localhost:$FRONT_PORT"
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s"
     volumes:
-      - .:/app
-      - public:/app/public
-      - tmp:/app/tmp
-    # ports:
-      # - "$API_PORT:3000"
+      # - .:/app
+      - ./app:/app
+      - ./spec:/spec
+      - ./public:/public
+      - ./tmp:/tmp
     depends_on:
       - db
     networks:
-      - web
+      - internal
+      - external
 
   web:
     container_name: web
@@ -54,11 +46,23 @@ services:
       context: .
       dockerfile: ./infra/web/Dockerfile
     volumes:
-      - public:/app/public
-      - tmp:/app/tmp
+      - ./public:/public
+      - ./tmp:/tmp
     ports:
       - 8000:80
     depends_on:
       - app
     networks:
-      - web
+      - external
+
+volumes:
+  tmp:
+  public:
+
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  external:
+    driver: bridge
+    internal: false

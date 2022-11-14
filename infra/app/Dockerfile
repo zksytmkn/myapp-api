@@ -9,10 +9,10 @@ ENV HOME=/${WORKDIR} \
 WORKDIR ${HOME}
 
 COPY Gemfile* ./
+RUN bundle install -j4
 
 RUN apt-get update -qq 
-RUN apt-get install -y default-mysql-client
-RUN bundle install -j4
+RUN apt-get install -y default-mysql-client iputils-ping net-tools
 
 COPY . ./
 
