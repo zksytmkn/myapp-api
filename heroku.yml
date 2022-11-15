@@ -9,7 +9,6 @@ setup:
 build:
   docker:
     web: infra/app/Dockerfile
-    web: infra/web/Dockerfile
   config:
     WORKDIR: app
 run:
