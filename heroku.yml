@@ -8,7 +8,8 @@ setup:
     RAILS_SERVE_STATIC_FILES: enabled
 build:
   docker:
-    web: Dockerfile
+    web: infra/app/Dockerfile
+    web: infra/web/Dockerfile
   config:
     WORKDIR: app
 run:
