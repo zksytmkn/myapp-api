@@ -42,5 +42,5 @@ end
 
 plugin :tmp_restart
 
-root = File.expand_path("../..", __FILE__)
-bind "unix://#{root}/tmp/sockets/puma.sock"
+# root = File.expand_path("../..", __FILE__)
+# bind "unix://#{root}/tmp/sockets/puma.sock"

@@ -8,8 +8,7 @@ setup:
     RAILS_SERVE_STATIC_FILES: enabled
 build:
   docker:
-    web: Dockerfile.app-heroku
-    web: Dockerfile.web-heroku
+    web: Dockerfile.heroku
   # config:
   #   WORKDIR: app
 run:
