@@ -9,7 +9,7 @@ setup:
 build:
   docker:
     web: infra/app/Dockerfile
-  config:
-    WORKDIR: app
+  # config:
+  #   WORKDIR: app
 run:
   web: bundle exec puma -C config/puma.rb
