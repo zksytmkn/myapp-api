@@ -33,14 +33,14 @@ rackup      DefaultRackup
 
 # Specifies the `environment` that Puma will run in.
 #
-# environment ENV.fetch("RAILS_ENV") { "development" }
-# pidfile ENV.fetch('PIDFILE') { 'tmp/pids/server.pid' }
+environment ENV.fetch("RAILS_ENV") { "development" }
+pidfile ENV.fetch('PIDFILE') { 'tmp/pids/server.pid' }
 
 on_worker_boot do
   ActiveRecord::Base.establish_connection
 end
 
-# plugin :tmp_restart
+plugin :tmp_restart
 
-# root = File.expand_path("../..", __FILE__)
-# bind "unix://#{root}/tmp/sockets/puma.sock"
+root = File.expand_path("../..", __FILE__)
+bind "unix://#{root}/tmp/sockets/puma.sock"
