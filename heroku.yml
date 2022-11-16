@@ -9,7 +9,7 @@ setup:
 build:
   docker:
     web: Dockerfile.heroku
-  # config:
-  #   WORKDIR: app
+  config:
+    WORKDIR: app
 run:
-  web: bundle exec puma -C config/puma.rb
+  web: bundle exec puma -C config/heroku/puma.rb
