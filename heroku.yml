@@ -8,8 +8,8 @@ setup:
     RAILS_SERVE_STATIC_FILES: enabled
 build:
   docker:
-    web: infra/app/Dockerfile
-  # config:
-  #   WORKDIR: app
+    web: Dockerfile.heroku
+  config:
+    WORKDIR: app
 run:
   web: bundle exec puma -C config/puma.rb
