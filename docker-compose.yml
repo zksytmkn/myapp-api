@@ -32,6 +32,7 @@ services:
     volumes:
       # - .:/app
       - ./app:/app
+      - ./db:/db
       - ./spec:/spec
       - ./public:/public
       - ./tmp:/tmp
