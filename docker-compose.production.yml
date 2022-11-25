@@ -27,6 +27,7 @@ services:
     environment:
       MYSQL_PASSWORD: $MYSQL_PASSWORD
       API_DOMAIN: "localhost:$FRONT_PORT"
+      BASE_URL: "http://localhost:$WEB_PORT"
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s"
     volumes:
       # - .:/app
