@@ -36,7 +36,7 @@ module UserAuth
 
       # 有効期限をUnixtimeで返す(必須)
       def token_expiration
-         token_lifetime.from_now.to_i
+        token_lifetime.from_now.to_i
       end
 
       # jwt_idの生成(必須)
