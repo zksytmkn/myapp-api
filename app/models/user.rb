@@ -1,6 +1,8 @@
 require "validator/email_validator"
 
 class User < ApplicationRecord
+  include TokenGenerateService
+
   before_validation :downcase_email
 
   has_secure_password
