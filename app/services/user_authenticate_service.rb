@@ -7,7 +7,6 @@ module UserAuthenticateService
     current_user.present? || unauthorized_user
   end
 
-  # 2021.12.20 追加
   # 保護リソースには認証・認可を行うこちらのメソッドを使用してください。
   # 認証 & 認可（トークンの持ち主 && メール認証ユーザーを判定）
   # 認証済み && メール認証済みのユーザーが居ればtrue、存在しない場合は401を返す

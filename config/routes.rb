@@ -7,8 +7,14 @@ Rails.application.routes.draw do
         delete :destroy, on: :collection
       end
 
-      # projects
-      resource :projects, only:[:index]
+      # products
+      resources :products, only:[:index]
+
+      # posts
+      resources :posts, only:[:index]
+
+      # communities
+      resources :communities, only:[:index]
     end
   end
 end

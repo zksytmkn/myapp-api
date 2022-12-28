@@ -95,6 +95,7 @@ GEM
     irb (1.4.2)
       reline (>= 0.3.0)
     json (2.6.2)
+    jwt (2.5.0)
     loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -116,6 +117,8 @@ GEM
       net-protocol
     nio4r (2.5.8)
     nokogiri (1.13.9-aarch64-linux)
+      racc (~> 1.4)
+    nokogiri (1.13.9-x86_64-darwin)
       racc (~> 1.4)
     parallel (1.22.1)
     parser (3.1.2.1)
@@ -206,6 +209,7 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  x86_64-darwin-21
 
 DEPENDENCIES
   bcrypt (~> 3.1, >= 3.1.18)
@@ -214,6 +218,7 @@ DEPENDENCIES
   factory_bot_rails (~> 6.2)
   hirb (~> 0.7.3)
   hirb-unicode-steakknife (~> 0.0.9)
+  jwt (~> 2.5)
   mysql2 (~> 0.5)
   puma (~> 5.0)
   rack-cors
