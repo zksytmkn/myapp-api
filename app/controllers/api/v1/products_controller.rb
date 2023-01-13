@@ -6,11 +6,20 @@ class Api::V1::ProductsController < ApplicationController
     date = Date.new(2022,12,20)
     10.times do |n|
       id = n + 1
-      name = "product #{id.to_s.rjust(2, "0")}"
-      text = "サンプルです。紹介文を入れます。"
-      price = "¥ #{n * 100}"
+      quantity = 1
+      inventory = 20
+      name = "農産物 #{id.to_s.rjust(2, "0")}"
+      text = "サンプルです。紹介文を入れます。aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      price = n * 100
       updated_at = date + (id * 6).hours
-      products << { id: id, name: name, text: text, price: price, updatedAt: updated_at }
+      like = false
+      dislike = false
+      purchased = false
+      seller = "投稿者 #{id.to_s.rjust(2, "0")}"
+      type = "果物"
+      producer = "青森県"
+      recommend = false
+      products << { id: id, name: name, text: text, price: price, quantity: quantity, inventory: inventory, updatedAt: updated_at, like: like, dislike: dislike, purchased: purchased, seller: seller, type: type, producer: producer, recommend: recommend }
     end
     # 本来はcurrent_user.products
     render json: products
