@@ -17,9 +17,10 @@ class Api::V1::ProductsController < ApplicationController
       purchased = false
       seller = "投稿者 #{id.to_s.rjust(2, "0")}"
       type = "果物"
-      producer = "青森県"
+      region = "東北地方"
+      prefecture = "青森県"
       recommend = false
-      products << { id: id, name: name, text: text, price: price, quantity: quantity, inventory: inventory, updatedAt: updated_at, like: like, dislike: dislike, purchased: purchased, seller: seller, type: type, producer: producer, recommend: recommend }
+      products << { id: id, name: name, text: text, price: price, quantity: quantity, inventory: inventory, updatedAt: updated_at, like: like, dislike: dislike, purchased: purchased, seller: seller, type: type, region: region, prefecture: prefecture , recommend: recommend }
     end
     # 本来はcurrent_user.products
     render json: products

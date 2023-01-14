@@ -12,7 +12,11 @@ class Api::V1::PostsController < ApplicationController
       updated_at = date + (id * 6).hours
       like = false
       dislike = false
-      posts << { id: id, name: name, poster: poster, text: text, updatedAt: updated_at, like: like, dislike: dislike }
+      type = "果物"
+      region = "東北地方"
+      prefecture = "青森県"
+      target = "消費者向け"
+      posts << { id: id, name: name, poster: poster, text: text, updatedAt: updated_at, like: like, dislike: dislike, type: type, region: region, prefecture: prefecture, target: target }
     end
     # 本来はcurrent_user.posts
     render json: posts
