@@ -7,9 +7,16 @@ class Api::V1::CommunitiesController < ApplicationController
     10.times do |n|
       id = n + 1
       name = "コミュニティ #{id.to_s.rjust(2, "0")}"
-      text = "サンプルです。紹介文を入れます。aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      text = "サンプルです。紹介文を入れます。"
       updated_at = date + (id * 6).hours
-      communities << { id: id, name: name, text: text, updatedAt: updated_at }
+      participated = false
+      invited = false
+      maker = "作成者 #{id.to_s.rjust(2, "0")}"
+      type = "果物"
+      region = "東北地方"
+      prefecture = "青森県"
+      member = n + 1
+      communities << { id: id, name: name, text: text, updatedAt: updated_at, participated: participated, invited: invited, maker: maker, type: type, region: region, prefecture: prefecture, member: member }
     end
     # 本来はcurrent_user.communities
     render json: communities

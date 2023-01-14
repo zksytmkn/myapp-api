@@ -9,7 +9,7 @@ class Api::V1::ProductsController < ApplicationController
       quantity = 1
       inventory = 20
       name = "農産物 #{id.to_s.rjust(2, "0")}"
-      text = "サンプルです。紹介文を入れます。aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      text = "サンプルです。紹介文を入れます。"
       price = n * 100
       updated_at = date + (id * 6).hours
       like = false
