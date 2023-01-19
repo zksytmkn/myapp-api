@@ -43,7 +43,7 @@ class Api::V1::AuthTokenController < ApplicationController
 
   # ログインユーザーが居ない、もしくはpasswordが一致しない場合404を返す
   def authenticate
-    unless login_user.present? &&
+    unless  login_user.present? &&
             login_user.authenticate(auth_params[:password])
       raise UserAuth.not_found_exception_class
     end
