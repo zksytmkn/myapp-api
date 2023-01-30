@@ -1,6 +1,8 @@
 table_names = %w(
   users
   products
+  posts
+  communities
 )
 
 table_names.each do |table_name|

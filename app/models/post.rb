@@ -1,15 +1,9 @@
-class Product < ApplicationRecord
+class Post < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   with_options presence: true do
     validates :name
-    validates :seller
-    validates :type
-    validates :region
-    validates :prefecture
-    validates :price
-    validates :quantity
-    validates :inventory
+    validates :poster
     validates :text
   end
   has_one_attached :image

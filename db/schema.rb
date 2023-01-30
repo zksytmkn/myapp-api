@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_21_113501) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_30_132753) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,16 +39,34 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_113501) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "communities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "text", null: false
+    t.string "maker", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "posts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "text", null: false
+    t.string "poster", null: false
+    t.boolean "like"
+    t.boolean "dislike"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
-    t.text "text"
-    t.string "seller"
-    t.string "type"
-    t.string "region"
-    t.string "prefecture"
-    t.integer "price"
-    t.integer "quantity"
-    t.integer "inventory"
+    t.text "text", null: false
+    t.string "seller", null: false
+    t.string "type", null: false
+    t.string "region", null: false
+    t.string "prefecture", null: false
+    t.integer "price", null: false
+    t.integer "quantity", null: false
+    t.integer "inventory", null: false
     t.boolean "like"
     t.boolean "dislike"
     t.boolean "recommend"

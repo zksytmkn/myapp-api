@@ -1,15 +1,9 @@
-class Product < ApplicationRecord
+class Community < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   with_options presence: true do
     validates :name
-    validates :seller
-    validates :type
-    validates :region
-    validates :prefecture
-    validates :price
-    validates :quantity
-    validates :inventory
+    validates :maker
     validates :text
   end
   has_one_attached :image

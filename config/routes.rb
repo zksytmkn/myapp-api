@@ -11,10 +11,10 @@ Rails.application.routes.draw do
       resources :products, only:[:index, :show, :new, :create, :edit, :update, :destroy]
 
       # posts
-      resources :posts, only:[:index]
+      resources :posts, only:[:index, :show, :new, :create, :edit, :update, :destroy]
 
       # communities
-      resources :communities, only:[:index]
+      resources :communities, only:[:index, :show, :new, :create, :edit, :update, :destroy]
     end
   end
 end

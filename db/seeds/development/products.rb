@@ -1,7 +1,7 @@
 10.times do |n|
   name = "農産物#{n}"
   seller = "user#{n}"
-  text = "紹介文です。サンプルです。"
+  text = "説明文です。サンプルです。"
   type = "果物"
   region = "東北地方"
   prefecture = "青森県"
