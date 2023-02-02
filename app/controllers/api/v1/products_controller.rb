@@ -4,7 +4,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def index
     products = Product.all
-    render json: products
+    render json: products, methods: [:image_url]
   end
 
   def new
@@ -47,6 +47,6 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :seller, :type, :region, :prefecture, :price, :quantity, :inventory, :text )
+    params.permit(:name, :seller, :type, :region, :prefecture, :price, :quantity, :inventory, :text, :image)
   end
 end
