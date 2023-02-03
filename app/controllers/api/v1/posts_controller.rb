@@ -4,7 +4,7 @@ class Api::V1::PostsController < ApplicationController
 
   def index
     posts = Post.all
-    render json: posts
+    render json: posts, methods: [:image_url]
   end
 
   def new
@@ -47,6 +47,6 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:name, :poster, :text )
+    params.permit(:name, :poster, :text, :image )
   end
 end

@@ -4,7 +4,7 @@ class Api::V1::CommunitiesController < ApplicationController
 
   def index
     communities = Community.all
-    render json: communities
+    render json: communities, methods: [:image_url]
   end
 
   def new
@@ -47,6 +47,6 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def community_params
-    params.require(:community).permit(:name, :maker, :text )
+    params.permit(:name, :maker, :text, :image )
   end
 end
