@@ -1,6 +1,5 @@
 class Api::V1::CommunitiesController < ApplicationController
   before_action :authenticate_active_user
-  before_action :set_community, only: [:show, :edit, :update, :delete]
 
   def index
     communities = Community.all
@@ -33,17 +32,8 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def destroy
-    if community.destroy
-      flash[:success] = "コミュニティを削除しました"
-      redirect_to()
-    else
-      flash[:failure] = "コミュニティの削除に失敗しました"
-      render :show
-    end
-  end
-
-  def set_community
     community = Community.find(params[:id])
+    community.destroy!
   end
 
   def community_params

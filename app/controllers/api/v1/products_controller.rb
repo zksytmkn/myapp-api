@@ -1,6 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
   before_action :authenticate_active_user
-  before_action :set_product, only: [:show, :edit, :update, :delete]
 
   def index
     products = Product.all
@@ -33,17 +32,8 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def destroy
-    if product.destroy
-      flash[:success] = "農産物を削除しました"
-      redirect_to()
-    else
-      flash[:failure] = "農産物の削除に失敗しました"
-      render :show
-    end
-  end
-
-  def set_product
     product = Product.find(params[:id])
+    product.destroy!
   end
 
   def product_params

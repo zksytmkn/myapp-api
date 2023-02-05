@@ -1,6 +1,5 @@
 class Api::V1::PostsController < ApplicationController
   before_action :authenticate_active_user
-  before_action :set_post, only: [:show, :edit, :update, :delete]
 
   def index
     posts = Post.all
@@ -33,17 +32,8 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def destroy
-    if post.destroy
-      flash[:success] = "呟きを削除しました"
-      redirect_to()
-    else
-      flash[:failure] = "呟きの削除に失敗しました"
-      render :show
-    end
-  end
-
-  def set_post
     post = Post.find(params[:id])
+    post.destroy!
   end
 
   def post_params
