@@ -62,7 +62,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_30_132753) do
     t.text "text", null: false
     t.string "seller", null: false
     t.string "type", null: false
-    t.string "region", null: false
     t.string "prefecture", null: false
     t.integer "price", null: false
     t.integer "quantity", null: false
@@ -78,6 +77,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_30_132753) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
+    t.string "prefecture", null: false
+    t.string "city", null: false
+    t.string "text", null: false
     t.string "password_digest", null: false
     t.boolean "activated", default: false, null: false
     t.boolean "admin", default: false, null: false

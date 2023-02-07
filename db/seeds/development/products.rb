@@ -3,7 +3,6 @@
   seller = "user#{n}"
   text = "説明文です。サンプルです。"
   type = "果物"
-  region = "東北地方"
   prefecture = "青森県"
   price = 3000
   quantity = 1
@@ -15,7 +14,6 @@
       product.seller = seller
       product.text = text
       product.type = type
-      product.region = region
       product.prefecture = prefecture
       product.price = price
       product.quantity = quantity

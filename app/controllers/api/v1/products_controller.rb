@@ -7,7 +7,6 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def new
-    product = Product.new
   end
 
   def create
@@ -22,13 +21,8 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def update
-    if product.update(product_params)
-      flash[:success] = "農産物を編集しました"
-      redirect_to()
-    else
-      flash[:failure] = "農産物の編集に失敗しました"
-      render :edit
-    end
+    product = Product.find(params[:id])
+    product.update(product_params)
   end
 
   def destroy
@@ -37,6 +31,6 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def product_params
-    params.permit(:name, :seller, :type, :region, :prefecture, :price, :quantity, :inventory, :text, :image)
+    params.permit(:name, :seller, :type, :prefecture, :price, :quantity, :inventory, :text, :image)
   end
 end

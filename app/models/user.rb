@@ -7,11 +7,9 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  validates  :name, presence: true,
-                    length: { maximum: 30, allow_blank: true }
+  validates :name, presence: true, length: { maximum: 30, allow_blank: true }
 
-  validates  :email,  presence: true,
-                      email: { allow_blank: true }
+  validates :email,  presence: true, email: { allow_blank: true }
 
   VALID_PASSWORD_REGEX = /\A[\w\-]+\z/
   validates  :password, presence: true,
@@ -39,7 +37,7 @@ class User < ApplicationRecord
   end
 
   def response_json(payload = {})
-    as_json(only: [:id, :name]).merge(payload).with_indifferent_access
+    as_json(only: [:id, :name, :email, :prefecture, :city, :text]).merge(payload).with_indifferent_access
   end
 
   private

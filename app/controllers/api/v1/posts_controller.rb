@@ -22,13 +22,8 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def update
-    if post.update(post_params)
-      flash[:success] = "呟きを編集しました"
-      redirect_to()
-    else
-      flash[:failure] = "呟きの編集に失敗しました"
-      render :edit
-    end
+    post = Post.find(params[:id])
+    post.update(post_params)
   end
 
   def destroy

@@ -5,7 +5,6 @@ class Product < ApplicationRecord
     validates :name
     validates :seller
     validates :type
-    validates :region
     validates :prefecture
     validates :price
     validates :quantity

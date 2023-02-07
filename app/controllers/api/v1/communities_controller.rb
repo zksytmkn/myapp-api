@@ -22,13 +22,8 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def update
-    if community.update(community_params)
-      flash[:success] = "コミュニティを編集しました"
-      redirect_to()
-    else
-      flash[:failure] = "コミュニティの編集に失敗しました"
-      render :edit
-    end
+    community = Community.find(params[:id])
+    community.update(community_params)
   end
 
   def destroy
