@@ -6,6 +6,7 @@ class User < ApplicationRecord
   before_validation :downcase_email
 
   has_secure_password
+  has_one_attached :image
 
   validates :name, presence: true, length: { maximum: 30, allow_blank: true }
 
@@ -16,6 +17,11 @@ class User < ApplicationRecord
                         length: { minimum: 8, allow_blank: true },
                         format: { with: VALID_PASSWORD_REGEX, message: :invalid_password, allow_blank: true },
                         allow_nil: true
+
+  def image_url
+    # 紐づいている画像のURLを取得する
+    image.attached? ? url_for(image) : nil
+  end
 
   class << self
     def find_by_activated(email)
@@ -37,7 +43,7 @@ class User < ApplicationRecord
   end
 
   def response_json(payload = {})
-    as_json(only: [:id, :name, :email, :prefecture, :city, :text]).merge(payload).with_indifferent_access
+    as_json(only: [:id, :name, :email, :prefecture, :city, :text, :image_url]).merge(payload).with_indifferent_access
   end
 
   private
