@@ -1,7 +1,9 @@
 table_names = %w(
   users
   products
+  productComments
   posts
+  postComments
   communities
 )
 

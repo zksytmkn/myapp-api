@@ -7,6 +7,10 @@ class User < ApplicationRecord
 
   has_secure_password
   has_one_attached :image
+  has_many :products
+  has_many :productComments
+  has_many :posts
+  has_many :postComments
 
   validates :name, presence: true, length: { maximum: 30, allow_blank: true }
 

@@ -6,6 +6,8 @@ class CreatePosts < ActiveRecord::Migration[7.0]
       t.string :poster, null: false
       t.boolean :like
       t.boolean :dislike
+      t.references :user, foreign_key: true
+
       t.timestamps
     end
   end

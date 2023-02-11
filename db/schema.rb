@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_30_132753) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_10_161511) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -47,14 +47,36 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_30_132753) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "post_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "postComment_content"
+    t.bigint "user_id"
+    t.bigint "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_comments_on_post_id"
+    t.index ["user_id"], name: "index_post_comments_on_user_id"
+  end
+
   create_table "posts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "text", null: false
     t.string "poster", null: false
     t.boolean "like"
     t.boolean "dislike"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "product_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "productComment_content"
+    t.bigint "user_id"
+    t.bigint "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_comments_on_product_id"
+    t.index ["user_id"], name: "index_product_comments_on_user_id"
   end
 
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -70,8 +92,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_30_132753) do
     t.boolean "dislike"
     t.boolean "recommend"
     t.boolean "purchased"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_products_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -90,4 +114,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_30_132753) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "post_comments", "posts"
+  add_foreign_key "post_comments", "users"
+  add_foreign_key "posts", "users"
+  add_foreign_key "product_comments", "products"
+  add_foreign_key "product_comments", "users"
+  add_foreign_key "products", "users"
 end

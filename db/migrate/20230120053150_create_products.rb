@@ -13,6 +13,8 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.boolean :dislike
       t.boolean :recommend
       t.boolean :purchased
+      t.references :user, foreign_key: true
+
       t.timestamps
     end
   end

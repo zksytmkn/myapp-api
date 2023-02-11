@@ -7,6 +7,7 @@ class Post < ApplicationRecord
     validates :text
   end
   has_one_attached :image
+  has_many :postComments
   self.inheritance_column = :_type_disabled
 
   def image_url

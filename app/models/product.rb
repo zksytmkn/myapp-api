@@ -12,6 +12,7 @@ class Product < ApplicationRecord
     validates :text
   end
   has_one_attached :image
+  has_many :productComments
   self.inheritance_column = :_type_disabled
 
   def image_url

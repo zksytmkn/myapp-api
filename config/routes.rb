@@ -8,16 +8,22 @@ Rails.application.routes.draw do
       end
 
       # users
-      resources :users, only:[:index, :show, :new, :create, :edit, :update, :destroy]
+      resources :users
 
       # products
-      resources :products, only:[:index, :show, :new, :create, :edit, :update, :destroy]
+      resources :products
+
+      # productComments
+      resources :product_comments
 
       # posts
-      resources :posts, only:[:index, :show, :new, :create, :edit, :update, :destroy]
+      resources :posts
+
+      # postComments
+      resources :post_comments
 
       # communities
-      resources :communities, only:[:index, :show, :new, :create, :edit, :update, :destroy]
+      resources :communities
     end
   end
 end
