@@ -16,6 +16,8 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def show
+    community = Community.find(params[:id])
+    render json: community
   end
 
   def edit
