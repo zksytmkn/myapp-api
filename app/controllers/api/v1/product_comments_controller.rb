@@ -1,5 +1,10 @@
 class Api::V1::ProductCommentsController < ApplicationController
 
+  def show
+    productComments = ProductComment.where(product_id: params[:id])
+    render json: productComments, include: [:user]
+  end
+
   def create
     productComment = ProductComment.new(productComment_params)
     productComment.save!

@@ -1,8 +1,8 @@
 10.times do |n|
   productComment_content = "コメント#{n}"
-  user_id = 1
+  user_id = n+1
   product_id = 1
-  productComment = ProductComment.find_or_initialize_by(product_id: product_id)
+  productComment = ProductComment.find_or_initialize_by(user_id: user_id)
 
   if  productComment.new_record?
       productComment.user_id = user_id
