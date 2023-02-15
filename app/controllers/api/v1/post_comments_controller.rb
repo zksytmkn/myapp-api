@@ -1,8 +1,8 @@
 class Api::V1::PostCommentsController < ApplicationController
 
-  def index
-    postComments = PostComment.all
-    render json: postComments
+  def show
+    postComments = PostComment.where(post_id: params[:id])
+    render json: postComments, include: [:user]
   end
 
   def create
