@@ -12,6 +12,6 @@ class Api::V1::ProductCommentsController < ApplicationController
 
   private
   def productComment_params
-    params.require(:productComment).permit(:productComment_content, :product_id)
+    params.require(:productComment).permit(:productComment_content, :product_id, :user_id)
   end
 end
