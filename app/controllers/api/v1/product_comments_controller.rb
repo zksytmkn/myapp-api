@@ -10,8 +10,12 @@ class Api::V1::ProductCommentsController < ApplicationController
     productComment.save!
   end
 
-  private
+  def destroy
+    productComment = ProductComment.find(params[:id])
+    productComment.destroy!
+  end
+
   def productComment_params
-    params.require(:productComment).permit(:productComment_content, :product_id, :user_id)
+    params.permit(:productComment_content, :product_id, :user_id)
   end
 end

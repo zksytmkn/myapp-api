@@ -10,8 +10,12 @@ class Api::V1::PostCommentsController < ApplicationController
     postComment.save!
   end
 
-  private
+  def destroy
+    postComment = PostComment.find(params[:id])
+    postComment.destroy!
+  end
+
   def postComment_params
-    params.require(:postComment).permit(:postComment_content, :post_id)
+    params.permit(:postComment_content, :post_id, :user_id)
   end
 end
