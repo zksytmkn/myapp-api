@@ -5,6 +5,7 @@ table_names = %w(
   posts
   postComments
   communities
+  communityMessages
 )
 
 table_names.each do |table_name|

@@ -1,7 +1,7 @@
 10.times do |n|
   postComment_content = "コメント#{n}"
   user_id = n+1
-  post_id = 1
+  post_id = n+1
   postComment = PostComment.find_or_initialize_by(user_id: user_id)
 
   if  postComment.new_record?

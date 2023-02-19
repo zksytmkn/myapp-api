@@ -8,6 +8,7 @@ class Api::V1::ProductCommentsController < ApplicationController
   def create
     productComment = ProductComment.new(productComment_params)
     productComment.save!
+    
   end
 
   def destroy

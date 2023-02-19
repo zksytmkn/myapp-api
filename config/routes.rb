@@ -7,6 +7,9 @@ Rails.application.routes.draw do
         delete :destroy, on: :collection
       end
 
+      # guests
+      resources :guest_sessions, only:[:create]
+
       # users
       resources :users
 
@@ -24,6 +27,9 @@ Rails.application.routes.draw do
 
       # communities
       resources :communities
+
+      # communityMessages
+      resources :community_messages
     end
   end
 end

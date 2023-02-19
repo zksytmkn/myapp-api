@@ -2,7 +2,6 @@
   name = "user#{n}"
   email = "#{name}@example.com"
   prefecture = "青森県"
-  city = "青森市"
   text ="プロフィール文です。"
   user = User.find_or_initialize_by(email: email, activated: true)
 
@@ -10,7 +9,6 @@
       user.name = name
       user.email = email
       user.prefecture = prefecture
-      user.city = city
       user.text = text
       user.password = "password"
       user.save!

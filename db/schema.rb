@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_10_161511) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_17_150557) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -45,6 +45,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_161511) do
     t.string "maker", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "community_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "communityMessage_content"
+    t.bigint "user_id"
+    t.bigint "community_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_community_messages_on_community_id"
+    t.index ["user_id"], name: "index_community_messages_on_user_id"
   end
 
   create_table "post_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -102,7 +112,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_161511) do
     t.string "name", null: false
     t.string "email", null: false
     t.string "prefecture", null: false
-    t.string "city", null: false
     t.string "text", null: false
     t.string "password_digest", null: false
     t.boolean "activated", default: false, null: false
@@ -114,6 +123,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_161511) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "community_messages", "communities"
+  add_foreign_key "community_messages", "users"
   add_foreign_key "post_comments", "posts"
   add_foreign_key "post_comments", "users"
   add_foreign_key "posts", "users"
