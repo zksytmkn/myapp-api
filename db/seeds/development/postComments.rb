@@ -1,5 +1,6 @@
 10.times do |n|
-  postComment_content = "コメント#{n}"
+  postComment_content = "コメントになります。こちらサンプルですが、
+  コメントになります。こちらにコメントを入力することになってます。#{n}"
   user_id = n+1
   post_id = n+1
   postComment = PostComment.find_or_initialize_by(user_id: user_id)
