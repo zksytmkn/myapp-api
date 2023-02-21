@@ -112,6 +112,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_150557) do
     t.string "name", null: false
     t.string "email", null: false
     t.string "prefecture", null: false
+    t.string "zipcode", null: false
+    t.string "street", null: false
+    t.string "building", null: false
     t.string "text", null: false
     t.string "password_digest", null: false
     t.boolean "activated", default: false, null: false
