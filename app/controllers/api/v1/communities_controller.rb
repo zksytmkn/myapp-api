@@ -17,7 +17,9 @@ class Api::V1::CommunitiesController < ApplicationController
 
   def show
     community = Community.find(params[:id])
-    render json: community
+    participation = Participation.where(community_id: params[:id]).pluck(:user_id)
+    user = User.find(participation)
+    render json: { community: community, user: user }
   end
 
   def edit

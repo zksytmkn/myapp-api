@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :productComments
   has_many :posts
   has_many :postComments
+  has_many :participations, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 30, allow_blank: true }
 

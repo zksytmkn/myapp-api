@@ -30,6 +30,12 @@ Rails.application.routes.draw do
 
       # communityMessages
       resources :community_messages
+
+      # participations
+      resources :participations
+
+      # invitations
+      resources :invitations
     end
   end
 end
