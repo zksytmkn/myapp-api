@@ -36,6 +36,9 @@ Rails.application.routes.draw do
 
       # invitations
       resources :invitations
+
+      # relationships
+      resources :relationships
     end
   end
 end

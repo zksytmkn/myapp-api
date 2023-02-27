@@ -3,7 +3,7 @@ class Product < ApplicationRecord
 
   with_options presence: true do
     validates :name
-    validates :seller
+    validates :user_id
     validates :type
     validates :prefecture
     validates :price
@@ -11,6 +11,7 @@ class Product < ApplicationRecord
     validates :inventory
     validates :text
   end
+  belongs_to :user
   has_one_attached :image
   has_many :productComments
   self.inheritance_column = :_type_disabled

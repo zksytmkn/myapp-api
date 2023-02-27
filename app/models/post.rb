@@ -3,9 +3,10 @@ class Post < ApplicationRecord
 
   with_options presence: true do
     validates :name
-    validates :poster
+    validates :user_id
     validates :text
   end
+  belongs_to :user
   has_one_attached :image
   has_many :postComments
   self.inheritance_column = :_type_disabled

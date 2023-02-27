@@ -3,7 +3,7 @@ class Api::V1::PostsController < ApplicationController
 
   def index
     posts = Post.all
-    render json: posts, methods: [:image_url]
+    render json: posts, methods: [:image_url], include: [:user]
   end
 
   def new
@@ -17,7 +17,7 @@ class Api::V1::PostsController < ApplicationController
 
   def show
     post = Post.find(params[:id])
-    render json: post
+    render json: post, include: [:user]
   end
 
   def edit
@@ -34,6 +34,6 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def post_params
-    params.permit(:name, :poster, :text, :image )
+    params.permit(:name, :user_id, :text, :image )
   end
 end

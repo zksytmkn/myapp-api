@@ -3,9 +3,10 @@ class Community < ApplicationRecord
 
   with_options presence: true do
     validates :name
-    validates :maker
+    validates :user_id
     validates :text
   end
+  belongs_to :user
   has_one_attached :image
   has_many :participations, dependent: :destroy
   self.inheritance_column = :_type_disabled

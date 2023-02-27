@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_22_075927) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_24_141302) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -42,9 +42,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_22_075927) do
   create_table "communities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "text", null: false
-    t.string "maker", null: false
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_communities_on_user_id"
   end
 
   create_table "community_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -63,6 +64,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_22_075927) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["community_id"], name: "index_invitations_on_community_id"
+    t.index ["user_id", "community_id"], name: "index_invitations_on_user_id_and_community_id", unique: true
     t.index ["user_id"], name: "index_invitations_on_user_id"
   end
 
@@ -72,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_22_075927) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["community_id"], name: "index_participations_on_community_id"
+    t.index ["user_id", "community_id"], name: "index_participations_on_user_id_and_community_id", unique: true
     t.index ["user_id"], name: "index_participations_on_user_id"
   end
 
@@ -88,7 +91,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_22_075927) do
   create_table "posts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "text", null: false
-    t.string "poster", null: false
     t.boolean "like"
     t.boolean "dislike"
     t.bigint "user_id"
@@ -110,7 +112,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_22_075927) do
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "text", null: false
-    t.string "seller", null: false
     t.string "type", null: false
     t.string "prefecture", null: false
     t.integer "price", null: false
@@ -124,6 +125,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_22_075927) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_products_on_user_id"
+  end
+
+  create_table "relationships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "following_id", null: false
+    t.integer "followed_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["following_id", "followed_id"], name: "index_relationships_on_following_id_and_followed_id", unique: true
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -144,6 +153,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_22_075927) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "communities", "users"
   add_foreign_key "community_messages", "communities"
   add_foreign_key "community_messages", "users"
   add_foreign_key "invitations", "communities"

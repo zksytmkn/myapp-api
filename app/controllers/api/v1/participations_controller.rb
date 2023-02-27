@@ -5,6 +5,12 @@ class Api::V1::ParticipationsController < ApplicationController
     participation.save!
   end
 
+  def show
+    participation = Participation.where(user_id: params[:id]).pluck(:community_id)
+    participatedCommunity = Community.find(participation)
+    render json: participatedCommunity
+  end
+
   def destroy
     participation = Participation.find_by(participation_params)
     participation.destroy!

@@ -13,11 +13,8 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    participation = Participation.where(user_id: params[:id]).pluck(:community_id)
-    participatedCommunity = Community.find(participation)
-    invitation = Invitation.where(user_id: params[:id]).pluck(:community_id)
-    invitedCommunity = Community.find(invitation)
-    render json: { participation: participatedCommunity, invitation: invitedCommunity }
+    user = User.find(params[:id])
+    render json: user
   end
 
   def edit

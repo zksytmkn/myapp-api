@@ -3,7 +3,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def index
     products = Product.all
-    render json: products, methods: [:image_url]
+    render json: products, methods: [:image_url], include: [:user]
   end
 
   def new
@@ -16,7 +16,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def show
     product = Product.find(params[:id])
-    render json: product
+    render json: product, include: [:user]
   end
 
   def edit
@@ -33,6 +33,6 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def product_params
-    params.permit(:name, :seller, :type, :prefecture, :price, :quantity, :inventory, :text, :image)
+    params.permit(:name, :user_id, :type, :prefecture, :price, :quantity, :inventory, :text, :image)
   end
 end

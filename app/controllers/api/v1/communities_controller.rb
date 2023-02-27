@@ -3,7 +3,7 @@ class Api::V1::CommunitiesController < ApplicationController
 
   def index
     communities = Community.all
-    render json: communities, methods: [:image_url]
+    render json: communities, methods: [:image_url], include: [:user]
   end
 
   def new
@@ -16,7 +16,7 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def show
-    community = Community.find(params[:id])
+    community = Community.find(params[:id]).as_json(include: [:user])
     participation = Participation.where(community_id: params[:id]).pluck(:user_id)
     user = User.find(participation)
     render json: { community: community, user: user }
