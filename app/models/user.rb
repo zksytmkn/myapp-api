@@ -7,11 +7,16 @@ class User < ApplicationRecord
 
   has_secure_password
   has_one_attached :image
-  has_many :products
-  has_many :productComments
-  has_many :posts
-  has_many :postComments
+  has_many :products, dependent: :destroy
+  has_many :productComments, dependent: :destroy
+  has_many :productFavorites, dependent: :destroy
+  has_many :productUnfavorites, dependent: :destroy
+  has_many :posts, dependent: :destroy
+  has_many :postComments, dependent: :destroy
+  has_many :postFavorites, dependent: :destroy
+  has_many :postUnfavorites, dependent: :destroy
   has_many :participations, dependent: :destroy
+  has_many :invitations, dependent: :destroy
   has_many :following_relationships, class_name: 'Relationship', :foreign_key => 'following_id'
   has_many :followed_relationships, class_name: 'Relationship', :foreign_key => 'followed_id'
 

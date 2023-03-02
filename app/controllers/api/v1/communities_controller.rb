@@ -16,10 +16,12 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def show
-    community = Community.find(params[:id]).as_json(include: [:user])
+    community = Community.find(params[:id]).as_json(methods: [:image_url], include: [:user])
     participation = Participation.where(community_id: params[:id]).pluck(:user_id)
-    user = User.find(participation)
-    render json: { community: community, user: user }
+    participatedUser = User.find(participation)
+    invitation = Invitation.where(community_id: params[:id]).pluck(:user_id)
+    invitedUser = User.find(invitation)
+    render json: { community: community, participation: participatedUser, invitation: invitedUser }
   end
 
   def edit
@@ -36,6 +38,6 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def community_params
-    params.permit(:name, :maker, :text, :image )
+    params.permit(:name, :user_id, :text, :image )
   end
 end

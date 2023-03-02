@@ -8,7 +8,9 @@ class Community < ApplicationRecord
   end
   belongs_to :user
   has_one_attached :image
+  has_many :community_messages, dependent: :destroy
   has_many :participations, dependent: :destroy
+  has_many :invitations, dependent: :destroy
   self.inheritance_column = :_type_disabled
 
   def image_url

@@ -8,8 +8,6 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.integer :price, null: false
       t.integer :quantity, null: false
       t.integer :inventory, null: false
-      t.boolean :like
-      t.boolean :dislike
       t.boolean :recommend
       t.boolean :purchased
       t.references :user, foreign_key: true

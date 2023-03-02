@@ -13,7 +13,9 @@ class Product < ApplicationRecord
   end
   belongs_to :user
   has_one_attached :image
-  has_many :productComments
+  has_many :productComments, dependent: :destroy
+  has_many :productFavorites, dependent: :destroy
+  has_many :productUnfavorites, dependent: :destroy
   self.inheritance_column = :_type_disabled
 
   def image_url

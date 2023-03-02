@@ -16,7 +16,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def show
     product = Product.find(params[:id])
-    render json: product, include: [:user]
+    render json: product, methods: [:image_url], include: [:user]
   end
 
   def edit
