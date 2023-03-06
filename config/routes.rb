@@ -20,10 +20,12 @@ Rails.application.routes.draw do
       resources :product_comments
 
       # productFavorites
-      resources :product_favorites
+      resources :product_favorites, :only => :show
+      resource :product_favorites, :only => [:create, :destroy]
 
       # productUnfavorites
-      resources :product_unfavorites
+      resources :product_unfavorites, :only => :show
+      resource :product_unfavorites, :only => [:create, :destroy]
 
       # posts
       resources :posts
@@ -32,10 +34,12 @@ Rails.application.routes.draw do
       resources :post_comments
 
       # postFavorites
-      resources :post_favorites
+      resources :post_favorites, :only => :show
+      resource :post_favorites, :only => [:create, :destroy]
 
       # postUnfavorites
-      resources :post_unfavorites
+      resources :post_unfavorites, :only => :show
+      resource :post_unfavorites, :only => [:create, :destroy]
 
       # communities
       resources :communities

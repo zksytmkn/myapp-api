@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_24_141302) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_02_124309) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -88,11 +88,29 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_24_141302) do
     t.index ["user_id"], name: "index_post_comments_on_user_id"
   end
 
+  create_table "post_favorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_favorites_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_post_favorites_on_user_id_and_post_id", unique: true
+    t.index ["user_id"], name: "index_post_favorites_on_user_id"
+  end
+
+  create_table "post_unfavorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_unfavorites_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_post_unfavorites_on_user_id_and_post_id", unique: true
+    t.index ["user_id"], name: "index_post_unfavorites_on_user_id"
+  end
+
   create_table "posts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "text", null: false
-    t.boolean "like"
-    t.boolean "dislike"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -109,6 +127,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_24_141302) do
     t.index ["user_id"], name: "index_product_comments_on_user_id"
   end
 
+  create_table "product_favorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_favorites_on_product_id"
+    t.index ["user_id", "product_id"], name: "index_product_favorites_on_user_id_and_product_id", unique: true
+    t.index ["user_id"], name: "index_product_favorites_on_user_id"
+  end
+
+  create_table "product_unfavorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_unfavorites_on_product_id"
+    t.index ["user_id", "product_id"], name: "index_product_unfavorites_on_user_id_and_product_id", unique: true
+    t.index ["user_id"], name: "index_product_unfavorites_on_user_id"
+  end
+
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "text", null: false
@@ -117,8 +155,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_24_141302) do
     t.integer "price", null: false
     t.integer "quantity", null: false
     t.integer "inventory", null: false
-    t.boolean "like"
-    t.boolean "dislike"
     t.boolean "recommend"
     t.boolean "purchased"
     t.bigint "user_id"
@@ -162,8 +198,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_24_141302) do
   add_foreign_key "participations", "users"
   add_foreign_key "post_comments", "posts"
   add_foreign_key "post_comments", "users"
+  add_foreign_key "post_favorites", "posts"
+  add_foreign_key "post_favorites", "users"
+  add_foreign_key "post_unfavorites", "posts"
+  add_foreign_key "post_unfavorites", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "product_comments", "products"
   add_foreign_key "product_comments", "users"
+  add_foreign_key "product_favorites", "products"
+  add_foreign_key "product_favorites", "users"
+  add_foreign_key "product_unfavorites", "products"
+  add_foreign_key "product_unfavorites", "users"
   add_foreign_key "products", "users"
 end
