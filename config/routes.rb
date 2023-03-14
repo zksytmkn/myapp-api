@@ -11,7 +11,9 @@ Rails.application.routes.draw do
       resources :guest_sessions, only: [:create]
 
       # users
-      resources :users
+      resources :users do
+        get :confirm_email, on: :collection
+      end
 
       # products
       resources :products

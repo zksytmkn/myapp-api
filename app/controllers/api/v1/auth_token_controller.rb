@@ -38,7 +38,7 @@ class Api::V1::AuthTokenController < ApplicationController
 
   # params[:email]からアクティブなユーザーを返す
   def login_user
-    @_login_user ||= User.find_by_activated(auth_params[:email])
+    @_login_user ||= User.find_by_confirmed(auth_params[:email])
   end
 
   # ログインユーザーが居ない、もしくはpasswordが一致しない場合404を返す

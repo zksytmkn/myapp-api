@@ -6,10 +6,6 @@ class Api::V1::PostsController < ApplicationController
     render json: posts, methods: [:image_url], include: [:user]
   end
 
-  def new
-    post = Post.new
-  end
-
   def create
     post = Post.new(post_params)
     post.save!
@@ -18,9 +14,6 @@ class Api::V1::PostsController < ApplicationController
   def show
     post = Post.find(params[:id])
     render json: post, methods: [:image_url], include: [:user]
-  end
-
-  def edit
   end
 
   def update

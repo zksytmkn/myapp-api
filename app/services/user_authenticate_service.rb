@@ -11,7 +11,7 @@ module UserAuthenticateService
   # 認証 & 認可（トークンの持ち主 && メール認証ユーザーを判定）
   # 認証済み && メール認証済みのユーザーが居ればtrue、存在しない場合は401を返す
   def authenticate_active_user
-    (current_user.present? && current_user.activated?) || unauthorized_user
+    (current_user.present? && current_user.confirmation_status?) || unauthorized_user
   end
 
   private

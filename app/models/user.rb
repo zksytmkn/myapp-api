@@ -4,6 +4,8 @@ class User < ApplicationRecord
   include TokenGenerateService
 
   before_validation :downcase_email
+  before_create :set_email_confirmation
+  after_create :send_email_confirmation
 
   has_secure_password
   has_one_attached :image
@@ -30,20 +32,47 @@ class User < ApplicationRecord
                         format: { with: VALID_PASSWORD_REGEX, message: :invalid_password, allow_blank: true },
                         allow_nil: true
 
+  enum confirmation_status: {
+    confirmed: 0,
+    unconfirmed: 1,
+  }
+
+  def set_email_confirmation
+    self.confirmation_token = SecureRandom.urlsafe_base64(47)
+    self.expiration_date = Time.zone.now + Constants::EMAIL_CONFIRMATION_LIMIT
+  end
+
+  def send_email_confirmation
+    UserMailer.send_email_confirmation(self).deliver_later
+  end
+
+  def expired?
+    expiration_date.present? ? expiration_date < Time.zone.now : false
+  end
+
+  def activate
+    status = User.confirmation_statuses[:confirmed]
+    update!(
+      confirmation_status: status,
+      confirmation_token: nil,
+      expiration_date: nil,
+    )
+  end
+
   def image_url
     # 紐づいている画像のURLを取得する
     image.attached? ? url_for(image) : nil
   end
 
   class << self
-    def find_by_activated(email)
-      find_by(email: email, activated: true)
+    def find_by_confirmed(email)
+      find_by(email: email, confirmation_status: 0)
     end
   end
 
-  def email_activated?
+  def email_confirmed?
     users = User.where.not(id: id)
-    users.find_by_activated(email).present?
+    users.find_by_confirmed(email).present?
   end
 
   def remember(jti)

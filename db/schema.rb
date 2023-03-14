@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_02_124309) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_07_121800) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -174,17 +174,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_02_124309) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
-    t.string "prefecture", null: false
-    t.string "zipcode", null: false
-    t.string "street", null: false
-    t.string "building", null: false
-    t.string "text", null: false
+    t.string "prefecture"
+    t.string "zipcode"
+    t.string "street"
+    t.string "building"
+    t.string "text"
     t.string "password_digest", null: false
-    t.boolean "activated", default: false, null: false
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "refresh_jti"
+    t.integer "confirmation_status", default: 1, null: false
+    t.string "confirmation_token", limit: 64
+    t.datetime "expiration_date"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

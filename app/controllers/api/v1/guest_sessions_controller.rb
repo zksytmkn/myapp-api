@@ -12,7 +12,7 @@ class Api::V1::GuestSessionsController < ApplicationController
         user.street = "東京都中央区銀座6-18-2"
         user.building = "野村不動産銀座ビル 11階"
         user.text = "ゲストユーザーです。"
-        user.activated = true
+        user.confirmation_status = 0
         user.save!
     end
 

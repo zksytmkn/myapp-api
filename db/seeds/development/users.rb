@@ -6,7 +6,7 @@
   street = "東京都中央区銀座6-18-2"
   building = "野村不動産銀座ビル 11階"
   text ="プロフィール文です。こちらにプロフィール文を入力します。プロフィール文です。こちらにプロフィール文を入力します。こちらにサンプルのプロフィール文を入力してください。プロフィール文です。こちらにプロフィール文を入力します。プロフィール文です。こちらにプロフィール文を入力します。こちらにサンプルのプロフィール文を入力してください。"
-  user = User.find_or_initialize_by(email: email, activated: true)
+  user = User.find_or_initialize_by(email: email, confirmation_status: 0)
 
   if  user.new_record?
       user.name = name
