@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_07_121800) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -37,6 +37,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_121800) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "carts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "product_id"
+    t.integer "quantity", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_carts_on_product_id"
+    t.index ["user_id", "product_id"], name: "index_carts_on_user_id_and_product_id", unique: true
+    t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
   create_table "communities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -66,6 +77,27 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_121800) do
     t.index ["community_id"], name: "index_invitations_on_community_id"
     t.index ["user_id", "community_id"], name: "index_invitations_on_user_id_and_community_id", unique: true
     t.index ["user_id"], name: "index_invitations_on_user_id"
+  end
+
+  create_table "order_details", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "order_id"
+    t.bigint "product_id"
+    t.integer "price", null: false
+    t.integer "quantity", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id", "product_id"], name: "index_order_details_on_order_id_and_product_id", unique: true
+    t.index ["order_id"], name: "index_order_details_on_order_id"
+    t.index ["product_id"], name: "index_order_details_on_product_id"
+  end
+
+  create_table "orders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "billing_amount", null: false
+    t.integer "status", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "participations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -153,8 +185,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_121800) do
     t.string "type", null: false
     t.string "prefecture", null: false
     t.integer "price", null: false
-    t.integer "quantity", null: false
-    t.integer "inventory", null: false
+    t.integer "quantity", default: 1, null: false
+    t.integer "stock", null: false
     t.boolean "recommend"
     t.boolean "purchased"
     t.bigint "user_id"
@@ -191,11 +223,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_07_121800) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "carts", "products"
+  add_foreign_key "carts", "users"
   add_foreign_key "communities", "users"
   add_foreign_key "community_messages", "communities"
   add_foreign_key "community_messages", "users"
   add_foreign_key "invitations", "communities"
   add_foreign_key "invitations", "users"
+  add_foreign_key "order_details", "orders"
+  add_foreign_key "order_details", "products"
+  add_foreign_key "orders", "users"
   add_foreign_key "participations", "communities"
   add_foreign_key "participations", "users"
   add_foreign_key "post_comments", "posts"

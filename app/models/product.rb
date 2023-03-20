@@ -8,7 +8,7 @@ class Product < ApplicationRecord
     validates :prefecture
     validates :price
     validates :quantity
-    validates :inventory
+    validates :stock
     validates :text
   end
   belongs_to :user

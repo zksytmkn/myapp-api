@@ -1,5 +1,10 @@
 class Api::V1::ProductFavoritesController < ApplicationController
 
+  def index
+    productFavorites = ProductFavorite.all
+    render json: productFavorites
+  end
+
   def create
     productFavorite = ProductFavorite.new(productFavorite_params)
     productFavorite.save!

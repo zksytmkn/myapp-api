@@ -1,5 +1,10 @@
 class Api::V1::ProductUnfavoritesController < ApplicationController
 
+  def index
+    productUnfavorites = ProductUnfavorite.all
+    render json: productUnfavorites
+  end
+
   def create
     productUnfavorite = ProductUnfavorite.new(productUnfavorite_params)
     productUnfavorite.save!

@@ -1,5 +1,10 @@
 class Api::V1::PostUnfavoritesController < ApplicationController
 
+  def index
+    postUnfavorites = PostUnfavorite.all
+    render json: postUnfavorites
+  end
+
   def create
     postUnfavorite = PostUnfavorite.new(postUnfavorite_params)
     postUnfavorite.save!

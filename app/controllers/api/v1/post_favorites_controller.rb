@@ -1,5 +1,10 @@
 class Api::V1::PostFavoritesController < ApplicationController
 
+  def index
+    postFavorites = PostFavorite.all
+    render json: postFavorites
+  end
+
   def create
     postFavorite = PostFavorite.new(postFavorite_params)
     postFavorite.save!

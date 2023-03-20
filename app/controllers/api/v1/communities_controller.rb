@@ -24,9 +24,6 @@ class Api::V1::CommunitiesController < ApplicationController
     render json: { community: community, participation: participatedUser, invitation: invitedUser }
   end
 
-  def edit
-  end
-
   def update
     community = Community.find(params[:id])
     community.update(community_params)

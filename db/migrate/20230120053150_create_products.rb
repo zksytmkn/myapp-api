@@ -6,10 +6,8 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :type, null: false
       t.string :prefecture, null: false
       t.integer :price, null: false
-      t.integer :quantity, null: false
-      t.integer :inventory, null: false
-      t.boolean :recommend
-      t.boolean :purchased
+      t.integer :quantity, default: 1, null: false
+      t.integer :stock, null: false
       t.references :user, foreign_key: true
 
       t.timestamps

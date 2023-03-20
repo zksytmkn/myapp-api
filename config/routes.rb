@@ -22,12 +22,22 @@ Rails.application.routes.draw do
       resources :product_comments
 
       # productFavorites
-      resources :product_favorites, :only => :show
+      resources :product_favorites, :only => [:index, :show]
       resource :product_favorites, :only => [:create, :destroy]
 
       # productUnfavorites
-      resources :product_unfavorites, :only => :show
+      resources :product_unfavorites, :only => [:index, :show]
       resource :product_unfavorites, :only => [:create, :destroy]
+
+      # carts
+      resources :carts, :only => [:show, :update, :destroy]
+      resource :carts, :only => :create
+
+      # orders
+      resources :orders
+
+      # orderDetails
+      resources :order_details
 
       # posts
       resources :posts
@@ -36,11 +46,11 @@ Rails.application.routes.draw do
       resources :post_comments
 
       # postFavorites
-      resources :post_favorites, :only => :show
+      resources :post_favorites, :only => [:index, :show]
       resource :post_favorites, :only => [:create, :destroy]
 
       # postUnfavorites
-      resources :post_unfavorites, :only => :show
+      resources :post_unfavorites, :only => [:index, :show]
       resource :post_unfavorites, :only => [:create, :destroy]
 
       # communities

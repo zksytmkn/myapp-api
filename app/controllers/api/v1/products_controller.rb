@@ -6,9 +6,6 @@ class Api::V1::ProductsController < ApplicationController
     render json: products, methods: [:image_url], include: [:user]
   end
 
-  def new
-  end
-
   def create
     product = Product.new(product_params)
     product.save!
@@ -19,12 +16,9 @@ class Api::V1::ProductsController < ApplicationController
     render json: product, methods: [:image_url], include: [:user]
   end
 
-  def edit
-  end
-
   def update
     product = Product.find(params[:id])
-    product.update(product_params)
+    product.update!(product_params)
   end
 
   def destroy
@@ -33,6 +27,6 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def product_params
-    params.permit(:name, :user_id, :type, :prefecture, :price, :quantity, :inventory, :text, :image)
+    params.permit(:name, :user_id, :type, :prefecture, :price, :quantity, :stock, :text, :image)
   end
 end
