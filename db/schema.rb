@@ -84,6 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
     t.bigint "product_id"
     t.integer "price", null: false
     t.integer "quantity", null: false
+    t.integer "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["order_id", "product_id"], name: "index_order_details_on_order_id_and_product_id", unique: true
@@ -94,7 +95,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
   create_table "orders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "billing_amount", null: false
-    t.integer "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_orders_on_user_id"
@@ -187,8 +187,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
     t.integer "price", null: false
     t.integer "quantity", default: 1, null: false
     t.integer "stock", null: false
-    t.boolean "recommend"
-    t.boolean "purchased"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

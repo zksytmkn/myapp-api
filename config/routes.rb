@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       end
 
       # guests
-      resources :guest_sessions, only: [:create]
+      resources :guest_sessions
 
       # users
       resources :users do
@@ -22,16 +22,16 @@ Rails.application.routes.draw do
       resources :product_comments
 
       # productFavorites
-      resources :product_favorites, :only => [:index, :show]
-      resource :product_favorites, :only => [:create, :destroy]
+      resources :product_favorites
+      resource :product_favorites
 
       # productUnfavorites
-      resources :product_unfavorites, :only => [:index, :show]
-      resource :product_unfavorites, :only => [:create, :destroy]
+      resources :product_unfavorites
+      resource :product_unfavorites
 
       # carts
-      resources :carts, :only => [:show, :update, :destroy]
-      resource :carts, :only => :create
+      resources :carts
+      resource :carts
 
       # orders
       resources :orders
@@ -46,12 +46,12 @@ Rails.application.routes.draw do
       resources :post_comments
 
       # postFavorites
-      resources :post_favorites, :only => [:index, :show]
-      resource :post_favorites, :only => [:create, :destroy]
+      resources :post_favorites
+      resource :post_favorites
 
       # postUnfavorites
-      resources :post_unfavorites, :only => [:index, :show]
-      resource :post_unfavorites, :only => [:create, :destroy]
+      resources :post_unfavorites
+      resource :post_unfavorites
 
       # communities
       resources :communities
@@ -60,15 +60,15 @@ Rails.application.routes.draw do
       resources :community_messages
 
       # participations
-      resources :participations, :only => :show
-      resource :participations, :only => [:create, :destroy]
+      resources :participations
+      resource :participations
 
       # invitations
       resources :invitations
 
       # relationships
-      resources :relationships, :only => :show
-      resource :relationships, :only => [:create, :destroy]
+      resources :relationships
+      resource :relationships
     end
   end
 end

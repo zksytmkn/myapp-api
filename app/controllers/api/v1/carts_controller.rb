@@ -1,13 +1,13 @@
 class Api::V1::CartsController < ApplicationController
 
+  def index
+    cart = Cart.where(user_id: current_user.id)
+    render json: cart, include: [:product]
+  end
+
   def create
     cart = Cart.new(cart_params)
     cart.save!
-  end
-
-  def show
-    cart = Cart.where(user_id: params[:id])
-    render json: cart, include: [:product]
   end
 
   def update
