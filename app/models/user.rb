@@ -18,7 +18,8 @@ class User < ApplicationRecord
   has_many :postFavorites, dependent: :destroy
   has_many :postUnfavorites, dependent: :destroy
   has_many :participations, dependent: :destroy
-  has_many :invitations, dependent: :destroy
+  has_many :inviting_invitations, class_name: 'Invitation', :foreign_key => 'inviting_id'
+  has_many :invited_invitations, class_name: 'Invitation', :foreign_key => 'invited_id'
   has_many :following_relationships, class_name: 'Relationship', :foreign_key => 'following_id'
   has_many :followed_relationships, class_name: 'Relationship', :foreign_key => 'followed_id'
 

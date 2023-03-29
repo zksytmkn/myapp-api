@@ -3,11 +3,7 @@ class Api::V1::CommunitiesController < ApplicationController
 
   def index
     communities = Community.all
-    render json: communities, methods: [:image_url], include: [:user]
-  end
-
-  def new
-    community = Community.new
+    render json: communities, methods: [:image_url]
   end
 
   def create
@@ -19,9 +15,11 @@ class Api::V1::CommunitiesController < ApplicationController
     community = Community.find(params[:id]).as_json(methods: [:image_url], include: [:user])
     participation = Participation.where(community_id: params[:id]).pluck(:user_id)
     participatedUser = User.find(participation)
-    invitation = Invitation.where(community_id: params[:id]).pluck(:user_id)
-    invitedUser = User.find(invitation)
-    render json: { community: community, participation: participatedUser, invitation: invitedUser }
+    invited = Invitation.where(community_id: params[:id]).pluck(:invited_id)
+    invitedUser = User.find(invited)
+    inviting = Invitation.where(community_id: params[:id], invited_id: current_user.id).pluck(:inviting_id)
+    invitingUser = User.find_by(id: inviting)
+    render json: { community: community, participation: participatedUser, invited: invitedUser, inviting: invitingUser }
   end
 
   def update

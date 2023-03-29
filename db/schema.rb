@@ -70,13 +70,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
   end
 
   create_table "invitations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.integer "inviting_id", null: false
+    t.integer "invited_id", null: false
     t.bigint "community_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["community_id"], name: "index_invitations_on_community_id"
-    t.index ["user_id", "community_id"], name: "index_invitations_on_user_id_and_community_id", unique: true
-    t.index ["user_id"], name: "index_invitations_on_user_id"
+    t.index ["invited_id", "community_id"], name: "index_invitations_on_invited_id_and_community_id", unique: true
   end
 
   create_table "order_details", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -95,6 +95,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
   create_table "orders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "billing_amount", null: false
+    t.string "zipcode", null: false
+    t.string "street", null: false
+    t.string "building", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_orders_on_user_id"
@@ -227,7 +230,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
   add_foreign_key "community_messages", "communities"
   add_foreign_key "community_messages", "users"
   add_foreign_key "invitations", "communities"
-  add_foreign_key "invitations", "users"
   add_foreign_key "order_details", "orders"
   add_foreign_key "order_details", "products"
   add_foreign_key "orders", "users"

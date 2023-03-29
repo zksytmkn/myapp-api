@@ -8,7 +8,6 @@ class Api::V1::CommunityMessagesController < ApplicationController
   def create
     communityMessage = CommunityMessage.new(communityMessage_params)
     communityMessage.save!
-    
   end
 
   def destroy

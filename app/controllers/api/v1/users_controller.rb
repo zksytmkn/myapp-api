@@ -16,9 +16,13 @@ class Api::V1::UsersController < ActionController::Base
   end
 
   def update
+    user = User.find(current_user.id)
+    product.update!(user_parmas)
   end
 
   def destroy
+    user = User.find(current_user.id)
+    user.destroy!
   end
 
   def confirm_email
@@ -37,6 +41,6 @@ class Api::V1::UsersController < ActionController::Base
   end
 
   def user_parmas
-    params.permit(:name, :email, :password, :password_confirmation)
+    params.permit(:name, :email, :prefecture, :zipcode, :street, :building, :text, :password, :password_confirmation)
   end
 end

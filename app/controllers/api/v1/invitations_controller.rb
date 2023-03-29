@@ -1,7 +1,7 @@
 class Api::V1::InvitationsController < ApplicationController
 
   def index
-    invitation = Invitation.where(user_id: current_user.id).pluck(:community_id)
+    invitation = Invitation.where(invited_id: current_user.id).pluck(:community_id)
     invitedCommunity = Community.find(invitation)
     render json: invitedCommunity
   end
@@ -17,6 +17,6 @@ class Api::V1::InvitationsController < ApplicationController
   end
 
   def invitation_params
-    params.permit(:user_id, :community_id)
+    params.permit(:inviting_id, :invited_id, :community_id)
   end
 end

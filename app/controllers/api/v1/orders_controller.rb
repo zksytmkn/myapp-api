@@ -1,17 +1,12 @@
 class Api::V1::OrdersController < ApplicationController
 
   def index
-    order = Order.where(user_id: current_user.id)
-    orderId = order.pluck(:id)
-    orderDetail = OrderDetail.where(order_id: orderId).as_json(include: [:product])
-    render json: { order: order, orderDetail: orderDetail}
-  end
-
-  def index
-    orderId = Order.where(user_id: current_user.id).pluck(:id)
-    buyer = OrderDetail.where(order_id: orderId).as_json(include: [:product, :order])
-    seller = OrderDetail.where(product_id: orderId).as_json(include: [:product, :order])
-    close = OrderDetail.where(product_id: orderId).as_json(include: [:product, :order])
+    buyerId = Order.where(user_id: current_user.id).pluck(:id)
+    buyer = OrderDetail.where(order_id: buyerId).where.not(status: 3).as_json(include: [:product, :order])
+    sellerId = Product.where(user_id: current_user.id).pluck(:id)
+    seller = OrderDetail.where(product_id: sellerId).where.not(status: 3).as_json(include: [:product, :order])
+    closeId = OrderDetail.where(order_id: buyerId).or(OrderDetail.where(product_id: sellerId)).pluck(:id)
+    close = OrderDetail.where(id: closeId).where(status: 3).as_json(include: [:product, :order])
     render json: { buyer: buyer, seller: seller, close: close}
   end
 
@@ -33,16 +28,20 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def show
-    orderDetail = OrderDetail.find_by(id: params[:id]).as_json(include: [:product, :order])
+    orderDetail = OrderDetail.find_by(id: params[:id]).as_json(include: [:product, order: { include: :user }])
     render json: orderDetail
   end
 
   def update
-    order = Order.find(params[:id])
-    order.update(order_params)
+    orderDetail = OrderDetail.find(params[:id])
+    orderDetail.update(orderDetail_params)
   end
 
   def order_params
-    params.permit(:user_id, :billing_amount)
+    params.permit(:user_id, :billing_amount, :zipcode, :street, :building)
+  end
+
+  def orderDetail_params
+    params.permit(:order_id, :product_id, :price, :quantity, :status)
   end
 end
