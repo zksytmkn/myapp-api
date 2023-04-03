@@ -22,5 +22,11 @@ class UserMailer < ApplicationMailer
     @user = user
     @token = token
     mail(to: @user.email, subject: '【Edible】パスワード再設定のご案内')
-  end  
+  end
+
+  def send_contact_email(name, email, contents)
+    @name = name
+    @contents = contents
+    mail(to: email, subject: '【Edible】お問い合わせありがとうございます')
+  end
 end

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       end
 
       resources :guest_sessions
+      resources :contacts, only: [:create]
 
       resources :users , only: [:index, :create, :show, :update, :destroy] do
         post :send_email_reset_confirmation, on: :collection
