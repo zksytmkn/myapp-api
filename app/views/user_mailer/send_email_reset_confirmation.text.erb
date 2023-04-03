@@ -1,0 +1,9 @@
+<%= @user.name %>様
+
+Edibleをご利用いただきありがとうございます。
+
+下記のリンクをクリックして、Edibleに再度ログインしてください。
+メールアドレスの変更を行なっていない場合は、このメールを無視してください。
+＊このURLの有効期限は24時間です。
+
+<%= confirm_email_reset_api_v1_users_url(token: @token, email: @email) %>

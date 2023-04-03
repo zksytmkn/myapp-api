@@ -4,7 +4,7 @@ class Community < ApplicationRecord
   with_options presence: true do
     validates :name
     validates :user_id
-    validates :text
+    validates :description
   end
   belongs_to :user
   has_one_attached :image

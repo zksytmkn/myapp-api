@@ -38,6 +38,7 @@ gem 'hirb-unicode-steakknife', '~> 0.0.9'
 gem 'bcrypt', '~> 3.1', '>= 3.1.18'
 
 gem 'jwt', '~> 2.5'
+gem 'email_validator'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

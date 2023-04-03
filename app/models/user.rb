@@ -2,10 +2,10 @@ require "validator/email_validator"
 
 class User < ApplicationRecord
   include TokenGenerateService
+  include ActionView::Helpers::UrlHelper
 
   before_validation :downcase_email
   before_create :set_email_confirmation
-  after_create :send_email_confirmation
 
   has_secure_password
   has_one_attached :image
@@ -27,10 +27,10 @@ class User < ApplicationRecord
 
   validates :email,  presence: true, email: { allow_blank: true }
 
-  VALID_PASSWORD_REGEX = /\A[\w\-]+\z/
-  validates  :password, presence: true,
+  VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*+\-_])(?=.*[\S])/x
+  validates :password,  presence: true,
                         length: { minimum: 8, allow_blank: true },
-                        format: { with: VALID_PASSWORD_REGEX, message: :invalid_password, allow_blank: true },
+                        format: { with: VALID_PASSWORD_REGEX, message: "パスワードは英数字と記号を含む必要があります", allow_blank: true },
                         allow_nil: true
 
   enum confirmation_status: {
@@ -41,10 +41,6 @@ class User < ApplicationRecord
   def set_email_confirmation
     self.confirmation_token = SecureRandom.urlsafe_base64(47)
     self.expiration_date = Time.zone.now + Constants::EMAIL_CONFIRMATION_LIMIT
-  end
-
-  def send_email_confirmation
-    UserMailer.send_email_confirmation(self).deliver_later
   end
 
   def expired?
@@ -85,12 +81,14 @@ class User < ApplicationRecord
   end
 
   def response_json(payload = {})
-    as_json(only: [:id, :name, :email, :prefecture, :zipcode, :street, :building, :text, :image_url]).merge(payload).with_indifferent_access
+    as_json(only: [:id, :name, :email, :prefecture, :zipcode, :street, :building, :profile_text, :image_url]).merge(payload).with_indifferent_access
   end
-
-  private
 
   def downcase_email
     self.email.downcase! if email
+  end
+
+  def reset_password_expired?
+    reset_password_expires_at < Time.zone.now
   end
 end

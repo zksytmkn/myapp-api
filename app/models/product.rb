@@ -4,12 +4,12 @@ class Product < ApplicationRecord
   with_options presence: true do
     validates :name
     validates :user_id
-    validates :type
+    validates :category
     validates :prefecture
     validates :price
     validates :quantity
     validates :stock
-    validates :text
+    validates :description
   end
   belongs_to :user
   has_one_attached :image

@@ -1,3 +1,3 @@
 module Constants
-  EMAIL_CONFIRMATION_LIMIT = Rails.env.production? ? 1.day : 10.minutes
+  EMAIL_CONFIRMATION_LIMIT = 24.hours
 end

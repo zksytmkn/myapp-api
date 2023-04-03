@@ -2,9 +2,9 @@ class Post < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   with_options presence: true do
-    validates :name
+    validates :title
     validates :user_id
-    validates :text
+    validates :body
   end
   belongs_to :user
   has_one_attached :image

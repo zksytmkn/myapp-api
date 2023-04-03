@@ -27,6 +27,6 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def product_params
-    params.permit(:name, :user_id, :type, :prefecture, :price, :quantity, :stock, :text, :image)
+    params.permit(:name, :user_id, :category, :prefecture, :price, :quantity, :stock, :description, :image)
   end
 end

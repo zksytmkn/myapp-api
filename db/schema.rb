@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_02_153252) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -52,7 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
 
   create_table "communities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
-    t.text "text", null: false
+    t.text "description", null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -144,8 +144,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
   end
 
   create_table "posts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "text", null: false
+    t.string "title", null: false
+    t.text "body", null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -184,8 +184,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
 
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
-    t.text "text", null: false
-    t.string "type", null: false
+    t.text "description", null: false
+    t.string "category", null: false
     t.string "prefecture", null: false
     t.integer "price", null: false
     t.integer "quantity", default: 1, null: false
@@ -211,7 +211,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
     t.string "zipcode"
     t.string "street"
     t.string "building"
-    t.string "text"
+    t.string "profile_text"
     t.string "password_digest", null: false
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
@@ -220,6 +220,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_132716) do
     t.integer "confirmation_status", default: 1, null: false
     t.string "confirmation_token", limit: 64
     t.datetime "expiration_date"
+    t.string "reset_password_token"
+    t.datetime "reset_password_expires_at"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

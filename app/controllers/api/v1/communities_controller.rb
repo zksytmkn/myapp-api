@@ -33,6 +33,6 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def community_params
-    params.permit(:name, :user_id, :text, :image )
+    params.permit(:name, :user_id, :description, :image )
   end
 end
