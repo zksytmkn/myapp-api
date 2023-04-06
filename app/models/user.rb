@@ -10,13 +10,13 @@ class User < ApplicationRecord
   has_secure_password
   has_one_attached :image
   has_many :products, dependent: :destroy
-  has_many :productComments, dependent: :destroy
-  has_many :productFavorites, dependent: :destroy
-  has_many :productUnfavorites, dependent: :destroy
+  has_many :product_comments, dependent: :destroy
+  has_many :product_favorites, dependent: :destroy
+  has_many :product_unfavorites, dependent: :destroy
   has_many :posts, dependent: :destroy
-  has_many :postComments, dependent: :destroy
-  has_many :postFavorites, dependent: :destroy
-  has_many :postUnfavorites, dependent: :destroy
+  has_many :post_comments, dependent: :destroy
+  has_many :post_favorites, dependent: :destroy
+  has_many :post_unfavorites, dependent: :destroy
   has_many :participations, dependent: :destroy
   has_many :inviting_invitations, class_name: 'Invitation', :foreign_key => 'inviting_id'
   has_many :invited_invitations, class_name: 'Invitation', :foreign_key => 'invited_id'
