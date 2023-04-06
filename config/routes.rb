@@ -2,20 +2,24 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :auth_token, only: [:create] do
-        post :refresh, on: :collection
-        delete :destroy, on: :collection
+        collection do
+          post :refresh
+          delete :destroy
+        end
       end
 
       resources :guest_sessions
       resources :contacts, only: [:create]
 
       resources :users , only: [:index, :create, :show, :update, :destroy] do
-        post :send_email_reset_confirmation, on: :collection
-        post :send_password_reset_email, on: :collection
-        post :forgot_password, on: :collection
-        patch :update_password, on: :collection
-        get :confirm_email_reset, on: :collection
-        put :reset_password, on: :collection
+        collection do
+          post :send_email_reset_confirmation
+          post :send_password_reset_email
+          post :forgot_password
+          patch :update_password
+          get :confirm_email_reset
+          put :reset_password
+        end
       end
 
       resources :password_resets do
@@ -24,8 +28,14 @@ Rails.application.routes.draw do
 
       resources :products
       resources :product_comments
-      resources :product_favorites
-      resources :product_unfavorites
+
+      resources :product_favorites, only: [:index, :create, :show, :update] do
+        delete :destroy, on: :collection, path: ':product_id/user/:user_id'
+      end
+
+      resources :product_unfavorites, only: [:index, :create, :show, :update] do
+        delete :destroy, on: :collection, path: ':product_id/user/:user_id'
+      end
 
       resources :carts
 
