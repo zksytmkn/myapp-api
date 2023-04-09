@@ -1,4 +1,5 @@
 class ProductComment < ApplicationRecord
+
   with_options presence: true do
     validates :productComment_content
     validates :product_id

@@ -7,15 +7,10 @@ class Api::V1::ProductFavoritesController < ApplicationController
   end
 
   def create
-    product_favorite = ProductFavorite.new(product_favorite_params)
-
-    if product_favorite.save
-      product_unfavorite = ProductUnfavorite.find_by(product_favorite_params)
-      product_unfavorite&.destroy!
-      render json: product_favorite, status: :created
-    else
-      render json: product_favorite.errors, status: :unprocessable_entity
-    end
+    product_favorite = ProductFavorite.create!(product_favorite_params)
+    product_unfavorite = ProductUnfavorite.find_by(product_favorite_params)
+    product_unfavorite&.destroy!
+    render json: product_favorite, status: :created
   end
 
   def show
@@ -25,7 +20,7 @@ class Api::V1::ProductFavoritesController < ApplicationController
   end
 
   def destroy
-    @product_favorite.destroy
+    @product_favorite.destroy!
     head :no_content
   end
 

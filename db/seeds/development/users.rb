@@ -16,7 +16,7 @@
       user.street = street
       user.building = building
       user.profile_text = profile_text
-      user.password = "password"
+      user.password = "Password123@"
       user.save!
   end
 end

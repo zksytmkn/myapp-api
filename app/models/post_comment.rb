@@ -1,4 +1,5 @@
 class PostComment < ApplicationRecord
+
   with_options presence: true do
     validates :postComment_content
     validates :post_id

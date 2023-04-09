@@ -6,6 +6,7 @@ class Community < ApplicationRecord
     validates :user_id
     validates :description
   end
+
   belongs_to :user
   has_one_attached :image
   has_many :community_messages, dependent: :destroy

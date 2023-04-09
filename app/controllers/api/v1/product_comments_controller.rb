@@ -1,21 +1,26 @@
 class Api::V1::ProductCommentsController < ApplicationController
+  before_action :find_product_comment, only: [:destroy]
 
   def show
-    productComments = ProductComment.where(product_id: params[:id])
-    render json: productComments, include: [:user]
+    product_comments = ProductComment.where(product_id: params[:id])
+    render json: product_comments, include: [:user]
   end
 
   def create
-    productComment = ProductComment.new(productComment_params)
-    productComment.save!
+    product_comment = ProductComment.create!(product_comment_params)
   end
 
   def destroy
-    productComment = ProductComment.find(params[:id])
-    productComment.destroy!
+    @product_comment.destroy!
   end
 
-  def productComment_params
+  private
+
+  def product_comment_params
     params.permit(:productComment_content, :product_id, :user_id)
+  end
+
+  def find_product_comment
+    @product_comment = ProductComment.find(params[:id])
   end
 end

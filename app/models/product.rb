@@ -11,6 +11,7 @@ class Product < ApplicationRecord
     validates :stock
     validates :description
   end
+
   belongs_to :user
   has_one_attached :image
   has_many :product_comments, dependent: :destroy
