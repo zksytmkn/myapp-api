@@ -1,21 +1,26 @@
 class Api::V1::PostCommentsController < ApplicationController
+  before_action :set_post_comment, only: [:destroy]
 
   def show
-    postComments = PostComment.where(post_id: params[:id])
-    render json: postComments, include: [:user]
+    post_comments = PostComment.where(post_id: params[:id])
+    render json: post_comments, include: [:user]
   end
 
   def create
-    postComment = PostComment.new(postComment_params)
-    postComment.save!
+    post_comment = PostComment.create!(post_comment_params)
   end
 
   def destroy
-    postComment = PostComment.find(params[:id])
-    postComment.destroy!
+    @post_comment.destroy!
   end
 
-  def postComment_params
+  private
+
+  def set_post_comment
+    @post_comment = PostComment.find(params[:id])
+  end
+
+  def post_comment_params
     params.permit(:postComment_content, :post_id, :user_id)
   end
 end

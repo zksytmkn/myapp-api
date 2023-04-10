@@ -1,30 +1,30 @@
 class Api::V1::PostUnfavoritesController < ApplicationController
 
   def index
-    postUnfavorites = PostUnfavorite.all
-    render json: postUnfavorites
+    post_unfavorites = PostUnfavorite.all
+    render json: post_unfavorites
   end
 
   def create
-    postUnfavorite = PostUnfavorite.new(postUnfavorite_params)
-    postUnfavorite.save!
-    if  postFavorite = PostFavorite.find_by(postUnfavorite_params)
-        postFavorite.destroy!
-    end
+    post_unfavorite = PostUnfavorite.create!(post_unfavorite_params)
+    post_favorite = PostFavorite.find_by(post_unfavorite_params)
+    post_favorite&.destroy!
   end
 
   def show
-    unfavorite = PostUnfavorite.where(user_id: params[:id]).pluck(:post_id)
-    postUnfavorite = Post.find(unfavorite)
-    render json: postUnfavorite
+    unfavorite_ids = PostUnfavorite.where(user_id: params[:id]).pluck(:post_id)
+    post_unfavorites = Post.find(unfavorite_ids)
+    render json: post_unfavorites
   end
 
   def destroy
-    postUnfavorite = PostUnfavorite.find_by(postUnfavorite_params)
-    postUnfavorite.destroy!
+    post_unfavorite = PostUnfavorite.find_by(post_unfavorite_params)
+    post_unfavorite.destroy!
   end
 
-  def postUnfavorite_params
+  private
+
+  def post_unfavorite_params
     params.permit(:post_id, :user_id)
   end
 end

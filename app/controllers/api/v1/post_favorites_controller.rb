@@ -2,22 +2,20 @@ class Api::V1::PostFavoritesController < ApplicationController
   before_action :set_post_favorite, only: [:destroy]
 
   def index
-    postFavorites = PostFavorite.all
-    render json: postFavorites
+    post_favorites = PostFavorite.all
+    render json: post_favorites
   end
 
   def create
-    postFavorite = PostFavorite.new(postFavorite_params)
-    postFavorite.save!
-    if  postUnfavorite = PostUnfavorite.find_by(postFavorite_params)
-        postUnfavorite.destroy!
-    end
+    post_favorite = PostFavorite.create!(post_favorite_params)
+    post_unfavorite = PostUnfavorite.find_by(post_favorite_params)
+    post_unfavorite&.destroy!
   end
 
   def show
-    favorite = PostFavorite.where(user_id: params[:id]).pluck(:post_id)
-    postFavorite = Post.find(favorite)
-    render json: postFavorite
+    favorite_ids = PostFavorite.where(user_id: params[:id]).pluck(:post_id)
+    post_favorites = Post.find(favorite_ids)
+    render json: post_favorites
   end
 
   def destroy
@@ -27,7 +25,7 @@ class Api::V1::PostFavoritesController < ApplicationController
 
   private
 
-  def postFavorite_params
+  def post_favorite_params
     params.permit(:post_id, :user_id)
   end
 
