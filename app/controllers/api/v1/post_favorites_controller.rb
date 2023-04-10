@@ -1,4 +1,5 @@
 class Api::V1::PostFavoritesController < ApplicationController
+  before_action :set_post_favorite, only: [:destroy]
 
   def index
     postFavorites = PostFavorite.all
@@ -20,11 +21,17 @@ class Api::V1::PostFavoritesController < ApplicationController
   end
 
   def destroy
-    postFavorite = PostFavorite.find_by(postFavorite_params)
-    postFavorite.destroy!
+    @post_favorite.destroy!
+    head :no_content
   end
+
+  private
 
   def postFavorite_params
     params.permit(:post_id, :user_id)
+  end
+
+  def set_post_favorite
+    @post_favorite = PostFavorite.find_by!(post_id: params[:post_id], user_id: params[:user_id])
   end
 end

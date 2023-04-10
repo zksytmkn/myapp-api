@@ -44,8 +44,14 @@ Rails.application.routes.draw do
 
       resources :posts
       resources :post_comments
-      resources :post_favorites
-      resources :post_unfavorites
+
+      resources :post_favorites, only: [:index, :create, :show, :update] do
+        delete :destroy, on: :collection, path: ':post_id/user/:user_id'
+      end
+
+      resources :post_unfavorites, only: [:index, :create, :show, :update] do
+        delete :destroy, on: :collection, path: ':post_id/user/:user_id'
+      end
 
       resources :communities
       resources :community_messages
