@@ -94,6 +94,7 @@ class Api::V1::UsersController < ActionController::Base
       render json: { message: "パスワード再設定用のメールを送信しました" }, status: :ok
     else
       render json: { message: "メールアドレスが見つかりません" }, status: :not_found
+    end
   end
 
   def reset_password
