@@ -7,8 +7,7 @@ class Api::V1::PostUnfavoritesController < ApplicationController
 
   def create
     post_unfavorite = PostUnfavorite.create!(post_unfavorite_params)
-    post_favorite = PostFavorite.find_by(post_unfavorite_params)
-    post_favorite&.destroy!
+    remove_post_favorite(post_unfavorite_params)
   end
 
   def show
@@ -26,5 +25,10 @@ class Api::V1::PostUnfavoritesController < ApplicationController
 
   def post_unfavorite_params
     params.permit(:post_id, :user_id)
+  end
+
+  def remove_post_favorite(params)
+    post_favorite = PostFavorite.find_by(params)
+    post_favorite&.destroy!
   end
 end

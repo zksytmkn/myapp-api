@@ -6,17 +6,21 @@ class Api::V1::RelationshipsController < ApplicationController
   end
 
   def show
-    following = Relationship.where(following_id: params[:id]).pluck(:followed_id)
-    followingUser = User.find(following)
-    followed = Relationship.where(followed_id: params[:id]).pluck(:following_id)
-    followedUser = User.find(followed)
-    render json: {following: followingUser, followed: followedUser}
+    following_ids = Relationship.where(following_id: params[:id]).pluck(:followed_id)
+    followed_ids = Relationship.where(followed_id: params[:id]).pluck(:following_id)
+
+    following_users = User.find(following_ids)
+    followed_users = User.find(followed_ids)
+
+    render json: { following: following_users, followed: followed_users }
   end
 
   def destroy
     relationship = Relationship.find_by(relationship_params)
     relationship.destroy!
   end
+
+  private
 
   def relationship_params
     params.permit(:following_id, :followed_id)

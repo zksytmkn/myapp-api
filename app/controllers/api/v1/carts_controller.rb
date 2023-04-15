@@ -1,23 +1,27 @@
 class Api::V1::CartsController < ApplicationController
+  before_action :set_cart, only: %i[update destroy]
 
   def index
-    cart = Cart.where(user_id: current_user.id)
-    render json: cart, include: [:product]
+    carts = Cart.where(user_id: current_user.id)
+    render json: carts, include: [:product]
   end
 
   def create
-    cart = Cart.new(cart_params)
-    cart.save!
+    Cart.create!(cart_params)
   end
 
   def update
-    cart = Cart.find(params[:id])
-    cart.update!(cart_params)
+    @cart.update!(cart_params)
   end
 
   def destroy
-    cart = Cart.find(params[:id])
-    cart.destroy!
+    @cart.destroy!
+  end
+
+  private
+
+  def set_cart
+    @cart = Cart.find(params[:id])
   end
 
   def cart_params

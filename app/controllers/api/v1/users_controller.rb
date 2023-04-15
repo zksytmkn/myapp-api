@@ -6,8 +6,7 @@ class Api::V1::UsersController < ActionController::Base
   before_action :confirm_password, only: [:send_email_reset_confirmation]
 
   def index
-    users = User.all
-    render json: users, methods: [:image_url]
+    render json: User.all, methods: [:image_url]
   end
 
   def create
@@ -18,26 +17,22 @@ class Api::V1::UsersController < ActionController::Base
   end
 
   def show
-    user = User.find(params[:id])
-    render json: user
+    render json: User.find(params[:id])
   end
 
   def update
-    user = User.find(params[:id])
-    user.update!(user_params)
+    User.find(params[:id]).update!(user_params)
   end
 
   def destroy
-    user = User.find(params[:id])
-    user.destroy!
+    User.find(params[:id]).destroy!
   end
 
   def send_email_reset_confirmation
     set_email_reset_confirmation
     token = SecureRandom.urlsafe_base64
     current_user.update!(confirmation_token: token)
-    new_email = params[:email]
-    UserMailer.send_email_reset_confirmation(current_user, new_email, token).deliver_later
+    UserMailer.send_email_reset_confirmation(current_user, params[:email], token).deliver_later
   end
 
   def set_email_reset_confirmation
@@ -57,11 +52,8 @@ class Api::V1::UsersController < ActionController::Base
     user = User.find_by(confirmation_token: params[:token])
     if valid_token?(user)
       user.activate
-      email = params[:email]
-      user.update!(email: email) if email.present?
-      if user&.confirmed?
-        render 'users/activate_account_success'
-      end
+      user.update!(email: params[:email]) if params[:email].present?
+      render user.confirmed? ? 'users/activate_account_success' : 'users/activate_account_error_invalid'
     else
       render 'users/activate_account_error_invalid'
     end
@@ -70,9 +62,9 @@ class Api::V1::UsersController < ActionController::Base
   def confirm_email_reset
     user = User.find_by(confirmation_token: params[:token])
     email = params[:email]
-  
+
     if valid_token?(user)
-      if User.where(email: email).exists?
+      if User.exists?(email: email)
         render 'users/change_email_error_duplicate'
       else
         user.update!(email: email, confirmation_token: nil)
@@ -102,12 +94,10 @@ class Api::V1::UsersController < ActionController::Base
       render json: { message: "パスワード再設定用のメールを送信しました" }, status: :ok
     else
       render json: { message: "メールアドレスが見つかりません" }, status: :not_found
-    end
   end
-  
+
   def reset_password
     user = User.find_by(reset_password_token: params[:token])
-  
     if user.present?
       if user.reset_password_expired?
         render json: { error: 'リンクが無効か、期限切れです' }, status: :unprocessable_entity
@@ -122,7 +112,7 @@ class Api::V1::UsersController < ActionController::Base
       render json: { error: '無効なトークンです' }, status: :unprocessable_entity
     end
   end
-  
+
   private
   
   def user_params
