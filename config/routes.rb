@@ -55,7 +55,11 @@ Rails.application.routes.draw do
 
       resources :communities
       resources :community_messages
-      resources :participations
+
+      resources :participations do
+        delete :destroy, on: :collection, path: ':community_id/user/:user_id'
+      end
+
       resources :invitations
       resources :relationships
     end

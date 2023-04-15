@@ -1,19 +1,24 @@
 class Api::V1::InvitationsController < ApplicationController
+  before_action :set_invitation, only: %i[destroy]
 
   def index
-    invitation = Invitation.where(invited_id: current_user.id).pluck(:community_id)
-    invitedCommunity = Community.find(invitation)
-    render json: invitedCommunity
+    invited_community_ids = Invitation.where(invited_id: current_user.id).pluck(:community_id)
+    invited_communities = Community.find(invited_community_ids)
+    render json: invited_communities
   end
 
   def create
-    invitation = Invitation.new(invitation_params)
-    invitation.save!
+    Invitation.create!(invitation_params)
   end
 
   def destroy
-    invitation = Invitation.find_by(invitation_params)
-    invitation.destroy!
+    @invitation.destroy!
+  end
+
+  private
+
+  def set_invitation
+    @invitation = Invitation.find_by(invitation_params)
   end
 
   def invitation_params

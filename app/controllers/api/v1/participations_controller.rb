@@ -1,19 +1,23 @@
 class Api::V1::ParticipationsController < ApplicationController
+  before_action :set_participation, only: [:destroy]
 
   def index
-    participation = Participation.where(user_id: current_user.id).pluck(:community_id)
-    participatedCommunity = Community.find(participation)
-    render json: participatedCommunity
+    community_ids = Participation.where(user_id: current_user.id).pluck(:community_id)
+    render json: Community.find(community_ids)
   end
 
   def create
-    participation = Participation.new(participation_params)
-    participation.save!
+    Participation.create!(participation_params)
   end
 
   def destroy
-    participation = Participation.find_by(participation_params)
-    participation.destroy!
+    @participation.destroy!
+  end
+
+  private
+
+  def set_participation
+    @participation = Participation.find_by(community_id: params[:community_id], user_id: params[:user_id])
   end
 
   def participation_params
