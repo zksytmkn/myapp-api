@@ -1,8 +1,17 @@
-<p><%= @user.name %>様</p>
-
-<p>Edibleをご利用いただきありがとうございます。</p>
-<p>下記のリンクをクリックして、Edibleに再度ログインしてください。</p>
-<p>メールアドレスの変更を行なっていない場合は、このメールを無視してください。</p>
-<p>＊このURLの有効期限は24時間です。</p>
-
-<%= link_to 'メールアドレスを変更する', confirm_email_reset_api_v1_users_url(token: @token, email: @email) %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+  <p><%= @user.name %>様</p>
+  <br>
+  <p>Edibleをご利用いただきありがとうございます。</p>
+  <br>
+  <p>下記のリンクをクリックして、Edibleに再度ログインしてください。</p>
+  <p>メールアドレスの変更を行なっていない場合は、このメールを無視してください。</p>
+  <p>＊このURLの有効期限は24時間です。</p>
+  <br>
+  <%= link_to 'メールアドレスを変更する', confirm_email_reset_api_v1_users_url(token: @token, email: @email) %>
+</body>
+</html>

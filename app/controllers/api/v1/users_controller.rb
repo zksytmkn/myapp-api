@@ -77,12 +77,8 @@ class Api::V1::UsersController < ActionController::Base
     email = params[:email]
 
     if valid_token?(user)
-      if User.exists?(email: email)
-        render 'users/change_email_error_duplicate'
-      else
-        user.update!(email: email, confirmation_token: nil)
-        render 'users/change_email_success'
-      end
+      user.update!(email: email, confirmation_token: nil)
+      render 'users/change_email_success'
     else
       render 'users/change_email_error_invalid'
     end
