@@ -29,4 +29,9 @@ class UserMailer < ApplicationMailer
     @contents = contents
     mail(to: email, subject: '【Edible】お問い合わせありがとうございます')
   end
+
+  def send_account_deletion_confirmation(user)
+    @user = user
+    mail(to: @user.email, subject: '【Edible】アカウント削除のご連絡')
+  end  
 end

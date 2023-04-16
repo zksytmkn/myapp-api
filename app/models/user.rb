@@ -17,7 +17,8 @@ class User < ApplicationRecord
   has_many :post_comments, dependent: :destroy
   has_many :post_favorites, dependent: :destroy
   has_many :post_unfavorites, dependent: :destroy
-  has_many :participations, dependent: :destroy
+  has_many :communities, dependent: :destroy
+  has_many :community_messages, dependent: :destroy
   has_many :inviting_invitations, class_name: 'Invitation', :foreign_key => 'inviting_id'
   has_many :invited_invitations, class_name: 'Invitation', :foreign_key => 'invited_id'
   has_many :following_relationships, class_name: 'Relationship', :foreign_key => 'following_id'
@@ -37,6 +38,19 @@ class User < ApplicationRecord
     confirmed: 0,
     unconfirmed: 1,
   }
+
+  def to_json(options = {})
+    if options[:index] || options[:show]
+      {
+        id: self.id,
+        name: self.name,
+        prefecture: self.prefecture,
+        profile_text: self.profile_text
+      }
+    else
+      super
+    end
+  end
 
   def set_email_confirmation
     self.confirmation_token = SecureRandom.urlsafe_base64(47)

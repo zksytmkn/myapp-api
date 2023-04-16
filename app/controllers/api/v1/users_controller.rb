@@ -3,10 +3,8 @@ require_relative '../../../../lib/validator/password_validator'
 class Api::V1::UsersController < ActionController::Base
   include UserAuthenticateService
 
-  before_action :confirm_password, only: [:send_email_reset_confirmation]
-
   def index
-    render json: User.all, methods: [:image_url]
+    render json: User.all.map { |user| user.to_json(index: true) }
   end
 
   def create
@@ -17,7 +15,7 @@ class Api::V1::UsersController < ActionController::Base
   end
 
   def show
-    render json: User.find(params[:id])
+    render json: User.find(params[:id]).to_json(show: true)
   end
 
   def update
@@ -25,14 +23,29 @@ class Api::V1::UsersController < ActionController::Base
   end
 
   def destroy
-    User.find(params[:id]).destroy!
+    if current_user
+      UserMailer.send_account_deletion_confirmation(current_user).deliver_later
+      current_user.destroy!
+      render json: { message: "アカウントを削除しました" }, status: :ok
+    else
+      render json: { message: "アカウントを削除できませんでした" }, status: :unprocessable_entity
+    end
   end
 
   def send_email_reset_confirmation
-    set_email_reset_confirmation
-    token = SecureRandom.urlsafe_base64
-    current_user.update!(confirmation_token: token)
-    UserMailer.send_email_reset_confirmation(current_user, params[:email], token).deliver_later
+    unless current_user.present? && current_user.authenticate(params[:current_password])
+      render json: { message: "現在のパスワードが間違っております" }, status: :unprocessable_entity
+      return
+    end
+
+    if User.exists?(email: params[:email])
+      render json: { message: "このメールアドレスは既に使われております" }, status: :unprocessable_entity
+    else
+      set_email_reset_confirmation
+      token = SecureRandom.urlsafe_base64
+      current_user.update!(confirmation_token: token)
+      UserMailer.send_email_reset_confirmation(current_user, params[:email], token).deliver_later
+    end
   end
 
   def set_email_reset_confirmation
@@ -75,12 +88,6 @@ class Api::V1::UsersController < ActionController::Base
     end
   end
 
-  def confirm_password
-    unless current_user.present? && current_user.authenticate(params[:current_password])
-      raise UserAuth.not_found_exception_class
-    end
-  end
-
   def valid_token?(user)
     user.present? && !user.expired?
   end
@@ -117,6 +124,6 @@ class Api::V1::UsersController < ActionController::Base
   private
   
   def user_params
-    params.permit(:name, :email, :prefecture, :zipcode, :street, :building, :text, :password)
+    params.permit(:name, :email, :prefecture, :zipcode, :street, :building, :profile_text, :password)
   end
 end
