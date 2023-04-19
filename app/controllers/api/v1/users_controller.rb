@@ -10,7 +10,7 @@ class Api::V1::UsersController < ActionController::Base
   def create
     @user = User.new(user_params)
     if @user.save
-      UserEmailService.send_email_confirmation(@user)
+      UserMailer.send_email_confirmation(@user).deliver_later
     end
   end
 

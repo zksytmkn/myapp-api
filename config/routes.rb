@@ -17,6 +17,7 @@ Rails.application.routes.draw do
           post :send_password_reset_email
           post :forgot_password
           patch :update_password
+          get :confirm_email
           get :confirm_email_reset
           put :reset_password
         end
