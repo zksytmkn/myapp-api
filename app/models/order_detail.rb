@@ -1,5 +1,4 @@
 class OrderDetail < ApplicationRecord
-
   with_options presence: true do
     validates :order_id
     validates :product_id

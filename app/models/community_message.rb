@@ -1,5 +1,4 @@
 class CommunityMessage < ApplicationRecord
-
   with_options presence: true do
     validates :communityMessage_content
     validates :community_id

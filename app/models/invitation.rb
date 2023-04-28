@@ -1,5 +1,4 @@
 class Invitation < ApplicationRecord
-
   with_options presence: true do
     validates :inviting_id
     validates :invited_id
