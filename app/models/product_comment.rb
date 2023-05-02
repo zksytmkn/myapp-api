@@ -1,6 +1,6 @@
 class ProductComment < ApplicationRecord
   with_options presence: true do
-    validates :productComment_content
+    validates :content
     validates :product_id
     validates :user_id
   end

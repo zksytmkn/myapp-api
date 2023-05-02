@@ -1,5 +1,5 @@
 10.times do |n|
-  postComment_content = "コメントになります。こちらサンプルですが、
+  content = "コメントになります。こちらサンプルですが、
   コメントになります。こちらにコメントを入力することになってます。#{n}"
   user_id = n+1
   post_id = n+1
@@ -8,7 +8,7 @@
   if  postComment.new_record?
       postComment.user_id = user_id
       postComment.post_id = post_id
-      postComment.postComment_content = postComment_content
+      postComment.content = content
       postComment.save!
   end
 end

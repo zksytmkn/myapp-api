@@ -7,23 +7,26 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def create
-    Community.create!(community_params)
-  end
+    community = Community.create!(community_params)
+    render json: community, status: :created
+  end  
 
   def show
-    participation_user_ids = Participation.where(community_id: @community.id).pluck(:user_id)
-    invitation_data = Invitation.where(community_id: @community.id)
-    
+    participation_users = User.joins(:participations).where(participations: { community_id: @community.id })
+    invited_users = User.joins(:invitations).where(invitations: { community_id: @community.id, inviting_id: current_user.id })
+    inviting_user = User.joins(:invitations).find_by(invitations: { community_id: @community.id, invited_id: current_user.id })
+  
     render json: {
       community: @community.as_json(methods: [:image_url], include: [:user]),
-      participation: User.find(participation_user_ids),
-      invited: User.find(invitation_data.pluck(:invited_id)),
-      inviting: User.find_by(id: invitation_data.where(invited_id: current_user.id).pluck(:inviting_id))
+      participation: participation_users,
+      invited: invited_users,
+      inviting: inviting_user
     }
   end
 
   def update
-    @community.update(community_params)
+    @community.update!(community_params)
+    render json: @community
   end
 
   def destroy

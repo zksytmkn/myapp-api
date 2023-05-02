@@ -7,8 +7,9 @@ class Api::V1::CartsController < ApplicationController
   end
 
   def create
-    Cart.create!(cart_params)
-  end
+    cart = Cart.create!(cart_params)
+    render json: cart, status: :created
+  end  
 
   def update
     @cart.update!(cart_params)

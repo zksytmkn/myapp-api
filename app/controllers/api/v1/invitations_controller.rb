@@ -2,8 +2,7 @@ class Api::V1::InvitationsController < ApplicationController
   before_action :set_invitation, only: %i[destroy]
 
   def index
-    invited_community_ids = Invitation.where(invited_id: current_user.id).pluck(:community_id)
-    invited_communities = Community.find(invited_community_ids)
+    invited_communities = Community.joins(:invitations).where(invitations: { invited_id: current_user.id })
     render json: invited_communities
   end
 
@@ -18,7 +17,7 @@ class Api::V1::InvitationsController < ApplicationController
   private
 
   def set_invitation
-    @invitation = Invitation.find_by(invitation_params)
+    @invitation = Invitation.find_by!(invitation_params)
   end
 
   def invitation_params

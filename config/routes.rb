@@ -24,7 +24,9 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :relationships, only: [:create, :show, :destroy]
+      resources :relationships, only: [:create, :destroy] do
+        get :user_follow_relationships, on: :member
+      end
 
       resources :password_resets, only: [:update] do
         get :reset_password_confirmation, on: :collection
@@ -32,7 +34,7 @@ Rails.application.routes.draw do
 
       #products
       resources :products, only: [:index, :create, :show, :update, :destroy]
-      resources :product_comments, only: [:create, :show, :destroy]
+      resources :product_comments, only: [:index, :create, :destroy]
 
       resources :product_favorites, only: [:index, :create, :show, :update] do
         delete :destroy, on: :collection, path: ':product_id/user/:user_id'
@@ -47,12 +49,11 @@ Rails.application.routes.draw do
 
       #orders
       resources :orders, only: [:index, :create, :show, :update]
-      resources :order_details
       resources :order_messages
 
       #posts
       resources :posts, only: [:index, :create, :show, :update, :destroy]
-      resources :post_comments, only: [:create, :show, :destroy]
+      resources :post_comments, only: [:index, :create, :destroy]
 
       resources :post_favorites, only: [:index, :create, :show, :update] do
         delete :destroy, on: :collection, path: ':post_id/user/:user_id'
@@ -63,10 +64,11 @@ Rails.application.routes.draw do
       end
 
       #communities
-      resources :communities, only: [:index, :create, :show, :update, :destroy]
-      resources :community_messages, only: [:create, :show]
-      resources :invitations, only: [:index, :create, :destroy]
+      resources :communities, only: [:index, :create, :show, :update, :destroy] do
+        resources :community_messages, only: [:index, :create]
+      end
 
+      resources :invitations, only: [:index, :create, :destroy]
       resources :participations, only: [:index, :create, :destroy] do
         delete :destroy, on: :collection, path: ':community_id/user/:user_id'
       end

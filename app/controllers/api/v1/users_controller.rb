@@ -1,6 +1,6 @@
 require_relative '../../../../lib/validator/password_validator'
 
-class Api::V1::UsersController < ActionController::Base
+class Api::V1::UsersController < ApplicationController
   include UserAuthenticateService
 
   def index
@@ -11,6 +11,9 @@ class Api::V1::UsersController < ActionController::Base
     @user = User.new(user_params)
     if @user.save
       UserMailer.send_email_confirmation(@user).deliver_later
+      render json: { message: "ユーザーが正常に作成されました" }, status: :created
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -19,7 +22,12 @@ class Api::V1::UsersController < ActionController::Base
   end
 
   def update
-    User.find(params[:id]).update!(user_params)
+    user = User.find(params[:id])
+    if user.update(user_params)
+      render json: { message: "ユーザー情報が正常に更新されました" }, status: :ok
+    else
+      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -28,7 +36,7 @@ class Api::V1::UsersController < ActionController::Base
       current_user.destroy!
       render json: { message: "アカウントを削除しました" }, status: :ok
     else
-      render json: { message: "アカウントを削除できませんでした" }, status: :unprocessable_entity
+      render json: { message: "アカウントが見つかりませんでした" }, status: :not_found
     end
   end
 

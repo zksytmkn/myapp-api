@@ -2,8 +2,8 @@ class Api::V1::ParticipationsController < ApplicationController
   before_action :set_participation, only: [:destroy]
 
   def index
-    community_ids = Participation.where(user_id: current_user.id).pluck(:community_id)
-    render json: Community.find(community_ids)
+    participated_communities = Community.joins(:participations).where(participations: { user_id: current_user.id })
+    render json: participated_communities
   end
 
   def create
@@ -17,7 +17,7 @@ class Api::V1::ParticipationsController < ApplicationController
   private
 
   def set_participation
-    @participation = Participation.find_by(community_id: params[:community_id], user_id: params[:user_id])
+    @participation = Participation.find_by!(community_id: params[:community_id], user_id: params[:user_id])
   end
 
   def participation_params

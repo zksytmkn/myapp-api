@@ -1,18 +1,17 @@
 class Api::V1::RelationshipsController < ApplicationController
 
   def create
-    relationship = Relationship.new(relationship_params)
-    relationship.save!
+    relationship = Relationship.create!(relationship_params)
   end
 
-  def show
+  def user_follow_relationships
     following_ids = Relationship.where(following_id: params[:id]).pluck(:followed_id)
     followed_ids = Relationship.where(followed_id: params[:id]).pluck(:following_id)
 
     following_users = User.find(following_ids)
     followed_users = User.find(followed_ids)
 
-    render json: { following: following_users, followed: followed_users }
+    render json: { following: following_users, followers: followed_users }
   end
 
   def destroy

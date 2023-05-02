@@ -1,7 +1,7 @@
 class Api::V1::CommunityMessagesController < ApplicationController
 
-  def show
-    render json: CommunityMessage.where(community_id: params[:id]), include: [:user]
+  def index
+    render json: CommunityMessage.where(community_id: params[:community_id]), include: [:user]
   end
 
   def create
@@ -11,6 +11,6 @@ class Api::V1::CommunityMessagesController < ApplicationController
   private
 
   def community_message_params
-    params.permit(:communityMessage_content, :community_id, :user_id)
+    params.permit(:content, :user_id).merge(community_id: params[:community_id])
   end
 end

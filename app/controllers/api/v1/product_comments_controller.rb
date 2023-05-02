@@ -1,8 +1,8 @@
 class Api::V1::ProductCommentsController < ApplicationController
-  before_action :find_product_comment, only: [:destroy]
+  before_action :set_product_comment, only: [:destroy]
 
-  def show
-    product_comments = ProductComment.where(product_id: params[:id])
+  def index
+    product_comments = ProductComment.where(product_id: params[:product_id])
     render json: product_comments, include: [:user]
   end
 
@@ -17,10 +17,10 @@ class Api::V1::ProductCommentsController < ApplicationController
   private
 
   def product_comment_params
-    params.permit(:productComment_content, :product_id, :user_id)
+    params.permit(:content, :product_id, :user_id)
   end
 
-  def find_product_comment
+  def set_product_comment
     @product_comment = ProductComment.find(params[:id])
   end
 end
