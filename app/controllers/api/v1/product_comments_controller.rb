@@ -1,13 +1,15 @@
 class Api::V1::ProductCommentsController < ApplicationController
+  before_action :set_product, only: [:index, :create]
   before_action :set_product_comment, only: [:destroy]
 
   def index
-    product_comments = ProductComment.where(product_id: params[:product_id])
+    product_comments = @product.product_comments
     render json: product_comments, include: [:user]
   end
 
   def create
-    product_comment = ProductComment.create!(product_comment_params)
+    product_comment = @product.product_comments.create!(product_comment_params)
+    render json: product_comment, status: :created
   end
 
   def destroy
@@ -16,11 +18,15 @@ class Api::V1::ProductCommentsController < ApplicationController
 
   private
 
-  def product_comment_params
-    params.permit(:content, :product_id, :user_id)
+  def set_product
+    @product = Product.find(params[:product_id])
   end
 
   def set_product_comment
     @product_comment = ProductComment.find(params[:id])
+  end
+
+  def product_comment_params
+    params.require(:product_comment).permit(:content).merge(user_id: current_user.id, product_id: params[:product_id])
   end
 end

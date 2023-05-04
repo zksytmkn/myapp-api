@@ -33,8 +33,9 @@ Rails.application.routes.draw do
       end
 
       #products
-      resources :products, only: [:index, :create, :show, :update, :destroy]
-      resources :product_comments, only: [:index, :create, :destroy]
+      resources :products, only: [:index, :create, :show, :update, :destroy] do
+        resources :product_comments, only: [:index, :create, :destroy]
+      end
 
       resources :product_favorites, only: [:index, :create, :show, :update] do
         delete :destroy, on: :collection, path: ':product_id/user/:user_id'
@@ -48,12 +49,14 @@ Rails.application.routes.draw do
       resources :carts, only: [:index, :create, :update, :destroy]
 
       #orders
-      resources :orders, only: [:index, :create, :show, :update]
-      resources :order_messages
+      resources :orders, only: [:index, :create, :show, :update] do
+        resources :order_messages, only: [:index, :create]
+      end
 
       #posts
-      resources :posts, only: [:index, :create, :show, :update, :destroy]
-      resources :post_comments, only: [:index, :create, :destroy]
+      resources :posts, only: [:index, :create, :show, :update, :destroy] do
+        resources :post_comments, only: [:index, :create, :destroy]
+      end
 
       resources :post_favorites, only: [:index, :create, :show, :update] do
         delete :destroy, on: :collection, path: ':post_id/user/:user_id'

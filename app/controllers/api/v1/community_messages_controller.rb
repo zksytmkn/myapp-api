@@ -5,12 +5,13 @@ class Api::V1::CommunityMessagesController < ApplicationController
   end
 
   def create
-    CommunityMessage.create!(community_message_params)
+    community_message = CommunityMessage.create!(community_message_params)
+    render json: community_message, status: :created
   end
 
   private
 
   def community_message_params
-    params.permit(:content, :user_id).merge(community_id: params[:community_id])
+    params.require(:community_message).permit(:content).merge(user_id: current_user.id, community_id: params[:community_id])
   end
 end

@@ -1,13 +1,14 @@
 class Api::V1::PostCommentsController < ApplicationController
+  before_action :set_post, only: [:index, :create]
   before_action :set_post_comment, only: [:destroy]
 
   def index
-    post_comments = PostComment.where(post_id: params[:post_id])
+    post_comments = @post.post_comments
     render json: post_comments, include: [:user]
   end
 
   def create
-    post_comment = PostComment.create!(post_comment_params)
+    post_comment = @post.post_comments.create!(post_comment_params)
     render json: post_comment, status: :created
   end
 
@@ -17,11 +18,15 @@ class Api::V1::PostCommentsController < ApplicationController
 
   private
 
+  def set_post
+    @post = Post.find(params[:post_id])
+  end
+
   def set_post_comment
     @post_comment = PostComment.find(params[:id])
   end
 
   def post_comment_params
-    params.permit(:content, :post_id, :user_id)
+    params.require(:post_comment).permit(:content).merge(user_id: current_user.id, post_id: params[:post_id])
   end
 end
