@@ -13,8 +13,8 @@ class Api::V1::CommunitiesController < ApplicationController
 
   def show
     participation_users = User.joins(:participations).where(participations: { community_id: @community.id })
-    invited_users = User.joins(:invitations).where(invitations: { community_id: @community.id, inviting_id: current_user.id })
-    inviting_user = User.joins(:invitations).find_by(invitations: { community_id: @community.id, invited_id: current_user.id })
+    invited_users = User.joins(:invited_invitations).where(invitations: { community_id: @community.id, inviting_id: current_user.id })
+    inviting_user = User.joins(:inviting_invitations).find_by(invitations: { community_id: @community.id, invited_id: current_user.id })
   
     render json: {
       community: @community.as_json(methods: [:image_url], include: [:user]),

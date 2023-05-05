@@ -60,7 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   end
 
   create_table "community_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "communityMessage_content"
+    t.text "content"
     t.bigint "user_id"
     t.bigint "community_id"
     t.datetime "created_at", null: false
@@ -93,8 +93,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   end
 
   create_table "order_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id"
+    t.bigint "order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_messages_on_order_id"
+    t.index ["user_id"], name: "index_order_messages_on_user_id"
   end
 
   create_table "orders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -119,7 +124,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   end
 
   create_table "post_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "postComment_content"
+    t.text "content"
     t.bigint "user_id"
     t.bigint "post_id"
     t.datetime "created_at", null: false
@@ -158,7 +163,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   end
 
   create_table "product_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "productComment_content"
+    t.text "content"
     t.bigint "user_id"
     t.bigint "product_id"
     t.datetime "created_at", null: false
@@ -239,6 +244,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   add_foreign_key "invitations", "communities"
   add_foreign_key "order_details", "orders"
   add_foreign_key "order_details", "products"
+  add_foreign_key "order_messages", "orders"
+  add_foreign_key "order_messages", "users"
   add_foreign_key "orders", "users"
   add_foreign_key "participations", "communities"
   add_foreign_key "participations", "users"

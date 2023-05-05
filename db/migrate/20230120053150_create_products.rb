@@ -9,7 +9,6 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.integer :quantity, default: 1, null: false
       t.integer :stock, null: false
       t.references :user, foreign_key: true
-
       t.timestamps
     end
   end

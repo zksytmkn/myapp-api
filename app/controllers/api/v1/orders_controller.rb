@@ -1,15 +1,15 @@
 class Api::V1::OrdersController < ApplicationController
-  before_action :set_order, only: %i[show update]
+  before_action :set_order, only: %i[update]
 
   def index
-    buyer_orders = current_user.orders.includes(order_details: :product)
-    seller_orders = Order.joins(order_details: :product).where(products: { user_id: current_user.id })
-    closed_orders = OrderDetail.where(status: 3).includes(:product, :order)
-
+    buyer_order_details = OrderDetail.joins(:order).where(orders: { user_id: current_user.id }).includes(:product, :order)
+    seller_order_details = OrderDetail.joins(:product).where(products: { user_id: current_user.id }).includes(:product, :order)
+    closed_order_details = OrderDetail.where(status: 3).includes(:product, :order)
+  
     render json: {
-      buyer: buyer_orders.as_json(include: { order_details: { include: :product } }),
-      seller: seller_orders.as_json(include: { order_details: { include: :product } }),
-      close: closed_orders.as_json(include: [:product, :order])
+      buyer: buyer_order_details.as_json(include: [:product, :order]),
+      seller: seller_order_details.as_json(include: [:product, :order]),
+      close: closed_order_details.as_json(include: [:product, :order])
     }
   end
 
@@ -22,8 +22,9 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def show
-    render json: @order.as_json(include: { order_details: { include: :product } })
-  end
+    order_detail = OrderDetail.find(params[:id])
+    render json: order_detail.as_json(include: { product: {}, order: { include: :user } })
+  end  
 
   def update
     @order.update!(order_params)

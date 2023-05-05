@@ -19,10 +19,14 @@ class User < ApplicationRecord
   has_many :post_unfavorites, dependent: :destroy
   has_many :communities, dependent: :destroy
   has_many :community_messages, dependent: :destroy
+  has_many :participations, dependent: :destroy
   has_many :inviting_invitations, class_name: 'Invitation', :foreign_key => 'inviting_id'
   has_many :invited_invitations, class_name: 'Invitation', :foreign_key => 'invited_id'
   has_many :following_relationships, class_name: 'Relationship', :foreign_key => 'following_id'
   has_many :followed_relationships, class_name: 'Relationship', :foreign_key => 'followed_id'
+  has_many :carts, dependent: :destroy
+  has_many :orders, dependent: :destroy
+  has_many :order_details, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 30, allow_blank: true }
 
