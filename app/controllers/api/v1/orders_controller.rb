@@ -27,7 +27,8 @@ class Api::V1::OrdersController < ApplicationController
   end  
 
   def update
-    @order.update!(order_params)
+    order_detail = OrderDetail.find(params[:id])
+    order_detail.update!(status: params[:status])
   end
 
   private
@@ -37,8 +38,8 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def order_params
-    params.permit(:user_id, :billing_amount, :zipcode, :street, :building)
-  end
+    params.permit(:user_id, :billing_amount, :zipcode, :street, :building, :status)
+  end  
 
   def create_order_details(order_id)
     current_user.carts.each do |cart|
