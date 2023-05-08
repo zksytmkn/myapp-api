@@ -2,21 +2,17 @@ class Api::V1::ProductFavoritesController < ApplicationController
   before_action :set_product_favorite, only: [:destroy]
 
   def index
-    product_favorites = ProductFavorite.all
+    favorite_ids = ProductFavorite.where(user_id: current_user.id).pluck(:product_id)
+    product_favorites = Product.find(favorite_ids)
     render json: product_favorites
   end
 
   def create
-    product_favorite = ProductFavorite.create!(product_favorite_params)
-    product_unfavorite = ProductUnfavorite.find_by(product_favorite_params)
+    product_favorite_params_with_current_user = product_favorite_params.merge(user_id: current_user.id)
+    product_favorite = ProductFavorite.create!(product_favorite_params_with_current_user)
+    product_unfavorite = ProductUnfavorite.find_by(product_favorite_params_with_current_user)
     product_unfavorite&.destroy!
     render json: product_favorite, status: :created
-  end
-
-  def show
-    favorites = ProductFavorite.where(user_id: params[:id]).pluck(:product_id)
-    products = Product.find(favorites)
-    render json: products
   end
 
   def destroy
@@ -27,10 +23,10 @@ class Api::V1::ProductFavoritesController < ApplicationController
   private
 
   def product_favorite_params
-    params.permit(:product_id, :user_id)
+    params.permit(:product_id).merge(user_id: current_user.id)
   end
 
   def set_product_favorite
-    @product_favorite = ProductFavorite.find_by!(product_id: params[:product_id], user_id: params[:user_id])
+    @product_favorite = ProductFavorite.find_by!(product_id: params[:product_id], user_id: current_user.id)
   end
 end

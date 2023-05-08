@@ -7,7 +7,7 @@ class Api::V1::CartsController < ApplicationController
   end
 
   def create
-    cart = Cart.create!(cart_params)
+    cart = Cart.create!(cart_params.merge(user_id: current_user.id))
     render json: cart, status: :created
   end  
 
@@ -26,6 +26,6 @@ class Api::V1::CartsController < ApplicationController
   end
 
   def cart_params
-    params.permit(:user_id, :product_id, :quantity)
+    params.permit(:product_id, :quantity)
   end
 end

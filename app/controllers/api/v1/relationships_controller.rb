@@ -1,7 +1,8 @@
 class Api::V1::RelationshipsController < ApplicationController
 
   def create
-    relationship = Relationship.create!(relationship_params)
+    relationship_params_with_current_user = relationship_params.merge(following_id: current_user.id)
+    Relationship.create!(relationship_params_with_current_user)
   end
 
   def user_follow_relationships
@@ -15,13 +16,13 @@ class Api::V1::RelationshipsController < ApplicationController
   end
 
   def destroy
-    relationship = Relationship.find_by(relationship_params)
+    relationship = Relationship.find_by(relationship_params.merge(following_id: current_user.id))
     relationship.destroy!
   end
 
   private
 
   def relationship_params
-    params.permit(:following_id, :followed_id)
+    params.permit(:followed_id)
   end
 end

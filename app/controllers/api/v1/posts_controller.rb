@@ -4,7 +4,14 @@ class Api::V1::PostsController < ApplicationController
 
   def index
     posts = Post.all
-    render json: posts, methods: [:image_url], include: [:user]
+    posts_with_favorites = posts.map do |post|
+      {
+        post: post,
+        favorites_count: PostFavorite.where(post_id: post.id).count,
+        unfavorites_count: PostUnfavorite.where(post_id: post.id).count
+      }
+    end
+    render json: posts_with_favorites
   end
 
   def create
@@ -12,7 +19,13 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def show
-    render json: @post, methods: [:image_url], include: [:user]
+    favorites_count = PostFavorite.where(post_id: @post.id).count
+    unfavorites_count = PostUnfavorite.where(post_id: @post.id).count
+    render json: {
+      post: @post.as_json(methods: [:image_url], include: [:user]),
+      favorites_count: favorites_count,
+      unfavorites_count: unfavorites_count
+    }
   end
 
   def update

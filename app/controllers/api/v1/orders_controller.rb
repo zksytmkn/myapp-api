@@ -15,6 +15,12 @@ class Api::V1::OrdersController < ApplicationController
 
   def create
     order = current_user.orders.new(order_params)
+    order.assign_attributes(
+      user_id: current_user.id,
+      zipcode: current_user.zipcode,
+      street: current_user.street,
+      building: current_user.building
+    )
     if order.save
       create_order_details(order.id)
       current_user.carts.destroy_all

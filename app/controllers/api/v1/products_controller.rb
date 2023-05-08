@@ -1,10 +1,17 @@
 class Api::V1::ProductsController < ApplicationController
-  before_action :authenticate_active_user
+  before_action :authenticate_active_user, only: [:create, :update, :destroy]
   before_action :set_product, only: [:show, :update, :destroy]
 
   def index
     products = Product.all
-    render_products(products)
+    products_with_favorites = products.map do |product|
+      {
+        product: product,
+        favorites_count: ProductFavorite.where(product_id: product.id).count,
+        unfavorites_count: ProductUnfavorite.where(product_id: product.id).count
+      }
+    end
+    render json: products_with_favorites
   end
 
   def create
@@ -12,7 +19,13 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def show
-    render_product(@product)
+    favorites_count = ProductFavorite.where(product_id: @product.id).count
+    unfavorites_count = ProductUnfavorite.where(product_id: @product.id).count
+    render json: {
+      product: @product.as_json(methods: [:image_url], include: [:user]),
+      favorites_count: favorites_count,
+      unfavorites_count: unfavorites_count
+    }
   end
 
   def update
