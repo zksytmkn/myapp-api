@@ -198,7 +198,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
     t.string "category", null: false
     t.string "prefecture", null: false
     t.integer "price", null: false
-    t.integer "quantity", default: 1, null: false
     t.integer "stock", null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false

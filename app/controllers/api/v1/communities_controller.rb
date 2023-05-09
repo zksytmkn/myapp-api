@@ -7,9 +7,10 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def create
-    community = Community.create!(community_params)
+    community_params_with_user = community_params.merge(user_id: current_user.id)
+    community = Community.create!(community_params_with_user)
     render json: community, status: :created
-  end  
+  end
 
   def show
     participation_users = User.joins(:participations).where(participations: { community_id: @community.id })
@@ -40,6 +41,6 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def community_params
-    params.permit(:name, :user_id, :description, :image)
+    params.permit(:name, :description, :image)
   end
 end

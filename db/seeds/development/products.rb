@@ -6,7 +6,6 @@
   category = "果物"
   prefecture = "青森県"
   price = 3000
-  quantity = 1
   stock = 20
   product = Product.find_or_initialize_by(name: name)
 
@@ -17,7 +16,6 @@
       product.category = category
       product.prefecture = prefecture
       product.price = price
-      product.quantity = quantity
       product.stock = stock
       product.save!
   end

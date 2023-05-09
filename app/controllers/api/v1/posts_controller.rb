@@ -15,7 +15,9 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def create
-    post = Post.create!(post_params)
+    post_params_with_user = post_params.merge(user_id: current_user.id)
+    post = Post.create!(post_params_with_user)
+    render json: post, status: :created
   end
 
   def show
@@ -29,7 +31,8 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def update
-    @post.update(post_params)
+    @post.update!(post_params)
+    render json: @post
   end
 
   def destroy
@@ -43,6 +46,6 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def post_params
-    params.permit(:title, :user_id, :body, :image)
+    params.permit(:title, :body, :image)
   end
 end

@@ -1,5 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
-  before_action :authenticate_active_user, only: [:create, :update, :destroy]
+  before_action :authenticate_active_user
   before_action :set_product, only: [:show, :update, :destroy]
 
   def index
@@ -15,7 +15,9 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def create
-    product = Product.create!(product_params)
+    product_params_with_user = product_params.merge(user_id: current_user.id, prefecture: current_user.prefecture)
+    product = Product.create!(product_params_with_user)
+    render json: product, status: :created
   end
 
   def show
@@ -30,6 +32,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def update
     @product.update!(product_params)
+    render json: @product
   end
 
   def destroy
@@ -43,7 +46,7 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def product_params
-    params.permit(:name, :user_id, :category, :prefecture, :price, :quantity, :stock, :description, :image)
+    params.permit(:name, :category, :price, :stock, :description, :image)
   end
 
   def render_product(product)

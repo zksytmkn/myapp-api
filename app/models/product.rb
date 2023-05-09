@@ -7,7 +7,6 @@ class Product < ApplicationRecord
     validates :category
     validates :prefecture
     validates :price
-    validates :quantity
     validates :stock
     validates :description
   end
