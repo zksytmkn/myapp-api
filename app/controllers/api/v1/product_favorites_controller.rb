@@ -27,6 +27,6 @@ class Api::V1::ProductFavoritesController < ApplicationController
   end
 
   def set_product_favorite
-    @product_favorite = ProductFavorite.find_by!(product_id: params[:product_id], user_id: current_user.id)
+    @product_favorite = ProductFavorite.find_by!(product_id: params[:id], user_id: current_user.id)
   end
 end

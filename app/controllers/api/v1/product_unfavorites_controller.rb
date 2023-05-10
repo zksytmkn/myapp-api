@@ -27,6 +27,6 @@ class Api::V1::ProductUnfavoritesController < ApplicationController
   end
 
   def set_product_unfavorite
-    @product_unfavorite = ProductUnfavorite.find_by!(product_id: params[:product_id], user_id: current_user.id)
+    @product_unfavorite = ProductUnfavorite.find_by!(product_id: params[:id], user_id: current_user.id)
   end
 end
