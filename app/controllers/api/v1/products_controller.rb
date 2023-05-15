@@ -1,5 +1,4 @@
 class Api::V1::ProductsController < ApplicationController
-  before_action :authenticate_active_user
   before_action :set_product, only: [:show, :update, :destroy]
 
   def index
@@ -7,16 +6,16 @@ class Api::V1::ProductsController < ApplicationController
     products_with_favorites = products.map do |product|
       {
         product: product,
-        favorites_count: ProductFavorite.where(product_id: product.id).count,
-        unfavorites_count: ProductUnfavorite.where(product_id: product.id).count
+        favorites_count: product.favorites_count,
+        unfavorites_count: product.unfavorites_count
       }
     end
     render json: products_with_favorites
   end
 
   def create
-    product_params_with_user = product_params.merge(user_id: current_user.id, prefecture: current_user.prefecture)
-    product = Product.create!(product_params_with_user)
+    product_params_with_current_user = product_params.merge(user_id: current_user.id, prefecture: current_user.prefecture)
+    product = Product.create!(product_params_with_current_user)
     render json: product, status: :created
   end
 
@@ -46,7 +45,7 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def product_params
-    params.permit(:name, :category, :price, :stock, :description, :image)
+    params.permit(:name, :category, :price, :description, :image)
   end
 
   def render_product(product)

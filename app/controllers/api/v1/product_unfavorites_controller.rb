@@ -23,7 +23,7 @@ class Api::V1::ProductUnfavoritesController < ApplicationController
   private
 
   def product_unfavorite_params
-    params.permit(:product_id).merge(user_id: current_user.id)
+    params.permit(:product_id)
   end
 
   def set_product_unfavorite

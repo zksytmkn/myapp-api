@@ -5,9 +5,14 @@ class Api::V1::OrderMessagesController < ApplicationController
   end
 
   def create
-    order_message = OrderMessage.create!(order_message_params)
-    render json: order_message, status: :created
-  end  
+    order_message = OrderMessage.new(order_message_params)
+
+    if order_message.save
+      render json: order_message, status: :created
+    else
+      render json: { error: order_message.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 
   private
 

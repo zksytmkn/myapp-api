@@ -72,8 +72,8 @@ Rails.application.routes.draw do
         resources :community_messages, only: %i[index create]
       end
       resources :invitations, only: %i[index create destroy]
-      resources :participations, only: %i[index create destroy] do
-        delete :destroy, on: :collection, path: ':community_id/user/:user_id'
+      resources :participations, only: %i[index create] do
+        delete :destroy, on: :member
       end
     end
   end

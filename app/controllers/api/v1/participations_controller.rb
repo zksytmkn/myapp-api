@@ -7,7 +7,7 @@ class Api::V1::ParticipationsController < ApplicationController
   end
 
   def create
-    Participation.create!(participation_params)
+    Participation.create!(participation_params.merge(user_id: current_user.id))
   end
 
   def destroy
@@ -17,10 +17,10 @@ class Api::V1::ParticipationsController < ApplicationController
   private
 
   def set_participation
-    @participation = Participation.find_by!(community_id: params[:community_id], user_id: params[:user_id])
+    @participation = Participation.find_by!(community_id: params[:community_id], user_id: current_user.id)
   end
 
   def participation_params
-    params.permit(:user_id, :community_id)
+    params.permit(:community_id)
   end
 end

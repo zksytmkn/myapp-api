@@ -23,4 +23,12 @@ class Product < ApplicationRecord
     # 紐づいている画像のURLを取得する
     image.attached? ? url_for(image) : nil
   end
+
+  def favorites_count
+    ProductFavorite.where(product_id: id).count
+  end
+
+  def unfavorites_count
+    ProductUnfavorite.where(product_id: id).count
+  end
 end

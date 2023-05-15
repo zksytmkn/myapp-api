@@ -7,7 +7,7 @@ class Api::V1::InvitationsController < ApplicationController
   end
 
   def create
-    Invitation.create!(invitation_params)
+    Invitation.create!(invitation_params.merge(inviting_id: current_user.id))
   end
 
   def destroy
@@ -21,6 +21,6 @@ class Api::V1::InvitationsController < ApplicationController
   end
 
   def invitation_params
-    params.permit(:inviting_id, :invited_id, :community_id)
+    params.permit(:invited_id, :community_id)
   end
 end

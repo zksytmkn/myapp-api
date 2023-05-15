@@ -1,5 +1,4 @@
 class Api::V1::CommunitiesController < ApplicationController
-  before_action :authenticate_active_user
   before_action :set_community, only: [:show, :update, :destroy]
 
   def index

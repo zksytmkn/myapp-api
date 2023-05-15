@@ -1,5 +1,5 @@
 class Api::V1::OrdersController < ApplicationController
-  before_action :set_order, only: %i[update]
+  before_action :set_order_detail, only: %i[update]
 
   def index
     buyer_order_details = OrderDetail.joins(:order).where(orders: { user_id: current_user.id }).includes(:product, :order)
@@ -24,6 +24,8 @@ class Api::V1::OrdersController < ApplicationController
     if order.save
       create_order_details(order.id)
       current_user.carts.destroy_all
+    else
+      render json: { error: order.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -33,29 +35,33 @@ class Api::V1::OrdersController < ApplicationController
   end  
 
   def update
-    order_detail = OrderDetail.find(params[:id])
-    order_detail.update!(status: params[:status])
+    if @order_detail.update(status: params[:status])
+      render json: @order_detail
+    else
+      render json: { error: @order_detail.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private
 
-  def set_order
-    @order = Order.find(params[:id])
+  def set_order_detail
+    @order_detail = OrderDetail.find(params[:id])
   end
 
   def order_params
-    params.permit(:user_id, :billing_amount, :zipcode, :street, :building, :status)
+    params.permit(:billing_amount, :status)
   end  
 
   def create_order_details(order_id)
-    current_user.carts.each do |cart|
-      order_detail = OrderDetail.new
-      order_detail.order_id = order_id
-      order_detail.product_id = cart.product_id
-      order_detail.price = cart.product.price
-      order_detail.quantity = cart.quantity
-      order_detail.status = 0
-      order_detail.save
+    order_details = current_user.carts.map do |cart|
+      {
+        order_id: order_id,
+        product_id: cart.product_id,
+        price: cart.product.price,
+        quantity: cart.quantity,
+        status: 0
+      }
     end
+    OrderDetail.insert_all(order_details)
   end
 end

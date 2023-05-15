@@ -4,7 +4,16 @@ class Api::V1::ProductFavoritesController < ApplicationController
   def index
     favorite_ids = ProductFavorite.where(user_id: current_user.id).pluck(:product_id)
     product_favorites = Product.find(favorite_ids)
-    render json: product_favorites
+
+    product_favorites_with_counts = product_favorites.map do |product|
+      {
+        product: product,
+        favorites_count: product.favorites_count,
+        unfavorites_count: product.unfavorites_count
+      }
+    end
+
+    render json: product_favorites_with_counts
   end
 
   def create
@@ -23,7 +32,7 @@ class Api::V1::ProductFavoritesController < ApplicationController
   private
 
   def product_favorite_params
-    params.permit(:product_id).merge(user_id: current_user.id)
+    params.permit(:product_id)
   end
 
   def set_product_favorite

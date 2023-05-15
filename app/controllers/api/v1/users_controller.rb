@@ -1,7 +1,6 @@
 require_relative '../../../../lib/validator/password_validator'
 
 class Api::V1::UsersController < ApplicationController
-  include UserAuthenticateService
 
   def index
     render json: User.all.map { |user| user.to_json(index: true) }
