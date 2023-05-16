@@ -5,13 +5,13 @@ class Api::V1::ProductsController < ApplicationController
     products = Product.all
     products_with_favorites = products.map do |product|
       {
-        product: product,
+        product: product.as_json(methods: [:image_url]),
         favorites_count: product.favorites_count,
         unfavorites_count: product.unfavorites_count
       }
     end
     render json: products_with_favorites
-  end
+  end  
 
   def create
     product_params_with_current_user = product_params.merge(user_id: current_user.id, prefecture: current_user.prefecture)
