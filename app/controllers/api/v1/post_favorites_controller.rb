@@ -4,7 +4,16 @@ class Api::V1::PostFavoritesController < ApplicationController
   def index
     favorite_ids = PostFavorite.where(user_id: current_user.id).pluck(:post_id)
     post_favorites = Post.find(favorite_ids)
-    render json: post_favorites
+
+    post_favorites_with_counts = post_favorites.map do |post|
+      {
+        post: post,
+        favorites_count: post.favorites_count,
+        unfavorites_count: post.unfavorites_count
+      }
+    end
+
+    render json: post_favorites_with_counts
   end
 
   def create
@@ -23,10 +32,10 @@ class Api::V1::PostFavoritesController < ApplicationController
   private
 
   def post_favorite_params
-    params.permit(:post_id).merge(user_id: current_user.id)
+    params.permit(:post_id)
   end
 
   def set_post_favorite
-    @post_favorite = PostFavorite.find_by!(post_id: params[:post_id], user_id: current_user.id)
+    @post_favorite = PostFavorite.find_by!(post_id: params[:id], user_id: current_user.id)
   end
 end

@@ -18,4 +18,12 @@ class Post < ApplicationRecord
     # 紐づいている画像のURLを取得する
     image.attached? ? url_for(image) : nil
   end
+
+  def favorites_count
+    PostFavorite.where(post_id: id).count
+  end
+
+  def unfavorites_count
+    PostUnfavorite.where(post_id: id).count
+  end
 end

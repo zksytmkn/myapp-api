@@ -5,27 +5,25 @@ class Api::V1::PostsController < ApplicationController
     posts = Post.all
     posts_with_favorites = posts.map do |post|
       {
-        post: post,
-        favorites_count: PostFavorite.where(post_id: post.id).count,
-        unfavorites_count: PostUnfavorite.where(post_id: post.id).count
+        post: post.as_json(methods: [:image_url]),
+        favorites_count: post.favorites_count,
+        unfavorites_count: post.unfavorites_count
       }
     end
     render json: posts_with_favorites
   end
 
   def create
-    post_params_with_user = post_params.merge(user_id: current_user.id)
-    post = Post.create!(post_params_with_user)
+    post_params_with_current_user = post_params.merge(user_id: current_user.id)
+    post = Post.create!(post_params_with_current_user)
     render json: post, status: :created
   end
 
   def show
-    favorites_count = PostFavorite.where(post_id: @post.id).count
-    unfavorites_count = PostUnfavorite.where(post_id: @post.id).count
     render json: {
-      post: @post.as_json(methods: [:image_url], include: [:user]),
-      favorites_count: favorites_count,
-      unfavorites_count: unfavorites_count
+      post: @post.as_json(methods: [:image_url]),
+      favorites_count: @post.favorites_count,
+      unfavorites_count: @post.unfavorites_count
     }
   end
 

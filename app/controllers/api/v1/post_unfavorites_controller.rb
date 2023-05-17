@@ -23,10 +23,10 @@ class Api::V1::PostUnfavoritesController < ApplicationController
   private
 
   def post_unfavorite_params
-    params.permit(:post_id).merge(user_id: current_user.id)
+    params.permit(:post_id)
   end
 
   def set_post_unfavorite
-    @post_unfavorite = PostUnfavorite.find_by!(post_id: params[:post_id], user_id: current_user.id)
+    @post_unfavorite = PostUnfavorite.find_by!(post_id: params[:id], user_id: current_user.id)
   end
 end

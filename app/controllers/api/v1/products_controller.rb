@@ -20,12 +20,10 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def show
-    favorites_count = ProductFavorite.where(product_id: @product.id).count
-    unfavorites_count = ProductUnfavorite.where(product_id: @product.id).count
     render json: {
-      product: @product.as_json(methods: [:image_url], include: [:user]),
-      favorites_count: favorites_count,
-      unfavorites_count: unfavorites_count
+      product: @product.as_json(methods: [:image_url]),
+      favorites_count: @product.favorites_count,
+      unfavorites_count: @product.unfavorites_count
     }
   end
 
@@ -46,13 +44,5 @@ class Api::V1::ProductsController < ApplicationController
 
   def product_params
     params.permit(:name, :category, :price, :description, :image)
-  end
-
-  def render_product(product)
-    render json: product, methods: [:image_url], include: [:user]
-  end
-
-  def render_products(products)
-    render json: products, methods: [:image_url], include: [:user]
   end
 end
