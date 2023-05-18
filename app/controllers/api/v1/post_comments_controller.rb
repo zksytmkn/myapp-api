@@ -27,6 +27,6 @@ class Api::V1::PostCommentsController < ApplicationController
   end
 
   def post_comment_params
-    params.require(:post_comment).permit(:content).merge(user_id: current_user.id, post_id: params[:post_id])
+    params.permit(:content).merge(user_id: current_user.id, post_id: params[:post_id])
   end
 end

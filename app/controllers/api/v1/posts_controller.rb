@@ -21,7 +21,7 @@ class Api::V1::PostsController < ApplicationController
 
   def show
     render json: {
-      post: @post.as_json(methods: [:image_url]),
+      post: @post.as_json(methods: [:image_url], include: [:user]),
       favorites_count: @post.favorites_count,
       unfavorites_count: @post.unfavorites_count
     }

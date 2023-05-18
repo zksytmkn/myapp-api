@@ -27,6 +27,6 @@ class Api::V1::ProductCommentsController < ApplicationController
   end
 
   def product_comment_params
-    params.require(:product_comment).permit(:content).merge(user_id: current_user.id, product_id: params[:product_id])
+    params.permit(:content).merge(user_id: current_user.id, product_id: params[:product_id])
   end
 end

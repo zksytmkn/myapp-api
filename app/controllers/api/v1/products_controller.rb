@@ -21,7 +21,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def show
     render json: {
-      product: @product.as_json(methods: [:image_url]),
+      product: @product.as_json(methods: [:image_url], include: [:user]),
       favorites_count: @product.favorites_count,
       unfavorites_count: @product.unfavorites_count
     }

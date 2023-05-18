@@ -13,5 +13,5 @@ class Api::V1::CommunityMessagesController < ApplicationController
 
   def community_message_params
     params.require(:community_message).permit(:content).merge(user_id: current_user.id, community_id: params[:community_id])
-  end
+  end  
 end

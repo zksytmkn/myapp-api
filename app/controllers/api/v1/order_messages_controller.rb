@@ -17,6 +17,6 @@ class Api::V1::OrderMessagesController < ApplicationController
   private
 
   def order_message_params
-    params.require(:order_message).permit(:content).merge(user_id: current_user.id, order_id: params[:order_id])
+    params.permit(:content).merge(user_id: current_user.id, order_id: params[:order_id])
   end  
 end
