@@ -2,7 +2,7 @@ class Api::V1::CommunitiesController < ApplicationController
   before_action :set_community, only: [:show, :update, :destroy]
 
   def index
-    render json: Community.all, methods: [:image_url]
+    render json: Community.all, methods: [:image_url], include: { user: { only: :name } }
   end
 
   def create

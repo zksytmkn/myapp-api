@@ -1,8 +1,8 @@
 class Cart < ApplicationRecord
   with_options presence: true do
-    validates :product_id
-    validates :user_id
-    validates :quantity
+    validates :product_id, presence: true
+    validates :user_id, presence: true
+    validates :quantity, presence: true
   end
 
   belongs_to :user

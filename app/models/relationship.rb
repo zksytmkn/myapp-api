@@ -1,7 +1,7 @@
 class Relationship < ApplicationRecord
   with_options presence: true do
-    validates :following_id
-    validates :followed_id
+    validates :following_id, presence: true
+    validates :followed_id, presence: true
   end
 
   belongs_to :following, class_name: 'User', :foreign_key => 'following_id'

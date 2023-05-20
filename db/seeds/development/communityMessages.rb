@@ -1,6 +1,5 @@
 10.times do |n|
-  content = "メッセージになります。こちらサンプルですが、
-  メッセージになります。こちらにメッセージを入力することになってます。#{n}"
+  content = "メッセージになります。#{n}"
   user_id = n+1
   community_id = 3
   communityMessage = CommunityMessage.find_or_initialize_by(user_id: user_id)

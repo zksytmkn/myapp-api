@@ -5,7 +5,7 @@ class Api::V1::ProductsController < ApplicationController
     products = Product.all
     products_with_favorites = products.map do |product|
       {
-        product: product.as_json(methods: [:image_url]),
+        product: product.as_json(methods: [:image_url], include: { user: { only: :name } }),
         favorites_count: product.favorites_count,
         unfavorites_count: product.unfavorites_count
       }

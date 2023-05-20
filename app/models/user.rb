@@ -28,7 +28,7 @@ class User < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :order_details, dependent: :destroy
 
-  validates :name, presence: true, length: { maximum: 13, allow_blank: true }
+  validates :name, presence: true, length: { maximum: 13, allow_blank: true }, uniqueness: { case_sensitive: false }
 
   validates :email, presence: true, email: { allow_blank: true }
 

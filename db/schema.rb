@@ -40,8 +40,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   end
 
   create_table "carts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "product_id"
+    t.bigint "user_id", null: false
+    t.bigint "product_id", null: false
     t.integer "quantity", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -52,16 +52,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   create_table "communities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_communities_on_user_id"
   end
 
   create_table "community_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "content"
-    t.bigint "user_id"
-    t.bigint "community_id"
+    t.text "content", null: false
+    t.bigint "user_id", null: false
+    t.bigint "community_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["community_id"], name: "index_community_messages_on_community_id"
@@ -79,8 +79,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   end
 
   create_table "order_details", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "order_id"
-    t.bigint "product_id"
+    t.bigint "order_id", null: false
+    t.bigint "product_id", null: false
     t.integer "price", null: false
     t.integer "quantity", null: false
     t.integer "status", null: false
@@ -92,9 +92,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   end
 
   create_table "order_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "content"
-    t.bigint "user_id"
-    t.bigint "order_id"
+    t.text "content", null: false
+    t.bigint "user_id", null: false
+    t.bigint "order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["order_id"], name: "index_order_messages_on_order_id"
@@ -102,7 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   end
 
   create_table "orders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.integer "billing_amount", null: false
     t.string "zipcode", null: false
     t.string "street", null: false
@@ -123,9 +123,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   end
 
   create_table "post_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "content"
-    t.bigint "user_id"
-    t.bigint "post_id"
+    t.text "content", null: false
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_post_comments_on_post_id"
@@ -155,16 +155,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   create_table "posts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "product_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "content"
-    t.bigint "user_id"
-    t.bigint "product_id"
+    t.text "content", null: false
+    t.bigint "product_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_product_comments_on_product_id"
@@ -198,7 +198,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
     t.string "prefecture", null: false
     t.integer "price", null: false
     t.integer "stock", null: false
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_products_on_user_id"
@@ -215,13 +215,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
+    t.string "password_digest", null: false
     t.string "prefecture"
     t.string "zipcode"
     t.string "street"
     t.string "building"
     t.string "profile_text"
-    t.string "password_digest", null: false
-    t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "refresh_jti"

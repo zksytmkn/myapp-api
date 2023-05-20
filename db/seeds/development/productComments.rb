@@ -1,6 +1,5 @@
 10.times do |n|
-  content = "コメントです。サンプルです。
-  こちらのコメントはサンプルです。実はこちらのコメントサンプルなんです。#{n}"
+  content = "コメントです。#{n}"
   user_id = n+1
   product_id = 1
   productComment = ProductComment.find_or_initialize_by(user_id: user_id)

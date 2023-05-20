@@ -5,7 +5,7 @@ class Api::V1::PostsController < ApplicationController
     posts = Post.all
     posts_with_favorites = posts.map do |post|
       {
-        post: post.as_json(methods: [:image_url]),
+        post: post.as_json(methods: [:image_url], include: { user: { only: :name } }),
         favorites_count: post.favorites_count,
         unfavorites_count: post.unfavorites_count
       }

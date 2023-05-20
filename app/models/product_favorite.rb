@@ -1,7 +1,7 @@
 class ProductFavorite < ApplicationRecord
   with_options presence: true do
-    validates :user_id
-    validates :product_id
+    validates :user_id, presence: true
+    validates :product_id, presence: true
   end
 
   belongs_to :user
