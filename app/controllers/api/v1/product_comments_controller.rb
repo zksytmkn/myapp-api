@@ -3,8 +3,10 @@ class Api::V1::ProductCommentsController < ApplicationController
   before_action :set_product_comment, only: [:destroy]
 
   def index
-    product_comments = @product.product_comments
-    render json: product_comments, include: [:user]
+    product_comments = @product.product_comments.includes(:user).map do |product_comment|
+      product_comment.as_json.merge(user: product_comment.user.as_json(only: :name, methods: :image_url))
+    end
+    render json: product_comments
   end
 
   def create
@@ -27,6 +29,6 @@ class Api::V1::ProductCommentsController < ApplicationController
   end
 
   def product_comment_params
-    params.permit(:content).merge(user_id: current_user.id, product_id: params[:product_id])
+    params.require(:product_comment).permit(:content).merge(user_id: current_user.id, product_id: params[:product_id])
   end
 end

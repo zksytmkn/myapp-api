@@ -7,13 +7,13 @@ class Api::V1::CartsController < ApplicationController
   end
 
   def create
-    product = Product.find(params[:product_id])
-    if product.stock < params[:quantity].to_i
+    product = Product.find(cart_params[:product_id])
+    if product.stock < cart_params[:quantity].to_i
       render json: { error: 'Not enough stock' }, status: :unprocessable_entity
       return
     end
 
-    product.update!(stock: product.stock - params[:quantity].to_i)
+    product.update!(stock: product.stock - cart_params[:quantity].to_i)
 
     cart = Cart.new(cart_params.merge(user_id: current_user.id))
     if cart.save
@@ -25,12 +25,12 @@ class Api::V1::CartsController < ApplicationController
 
   def update
     product = Product.find(@cart.product_id)
-    if product.stock < params[:quantity].to_i - @cart.quantity
+    if product.stock < cart_params[:quantity].to_i - @cart.quantity
       render json: { error: 'Not enough stock' }, status: :unprocessable_entity
       return
     end
 
-    product.update!(stock: product.stock - params[:quantity].to_i + @cart.quantity)
+    product.update!(stock: product.stock - cart_params[:quantity].to_i + @cart.quantity)
 
     if @cart.update(cart_params)
       render json: @cart

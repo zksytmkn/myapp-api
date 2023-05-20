@@ -31,11 +31,11 @@ class Api::V1::OrdersController < ApplicationController
 
   def show
     order_detail = OrderDetail.find(params[:id])
-    render json: order_detail.as_json(include: { product: {}, order: { include: :user } })
-  end  
+    render json: order_detail.as_json(include: { product: {}, order: { include: { user: { only: :name } } } })
+  end
 
   def update
-    if @order_detail.update(status: params[:status])
+    if @order_detail.update(order_params)
       render json: @order_detail
     else
       render json: { error: @order_detail.errors.full_messages }, status: :unprocessable_entity
@@ -49,8 +49,8 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def order_params
-    params.permit(:billing_amount, :status)
-  end  
+    params.require(:order).permit(:billing_amount, :status)
+  end
 
   def create_order_details(order_id)
     order_details = current_user.carts.map do |cart|

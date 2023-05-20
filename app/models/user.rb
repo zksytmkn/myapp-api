@@ -28,9 +28,9 @@ class User < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :order_details, dependent: :destroy
 
-  validates :name, presence: true, length: { maximum: 30, allow_blank: true }
+  validates :name, presence: true, length: { maximum: 13, allow_blank: true }
 
-  validates :email,  presence: true, email: { allow_blank: true }
+  validates :email, presence: true, email: { allow_blank: true }
 
   VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*+\-_])(?=.*[\S])/x
   validates :password,  presence: true,

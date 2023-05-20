@@ -3,8 +3,8 @@ class Api::V1::PostCommentsController < ApplicationController
   before_action :set_post_comment, only: [:destroy]
 
   def index
-    post_comments = @post.post_comments
-    render json: post_comments, include: [:user]
+    post_comments = @post.post_comments.as_json(include: { user: { only: :name, methods: :image_url } })
+    render json: post_comments
   end
 
   def create
@@ -27,6 +27,6 @@ class Api::V1::PostCommentsController < ApplicationController
   end
 
   def post_comment_params
-    params.permit(:content).merge(user_id: current_user.id, post_id: params[:post_id])
+    params.require(:post_comment).permit(:content).merge(user_id: current_user.id, post_id: params[:post_id])
   end
 end

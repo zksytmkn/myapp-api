@@ -127,6 +127,6 @@ class Api::V1::UsersController < ApplicationController
   private
   
   def user_params
-    params.permit(:name, :email, :prefecture, :zipcode, :street, :building, :profile_text, :password)
+    params.permit(:name, :email, :prefecture, :zipcode, :street, :building, :profile_text, :password, :image)
   end
 end

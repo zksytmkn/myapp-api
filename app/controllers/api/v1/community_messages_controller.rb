@@ -1,7 +1,7 @@
 class Api::V1::CommunityMessagesController < ApplicationController
 
   def index
-    render json: CommunityMessage.where(community_id: params[:community_id]), include: [:user]
+    render json: CommunityMessage.where(community_id: params[:community_id]).as_json(include: { user: { only: :name } })
   end
 
   def create

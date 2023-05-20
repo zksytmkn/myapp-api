@@ -32,7 +32,7 @@ class Api::V1::ProductFavoritesController < ApplicationController
   private
 
   def product_favorite_params
-    params.permit(:product_id)
+    params.require(:product_favorite).permit(:product_id)
   end
 
   def set_product_favorite

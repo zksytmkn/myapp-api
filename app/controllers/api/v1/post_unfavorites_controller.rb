@@ -23,7 +23,7 @@ class Api::V1::PostUnfavoritesController < ApplicationController
   private
 
   def post_unfavorite_params
-    params.permit(:post_id)
+    params.require(:post_unfavorite).permit(:post_id)
   end
 
   def set_post_unfavorite

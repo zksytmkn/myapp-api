@@ -32,7 +32,7 @@ class Api::V1::PostFavoritesController < ApplicationController
   private
 
   def post_favorite_params
-    params.permit(:post_id)
+    params.require(:post_favorite).permit(:post_id)
   end
 
   def set_post_favorite

@@ -21,6 +21,6 @@ class Api::V1::ParticipationsController < ApplicationController
   end
 
   def participation_params
-    params.permit(:community_id)
+    params.require(:participation).permit(:community_id)
   end
 end

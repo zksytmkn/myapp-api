@@ -1,8 +1,8 @@
 class ProductComment < ApplicationRecord
   with_options presence: true do
-    validates :content
-    validates :product_id
-    validates :user_id
+    validates :content, presence: true, length: { maximum: 200 }
+    validates :product_id, presence: true
+    validates :user_id, presence: true
   end
 
   belongs_to :user

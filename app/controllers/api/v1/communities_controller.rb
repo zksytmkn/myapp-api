@@ -2,7 +2,7 @@ class Api::V1::CommunitiesController < ApplicationController
   before_action :set_community, only: [:show, :update, :destroy]
 
   def index
-    render json: Community.all, methods: [:image_url], include: [:user]
+    render json: Community.all, methods: [:image_url]
   end
 
   def create
@@ -17,7 +17,7 @@ class Api::V1::CommunitiesController < ApplicationController
     inviting_user = User.joins(:inviting_invitations).find_by(invitations: { community_id: @community.id, invited_id: current_user.id })
   
     render json: {
-      community: @community.as_json(methods: [:image_url], include: [:user]),
+      community: @community.as_json(methods: [:image_url], include: { user: { only: :name } }),
       participation: participation_users,
       invited: invited_users,
       inviting: inviting_user
