@@ -5,8 +5,13 @@ class Api::V1::CommunityMessagesController < ApplicationController
   end
 
   def create
-    community_message = CommunityMessage.create!(community_message_params)
-    render json: community_message, status: :created
+    community_message = CommunityMessage.new(community_message_params)
+  
+    if community_message.save
+      render json: community_message, status: :created
+    else
+      render json: { error: 'メッセージを送信できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   private

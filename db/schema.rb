@@ -221,6 +221,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_28_132435) do
     t.string "street"
     t.string "building"
     t.string "profile_text"
+    t.boolean "is_guest", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "refresh_jti"

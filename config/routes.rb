@@ -9,25 +9,20 @@ Rails.application.routes.draw do
       end
 
       #users
-      resources :users, only: %i[index create show update destroy] do
+      resources :users, only: %i[index show create update destroy] do
         collection do
+          get :confirm_email
+          get :confirm_email_reset
           post :send_email_reset_confirmation
           post :send_password_reset_email
           post :forgot_password
           patch :update_password
-          get :confirm_email
-          get :confirm_email_reset
           put :reset_password
         end
       end
 
       #guest_users
       resources :guest_sessions, only: %i[create]
-
-      #user_settings
-      resources :password_resets, only: %i[update] do
-        get :reset_password_confirmation, on: :collection
-      end
 
       #follows
       resources :relationships, only: %i[create destroy] do
@@ -38,7 +33,7 @@ Rails.application.routes.draw do
       resources :contacts, only: %i[create]
 
       #products
-      resources :products, only: %i[index create show update destroy] do
+      resources :products, only: %i[index show create update destroy] do
         resources :product_comments, only: %i[index create destroy]
       end
       resources :product_favorites, only: %i[index create] do
@@ -52,12 +47,16 @@ Rails.application.routes.draw do
       resources :carts, only: %i[index create update destroy]
 
       #orders
-      resources :orders, only: %i[index create show update] do
+      resources :orders, only: %i[index show create] do
         resources :order_messages, only: %i[index create]
       end
 
+      #order_details
+      resources :order_details, only: %i[update] do
+      end
+
       #posts
-      resources :posts, only: %i[index create show update destroy] do
+      resources :posts, only: %i[index show create update destroy] do
         resources :post_comments, only: %i[index create destroy]
       end
       resources :post_favorites, only: %i[index create] do
@@ -68,10 +67,10 @@ Rails.application.routes.draw do
       end
 
       #communities
-      resources :communities, only: %i[index create show update destroy] do
+      resources :communities, only: %i[index show create update destroy] do
         resources :community_messages, only: %i[index create]
       end
-      resources :invitations, only: %i[index create destroy]
+      resources :invitations, only: %i[index create]
       resources :participations, only: %i[index create] do
         delete :destroy, on: :member
       end

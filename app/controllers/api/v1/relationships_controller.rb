@@ -5,6 +5,11 @@ class Api::V1::RelationshipsController < ApplicationController
     Relationship.create!(relationship_params_with_current_user)
   end
 
+  def destroy
+    relationship = Relationship.find_by(relationship_params.merge(following_id: current_user.id))
+    relationship.destroy!
+  end
+
   def user_follow_relationships
     following_ids = Relationship.where(following_id: params[:id]).pluck(:followed_id)
     followed_ids = Relationship.where(followed_id: params[:id]).pluck(:following_id)
@@ -13,11 +18,6 @@ class Api::V1::RelationshipsController < ApplicationController
     followed_users = User.find(followed_ids)
 
     render json: { following: following_users, followers: followed_users }
-  end
-
-  def destroy
-    relationship = Relationship.find_by(relationship_params.merge(following_id: current_user.id))
-    relationship.destroy!
   end
 
   private

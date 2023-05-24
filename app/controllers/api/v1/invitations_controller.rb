@@ -6,7 +6,12 @@ class Api::V1::InvitationsController < ApplicationController
   end
 
   def create
-    Invitation.create!(invitation_params.merge(inviting_id: current_user.id))
+    invitation = Invitation.new(invitation_params.merge(inviting_id: current_user.id))
+    if invitation.save
+      render json: invitation, status: :created
+    else
+      render json: { error: 'コミュニティに招待できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   private

@@ -13,12 +13,6 @@ class Api::V1::PostsController < ApplicationController
     render json: posts_with_favorites
   end
 
-  def create
-    post_params_with_current_user = post_params.merge(user_id: current_user.id)
-    post = Post.create!(post_params_with_current_user)
-    render json: post, status: :created
-  end
-
   def show
     render json: {
       post: @post.as_json(
@@ -28,6 +22,12 @@ class Api::V1::PostsController < ApplicationController
       favorites_count: @post.favorites_count,
       unfavorites_count: @post.unfavorites_count
     }
+  end
+
+  def create
+    post_params_with_current_user = post_params.merge(user_id: current_user.id)
+    post = Post.create!(post_params_with_current_user)
+    render json: post, status: :created
   end
 
   def update

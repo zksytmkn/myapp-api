@@ -10,7 +10,7 @@ class Api::V1::OrderMessagesController < ApplicationController
     if order_message.save
       render json: order_message, status: :created
     else
-      render json: { error: order_message.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: 'メッセージを送信できませんでした' }, status: :unprocessable_entity
     end
   end
 

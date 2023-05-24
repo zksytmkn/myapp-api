@@ -6,6 +6,10 @@ class Api::V1::UsersController < ApplicationController
     render json: User.all.map { |user| user.to_json(index: true) }
   end
 
+  def show
+    render json: User.find(params[:id]).to_json(show: true)
+  end
+
   def create
     @user = User.new(user_params)
     if @user.save
@@ -14,10 +18,6 @@ class Api::V1::UsersController < ApplicationController
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
-  end
-
-  def show
-    render json: User.find(params[:id]).to_json(show: true)
   end
 
   def update
@@ -35,7 +35,7 @@ class Api::V1::UsersController < ApplicationController
       current_user.destroy!
       render json: { message: "アカウントを削除しました" }, status: :ok
     else
-      render json: { message: "アカウントが見つかりませんでした" }, status: :not_found
+      render json: { message: "アカウントが見つかりません" }, status: :not_found
     end
   end
 

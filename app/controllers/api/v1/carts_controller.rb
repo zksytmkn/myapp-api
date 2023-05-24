@@ -7,9 +7,14 @@ class Api::V1::CartsController < ApplicationController
   end
 
   def create
-    product = Product.find(cart_params[:product_id])
+    product = Product.find_by(id: cart_params[:product_id])
+    if product.nil?
+      render json: { error: '農産物が見つかりません' }, status: :not_found
+      return
+    end
+    
     if product.stock < cart_params[:quantity].to_i
-      render json: { error: 'Not enough stock' }, status: :unprocessable_entity
+      render json: { error: '在庫が不足しています' }, status: :unprocessable_entity
       return
     end
 
@@ -19,14 +24,19 @@ class Api::V1::CartsController < ApplicationController
     if cart.save
       render json: cart, status: :created
     else
-      render json: { error: cart.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: 'カートに入れられませんでした' }, status: :unprocessable_entity
     end
-  end  
+  end
 
   def update
-    product = Product.find(@cart.product_id)
+    product = Product.find_by(id: @cart.product_id)
+    if product.nil?
+      render json: { error: '農産物が見つかりません' }, status: :not_found
+      return
+    end
+    
     if product.stock < cart_params[:quantity].to_i - @cart.quantity
-      render json: { error: 'Not enough stock' }, status: :unprocessable_entity
+      render json: { error: '在庫が不足しています' }, status: :unprocessable_entity
       return
     end
 
@@ -35,7 +45,7 @@ class Api::V1::CartsController < ApplicationController
     if @cart.update(cart_params)
       render json: @cart
     else
-      render json: { error: @cart.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: 'カートに入れられませんでした' }, status: :unprocessable_entity
     end
   end
 
@@ -43,13 +53,17 @@ class Api::V1::CartsController < ApplicationController
     if @cart
       Product.transaction do
         product = @cart.product
+        if product.nil?
+          render json: { error: '農産物が見つかりません' }, status: :not_found
+          return
+        end
         product.stock += @cart.quantity
         product.save!
         @cart.destroy
       end
-      render json: { message: 'Cart item has been deleted.' }, status: :ok
+      render json: { message: 'カートから削除しました' }, status: :ok
     else
-      render json: { error: 'Cart item not found.' }, status: :not_found
+      render json: { error: 'カートから削除できませんでした' }, status: :not_found
     end
   end
 
@@ -58,9 +72,14 @@ class Api::V1::CartsController < ApplicationController
 
   def set_cart
     @cart = Cart.find_by(id: params[:id])
+    if @cart.nil?
+      render json: { error: 'カートに農産物が見つかりません' }, status: :not_found
+      return
+    end
   end
 
   def cart_params
     params.require(:cart).permit(:product_id, :quantity)
   end  
 end
+

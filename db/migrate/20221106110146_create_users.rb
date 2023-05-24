@@ -9,6 +9,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :street
       t.string :building
       t.string :profile_text
+      t.boolean :is_guest, default: false
       t.timestamps
     end
   end

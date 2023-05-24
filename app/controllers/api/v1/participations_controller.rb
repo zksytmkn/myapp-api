@@ -7,17 +7,31 @@ class Api::V1::ParticipationsController < ApplicationController
   end
 
   def create
-    Participation.create!(participation_params.merge(user_id: current_user.id))
+    participation = Participation.new(participation_params.merge(user_id: current_user.id))
+
+    if participation.save
+      render json: participation, status: :created
+    else
+      render json: { error: 'コミュニティに参加できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    @participation.destroy!
+    if @participation.destroy
+      render status: :no_content
+    else
+      render json: { error: 'コミュニティを退会できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   private
 
   def set_participation
-    @participation = Participation.find_by!(community_id: params[:id], user_id: current_user.id)
+    @participation = Participation.find_by(community_id: params[:id], user_id: current_user.id)
+
+    unless @participation
+      render json: { error: '参加情報が見つかりません' }, status: :not_found
+    end
   end
 
   def participation_params

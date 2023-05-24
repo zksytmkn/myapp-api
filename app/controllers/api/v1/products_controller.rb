@@ -11,12 +11,6 @@ class Api::V1::ProductsController < ApplicationController
       }
     end
     render json: products_with_favorites
-  end  
-
-  def create
-    product_params_with_current_user = product_params.merge(user_id: current_user.id, prefecture: current_user.prefecture)
-    product = Product.create!(product_params_with_current_user)
-    render json: product, status: :created
   end
 
   def show
@@ -25,6 +19,12 @@ class Api::V1::ProductsController < ApplicationController
       favorites_count: @product.favorites_count,
       unfavorites_count: @product.unfavorites_count
     }
+  end
+
+  def create
+    product_params_with_current_user = product_params.merge(user_id: current_user.id, prefecture: current_user.prefecture)
+    product = Product.create!(product_params_with_current_user)
+    render json: product, status: :created
   end
 
   def update
