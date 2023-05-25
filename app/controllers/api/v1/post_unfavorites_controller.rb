@@ -9,15 +9,22 @@ class Api::V1::PostUnfavoritesController < ApplicationController
 
   def create
     post_unfavorite_params_with_current_user = post_unfavorite_params.merge(user_id: current_user.id)
-    post_unfavorite = PostUnfavorite.create!(post_unfavorite_params_with_current_user)
-    post_favorite = PostFavorite.find_by(post_unfavorite_params_with_current_user)
-    post_favorite&.destroy!
-    render json: post_unfavorite, status: :created
+    post_unfavorite = PostUnfavorite.new(post_unfavorite_params_with_current_user)
+    if post_unfavorite.save
+      post_favorite = PostFavorite.find_by(post_unfavorite_params_with_current_user)
+      post_favorite&.destroy!
+      render json: post_unfavorite, status: :created
+    else
+      render json: { error: 'ないねできませんでした' }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    @post_unfavorite.destroy!
-    head :no_content
+    if @post_unfavorite.destroy
+      head :no_content
+    else
+      render json: { error: 'ないねを解除できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   private
@@ -27,6 +34,9 @@ class Api::V1::PostUnfavoritesController < ApplicationController
   end
 
   def set_post_unfavorite
-    @post_unfavorite = PostUnfavorite.find_by!(post_id: params[:id], user_id: current_user.id)
+    @post_unfavorite = PostUnfavorite.find_by(post_id: params[:id], user_id: current_user.id)
+    if @post_unfavorite.nil?
+      render json: { error: 'ないねが見つかりません' }, status: :not_found
+    end
   end
 end

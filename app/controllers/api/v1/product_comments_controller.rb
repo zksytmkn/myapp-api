@@ -10,22 +10,40 @@ class Api::V1::ProductCommentsController < ApplicationController
   end
 
   def create
-    product_comment = @product.product_comments.create!(product_comment_params)
-    render json: product_comment, status: :created
+    product_comment = @product.product_comments.new(product_comment_params)
+
+    if product_comment.save
+      render json: product_comment, status: :created
+    else
+      render json: { error: 'コメントできませんでした' }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    @product_comment.destroy!
+    if @product_comment
+      @product_comment.destroy
+      head :no_content
+    else
+      render json: { error: 'コメントを削除できませんでした' }, status: :not_found
+    end
   end
 
   private
 
   def set_product
-    @product = Product.find(params[:product_id])
+    @product = Product.find_by(id: params[:product_id])
+    if @product.nil?
+      render json: { error: '農産物が見つかりません' }, status: :not_found
+      return
+    end
   end
 
   def set_product_comment
-    @product_comment = ProductComment.find(params[:id])
+    @product_comment = ProductComment.find_by(id: params[:id])
+    if @product_comment.nil?
+      render json: { error: 'コメントが見つかりません' }, status: :not_found
+      return
+    end
   end
 
   def product_comment_params

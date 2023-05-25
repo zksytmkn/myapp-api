@@ -23,23 +23,38 @@ class Api::V1::ProductsController < ApplicationController
 
   def create
     product_params_with_current_user = product_params.merge(user_id: current_user.id, prefecture: current_user.prefecture)
-    product = Product.create!(product_params_with_current_user)
-    render json: product, status: :created
+    product = Product.new(product_params_with_current_user)
+    if product.save
+      render json: product, status: :created
+    else
+      render json: { error: '農産物を出品できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   def update
-    @product.update!(product_params)
-    render json: @product
+    if @product.update(product_params)
+      render json: @product
+    else
+      render json: { error: '農産物を編集できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    @product.destroy!
+    if @product.destroy
+      head :no_content
+    else
+      render json: { error: '農産物を削除できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   private
 
   def set_product
-    @product = Product.find(params[:id])
+    @product = Product.find_by(id: params[:id])
+    if @product.nil?
+      render json: { error: '農産物が見つかりません' }, status: :not_found
+      return
+    end
   end
 
   def product_params

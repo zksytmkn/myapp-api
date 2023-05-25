@@ -2,12 +2,37 @@ ja:
   activerecord:
     attributes:
       user:
-        name: 名前
+        name: ユーザー名
         email: メールアドレス
         password: パスワード
-        activated: アクティブフラグ
-        admin: 管理者フラグ
+      relationship:
+        following_id: フォローするユーザー
+        followed_id: フォローされるユーザー
     errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以内で入力してください"
+              taken: "は既に使われています"
+            email:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以内で入力してください"
+              taken: "は既に使われています"
+              invalid: "が不正です"
+            password:
+              blank: "を入力してください"
+              too_short: "は最低%{count}文字必要です"
+              invalid: "は英数字と記号を含む必要があります"
+        relationship:
+          attributes:
+            following_id:
+              blank: "を選択してください"
+              taken: "は既にフォローしています"
+            followed_id:
+              blank: "を選択してください"
+              taken: "は既にフォローされています"
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
         restrict_dependent_destroy:

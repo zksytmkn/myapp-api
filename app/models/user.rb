@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 13, allow_blank: true }, uniqueness: { case_sensitive: false }
 
-  validates :email, presence: true, email: { allow_blank: true }
+  validates :email, presence: true, email: { allow_blank: true }, uniqueness: { case_sensitive: false }
 
   VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*+\-_])(?=.*[\S])/x
   validates :password,  presence: true,

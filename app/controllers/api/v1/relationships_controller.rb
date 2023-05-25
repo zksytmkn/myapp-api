@@ -1,13 +1,24 @@
 class Api::V1::RelationshipsController < ApplicationController
-
   def create
     relationship_params_with_current_user = relationship_params.merge(following_id: current_user.id)
-    Relationship.create!(relationship_params_with_current_user)
+    begin
+      Relationship.create!(relationship_params_with_current_user)
+    rescue ActiveRecord::RecordInvalid => e
+      render json: { error: e.record.errors.full_messages.join(", ") }, status: :unprocessable_entity
+    end
   end
 
   def destroy
     relationship = Relationship.find_by(relationship_params.merge(following_id: current_user.id))
-    relationship.destroy!
+    if relationship.nil?
+      render json: { error: 'フォロー情報が見つかりません' }, status: :not_found
+      return
+    end
+    begin
+      relationship.destroy!
+    rescue ActiveRecord::RecordNotDestroyed => e
+      render json: { error: 'フォローを解除できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   def user_follow_relationships

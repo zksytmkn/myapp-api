@@ -7,6 +7,8 @@ class OrderDetail < ApplicationRecord
     validates :status, presence: true
   end
 
+  validates_uniqueness_of :order_id, scope: :product_id
+
   belongs_to :order
   belongs_to :product
 

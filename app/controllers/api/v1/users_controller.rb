@@ -14,44 +14,67 @@ class Api::V1::UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       UserMailer.send_email_confirmation(@user).deliver_later
-      render json: { message: "ユーザーが正常に作成されました" }, status: :created
+      render json: { message: 'メールアドレスに確認メールを送信しました' }, status: :created
     else
-      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: @user.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 
   def update
     user = User.find(params[:id])
+
+    unless user == current_user
+      render json: { error: 'この操作は許可されておりません' }, status: :unauthorized
+      return
+    end
+
     if user.update(user_params)
-      render json: { message: "ユーザー情報が正常に更新されました" }, status: :ok
+      render json: { message: 'ユーザー情報を編集しました' }, status: :ok
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: user.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 
   def destroy
     if current_user
       UserMailer.send_account_deletion_confirmation(current_user).deliver_later
-      current_user.destroy!
-      render json: { message: "アカウントを削除しました" }, status: :ok
+      begin
+        current_user.destroy!
+      rescue ActiveRecord::RecordNotDestroyed => e
+        render json: { error: 'アカウントを削除できませんでした' }, status: :unprocessable_entity
+        return
+      end
+      render json: { message: 'アカウントを削除しました' }, status: :ok
     else
-      render json: { message: "アカウントが見つかりません" }, status: :not_found
+      render json: { error: 'アカウントが見つかりません' }, status: :not_found
     end
   end
 
   def send_email_reset_confirmation
-    unless current_user.present? && current_user.authenticate(params[:current_password])
-      render json: { message: "現在のパスワードが間違っております" }, status: :unprocessable_entity
+    unless params[:current_password].present? && params[:email].present?
+      render json: { error: '必要な情報が不足しています' }, status: :unprocessable_entity
       return
     end
-
-    if User.exists?(email: params[:email])
-      render json: { message: "このメールアドレスは既に使われております" }, status: :unprocessable_entity
-    else
+  
+    unless current_user.present? && current_user.authenticate(params[:current_password])
+      render json: { error: '現在のパスワードが間違っています' }, status: :unprocessable_entity
+      return
+    end
+    
+    current_user.email = params[:email]
+    if current_user.valid?
       set_email_reset_confirmation
       token = SecureRandom.urlsafe_base64
-      current_user.update!(confirmation_token: token)
+      begin
+        current_user.update!(confirmation_token: token)
+      rescue ActiveRecord::RecordInvalid => e
+        render json: { error: '確認トークンの更新に失敗しました' }, status: :unprocessable_entity
+        return
+      end
       UserMailer.send_email_reset_confirmation(current_user, params[:email], token).deliver_later
+      render json: { message: 'メールアドレスに確認メールを送信しました' }, status: :ok
+    else
+      render json: { error: current_user.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 
@@ -60,12 +83,16 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update_password
-    if current_user.update(password: params[:password])
+    current_user.password = params[:password]
+    if current_user.valid?
+      current_user.save!
       UserMailer.send_password_reset_confirmation(current_user).deliver_later
-      render json: { message: "パスワードが正常に更新されました" }, status: :ok
+      render json: { message: "パスワードを変更しました" }, status: :ok
     else
-      render json: { message: current_user.errors.full_messages.join(", ") }, status: :unprocessable_entity
+      render json: { error: current_user.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { error: e.record.errors.full_messages.join(", ") }, status: :unprocessable_entity
   end
 
   def confirm_email
@@ -103,7 +130,7 @@ class Api::V1::UsersController < ApplicationController
       UserMailer.send_password_reset(user, token).deliver_later
       render json: { message: "パスワード再設定用のメールを送信しました" }, status: :ok
     else
-      render json: { message: "メールアドレスが見つかりません" }, status: :not_found
+      render json: { error: "メールアドレスが見つかりません" }, status: :not_found
     end
   end
 
@@ -116,7 +143,7 @@ class Api::V1::UsersController < ApplicationController
         if user.update(password: params[:password], reset_password_token: nil, reset_password_expires_at: nil)
           render json: { message: "パスワードが正常に更新されました" }, status: :ok
         else
-          render json: { message: user.errors.full_messages.join(", ") }, status: :unprocessable_entity
+          render json: { error: user.errors.full_messages.join(", ") }, status: :unprocessable_entity
         end
       end
     else

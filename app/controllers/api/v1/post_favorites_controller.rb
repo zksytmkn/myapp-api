@@ -18,15 +18,22 @@ class Api::V1::PostFavoritesController < ApplicationController
 
   def create
     post_favorite_params_with_current_user = post_favorite_params.merge(user_id: current_user.id)
-    post_favorite = PostFavorite.create!(post_favorite_params_with_current_user)
-    post_unfavorite = PostUnfavorite.find_by(post_favorite_params_with_current_user)
-    post_unfavorite&.destroy!
-    render json: post_favorite, status: :created
+    post_favorite = PostFavorite.new(post_favorite_params_with_current_user)
+    if post_favorite.save
+      post_unfavorite = PostUnfavorite.find_by(post_favorite_params_with_current_user)
+      post_unfavorite&.destroy!
+      render json: post_favorite, status: :created
+    else
+      render json: { error: 'いいねできませんでした' }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    @post_favorite.destroy!
-    head :no_content
+    if @post_favorite.destroy
+      head :no_content
+    else
+      render json: { error: 'いいねを解除できませんでした' }, status: :unprocessable_entity
+    end
   end
 
   private
@@ -36,6 +43,9 @@ class Api::V1::PostFavoritesController < ApplicationController
   end
 
   def set_post_favorite
-    @post_favorite = PostFavorite.find_by!(post_id: params[:id], user_id: current_user.id)
+    @post_favorite = PostFavorite.find_by(post_id: params[:id], user_id: current_user.id)
+    if @post_favorite.nil?
+      render json: { error: 'いいねが見つかりません' }, status: :not_found
+    end
   end
 end
