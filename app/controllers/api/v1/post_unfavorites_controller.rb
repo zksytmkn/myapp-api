@@ -15,7 +15,7 @@ class Api::V1::PostUnfavoritesController < ApplicationController
       post_favorite&.destroy!
       render json: post_unfavorite, status: :created
     else
-      render json: { error: 'ないねできませんでした' }, status: :unprocessable_entity
+      render json: { error: post_unfavorite.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

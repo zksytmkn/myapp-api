@@ -2,9 +2,9 @@ class Post < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   with_options presence: true do
-    validates :title, presence: true, length: { maximum: 30, allow_blank: true }
-    validates :body, presence: true, length: { maximum: 400, allow_blank: true }
-    validates :user_id, presence: true
+    validates :title, length: { maximum: 30, allow_blank: true }
+    validates :body, length: { maximum: 400, allow_blank: true }
+    validates :user_id
   end
 
   belongs_to :user

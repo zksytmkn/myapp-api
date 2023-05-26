@@ -30,7 +30,7 @@ class Api::V1::PostsController < ApplicationController
     if post.save
       render json: post, status: :created
     else
-      render json: { error: 'つぶやきを投稿できませんでした' }, status: :unprocessable_entity
+      render json: { error: post.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -38,7 +38,7 @@ class Api::V1::PostsController < ApplicationController
     if @post.update(post_params)
       render json: @post
     else
-      render json: { error: 'つぶやきを編集できませんでした' }, status: :unprocessable_entity
+      render json: { error: @post.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

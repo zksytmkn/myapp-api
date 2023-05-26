@@ -1,10 +1,10 @@
 class Order < ApplicationRecord
   with_options presence: true do
-    validates :user_id, presence: true
-    validates :billing_amount, presence: true
-    validates :zipcode, presence: true
-    validates :street, presence: true
-    validates :building, presence: true
+    validates :user_id
+    validates :billing_amount
+    validates :zipcode
+    validates :street
+    validates :building
   end
 
   belongs_to :user

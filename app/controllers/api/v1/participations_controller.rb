@@ -12,7 +12,7 @@ class Api::V1::ParticipationsController < ApplicationController
     if participation.save
       render json: participation, status: :created
     else
-      render json: { error: 'コミュニティに参加できませんでした' }, status: :unprocessable_entity
+      render json: { error: participation.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

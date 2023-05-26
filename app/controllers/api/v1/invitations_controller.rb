@@ -10,7 +10,7 @@ class Api::V1::InvitationsController < ApplicationController
     if invitation.save
       render json: invitation, status: :created
     else
-      render json: { error: 'コミュニティに招待できませんでした' }, status: :unprocessable_entity
+      render json: { error: invitation.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

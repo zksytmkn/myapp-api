@@ -1,7 +1,7 @@
 class ProductUnfavorite < ApplicationRecord
   with_options presence: true do
-    validates :user_id, presence: true
-    validates :product_id, presence: true
+    validates :user_id
+    validates :product_id
   end
 
   validates_uniqueness_of :user_id, scope: :product_id

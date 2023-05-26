@@ -10,7 +10,7 @@ class Api::V1::CommunityMessagesController < ApplicationController
     if community_message.save
       render json: community_message, status: :created
     else
-      render json: { error: 'メッセージを送信できませんでした' }, status: :unprocessable_entity
+      render json: { error: community_message.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

@@ -24,7 +24,7 @@ class Api::V1::CommunitiesController < ApplicationController
     if community.save
       render json: community, status: :created
     else
-      render json: { error: 'コミュニティを作成できませんでした' }, status: :unprocessable_entity
+      render json: { error: community.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -32,7 +32,7 @@ class Api::V1::CommunitiesController < ApplicationController
     if @community.update(community_params)
       render json: @community
     else
-      render json: { error: 'コミュニティを編集できませんでした' }, status: :unprocessable_entity
+      render json: { error: @community.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

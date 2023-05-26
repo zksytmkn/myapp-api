@@ -5,7 +5,7 @@ class Api::V1::OrderDetailsController < ApplicationController
     if @order_detail.update(order_detail_params)
       render json: @order_detail
     else
-      render json: { error: '注文ステータスを更新できませんでした' }, status: :unprocessable_entity
+      render json: { error: @order_detail.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

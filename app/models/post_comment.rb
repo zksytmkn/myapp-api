@@ -1,8 +1,8 @@
 class PostComment < ApplicationRecord
   with_options presence: true do
-    validates :content, presence: true, length: { maximum: 200, allow_blank: true }
-    validates :user_id, presence: true
-    validates :post_id, presence: true
+    validates :content, length: { maximum: 200, allow_blank: true }
+    validates :user_id
+    validates :post_id
   end
 
   belongs_to :user

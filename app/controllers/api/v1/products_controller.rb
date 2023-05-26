@@ -27,7 +27,7 @@ class Api::V1::ProductsController < ApplicationController
     if product.save
       render json: product, status: :created
     else
-      render json: { error: '農産物を出品できませんでした' }, status: :unprocessable_entity
+      render json: { error: product.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -35,7 +35,7 @@ class Api::V1::ProductsController < ApplicationController
     if @product.update(product_params)
       render json: @product
     else
-      render json: { error: '農産物を編集できませんでした' }, status: :unprocessable_entity
+      render json: { error: @product.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

@@ -29,7 +29,7 @@ class Api::V1::OrdersController < ApplicationController
       create_order_details(order.id)
       current_user.carts.destroy_all
     else
-      render json: { error: '農産物を購入できませんでした' }, status: :unprocessable_entity
+      render json: { error: order.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

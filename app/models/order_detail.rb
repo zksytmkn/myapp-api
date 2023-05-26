@@ -1,10 +1,10 @@
 class OrderDetail < ApplicationRecord
   with_options presence: true do
-    validates :order_id, presence: true
-    validates :product_id, presence: true
-    validates :price, presence: true
-    validates :quantity, presence: true
-    validates :status, presence: true
+    validates :order_id
+    validates :product_id
+    validates :price
+    validates :quantity
+    validates :status
   end
 
   validates_uniqueness_of :order_id, scope: :product_id

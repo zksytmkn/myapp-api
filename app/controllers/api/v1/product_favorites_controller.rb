@@ -25,7 +25,7 @@ class Api::V1::ProductFavoritesController < ApplicationController
       product_unfavorite&.destroy
       render json: product_favorite, status: :created
     else
-      render json: { error: 'いいねできませんでした' }, status: :unprocessable_entity
+      render json: { error: product_favorite.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

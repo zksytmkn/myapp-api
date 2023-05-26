@@ -2,9 +2,9 @@ class Community < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   with_options presence: true do
-    validates :name, presence: true, length: { maximum: 13, allow_blank: true }
-    validates :description, presence: true, length: { maximum: 300, allow_blank: true }
-    validates :user_id, presence: true
+    validates :name, length: { maximum: 13, allow_blank: true }
+    validates :description, length: { maximum: 300, allow_blank: true }
+    validates :user_id
   end
 
   belongs_to :user

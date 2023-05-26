@@ -24,7 +24,7 @@ class Api::V1::CartsController < ApplicationController
     if cart.save
       render json: cart, status: :created
     else
-      render json: { error: 'カートに入れられませんでした' }, status: :unprocessable_entity
+      render json: { error: cart.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -45,7 +45,7 @@ class Api::V1::CartsController < ApplicationController
     if @cart.update(cart_params)
       render json: @cart
     else
-      render json: { error: 'カートに入れられませんでした' }, status: :unprocessable_entity
+      render json: { error: @cart.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

@@ -12,7 +12,7 @@ class Api::V1::PostCommentsController < ApplicationController
     if post_comment.save
       render json: post_comment, status: :created
     else
-      render json: { error: 'コメントできませんでした' }, status: :unprocessable_entity
+      render json: { error: post_comment.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

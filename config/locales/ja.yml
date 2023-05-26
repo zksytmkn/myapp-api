@@ -8,6 +8,60 @@ ja:
       relationship:
         following_id: フォローするユーザー
         followed_id: フォローされるユーザー
+      product:
+        name: 名前
+        category: 種類
+        prefecture: 都道府県
+        price: 価格
+        stock: 在庫
+        description: 説明文
+        image: 画像
+      product_comment:
+        content: コメント
+      product_favorite:
+        product_id: 農産物
+        user_id: いいねするユーザー
+      product_unfavorite:
+        product_id: 農産物
+        user_id: ないねするユーザー
+      post:
+        title: タイトル
+        body: つぶやき
+        image: 画像
+      post_comment:
+        content: コメント
+      post_favorite:
+        post_id: つぶやき
+        user_id: いいねするユーザー
+      post_unfavorite:
+        post_id: つぶやき
+        user_id: ないねするユーザー
+      community:
+        name: 名前
+        description: 紹介文
+      community_message:
+        content: メッセージ
+      participation:
+        user_id: ユーザー
+        community_id: コミュニティ
+      invitation:
+        inviting_id: 招待するユーザー
+        invited_id: 招待されるユーザー
+        community_id: コミュニティ
+      cart:
+        product_id: 農産物
+        user_id: ユーザー
+        quantity: 数量
+      order:
+        billing_amount: 合計（税込）
+      order_detail:
+        order_id: 注文
+        product_id: 農産物
+        price: 価格
+        quantity: 数量
+        status: 注文ステータス
+      order_message:
+        content: メッセージ
     errors:
       models:
         user:
@@ -33,6 +87,132 @@ ja:
             followed_id:
               blank: "を選択してください"
               taken: "は既にフォローされています"
+        product:
+          attributes:
+            name:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以内で入力してください"
+              taken: "は既に使われています"
+            category:
+              blank: "を選択してください"
+            prefecture:
+              blank: "を選択してください"
+            price:
+              blank: "を入力してください"
+              not_a_number: "は数値で入力してください"
+            stock:
+              blank: "を入力してください"
+              not_a_number: "は数値で入力してください"
+            description:
+              blank: "を入力してください"
+            image:
+              blank: "を選択してください"
+        product_comment:
+          attributes:
+            content:
+              blank: "を入力してください"
+        product_favorite:
+          attributes:
+            product_id:
+              blank: "を選択してください"
+              taken: "は既にいいねされています"
+            user_id:
+              blank: "を選択してください"
+        product_unfavorite:
+          attributes:
+            product_id:
+              blank: "を選択してください"
+              taken: "は既にないねされています"
+            user_id:
+              blank: "を選択してください"
+        post:
+          attributes:
+            title:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以内で入力してください"
+            body:
+              blank: "を入力してください"
+            image:
+              blank: "を選択してください"
+        post_comment:
+          attributes:
+            content:
+              blank: "を入力してください"
+        post_favorite:
+          attributes:
+            post_id:
+              blank: "を選択してください"
+              taken: "は既にいいねされています"
+            user_id:
+              blank: "を選択してください"
+        post_unfavorite:
+          attributes:
+            post_id:
+              blank: "を選択してください"
+              taken: "は既にないねされています"
+            user_id:
+              blank: "を選択してください"
+        community:
+          attributes:
+            name:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以内で入力してください"
+            description:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以内で入力してください"
+        community_message:
+          attributes:
+            content:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以内で入力してください"
+        participation:
+          attributes:
+            user_id:
+              blank: "を選択してください"
+              taken: "は既に参加しています"
+            community_id:
+              blank: "を選択してください"
+              taken: "は既に参加しています"
+        invitation:
+          attributes:
+            inviting_id:
+              blank: "を選択してください"
+            invited_id:
+              blank: "を選択してください"
+              taken: "は既に招待されています"
+            community_id:
+              blank: "を選択してください"
+        cart:
+          attributes:
+            product_id:
+              blank: "を選択してください"
+            quantity:
+              blank: "を選択してください"
+        order:
+          attributes:
+            billing_amount:
+              blank: "を入力してください"
+              not_a_number: "は数値で入力してください"
+        order_detail:
+          attributes:
+            order_id:
+              blank: "を選択してください"
+            product_id:
+              blank: "を選択してください"
+            price:
+              blank: "を入力してください"
+              not_a_number: "は数値で入力してください"
+            quantity:
+              blank: "を入力してください"
+              not_a_number: "は数値で入力してください"
+            status:
+              blank: "を選択してください"
+              inclusion: "が不正です"
+        order_message:
+          attributes:
+            content:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以内で入力してください"
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
         restrict_dependent_destroy:
