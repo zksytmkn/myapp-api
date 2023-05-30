@@ -67,17 +67,11 @@ ja:
         user:
           attributes:
             name:
-              blank: "を入力してください"
-              too_long: "は%{count}文字以内で入力してください"
               taken: "は既に使われています"
             email:
-              blank: "を入力してください"
-              too_long: "は%{count}文字以内で入力してください"
               taken: "は既に使われています"
               invalid: "が不正です"
             password:
-              blank: "を入力してください"
-              too_short: "は最低%{count}文字必要です"
               invalid: "は英数字と記号を含む必要があります"
         relationship:
           attributes:
@@ -90,27 +84,13 @@ ja:
         product:
           attributes:
             name:
-              blank: "を入力してください"
-              too_long: "は%{count}文字以内で入力してください"
               taken: "は既に使われています"
             category:
               blank: "を選択してください"
             prefecture:
               blank: "を選択してください"
-            price:
-              blank: "を入力してください"
-              not_a_number: "は数値で入力してください"
-            stock:
-              blank: "を入力してください"
-              not_a_number: "は数値で入力してください"
-            description:
-              blank: "を入力してください"
             image:
               blank: "を選択してください"
-        product_comment:
-          attributes:
-            content:
-              blank: "を入力してください"
         product_favorite:
           attributes:
             product_id:
@@ -127,17 +107,8 @@ ja:
               blank: "を選択してください"
         post:
           attributes:
-            title:
-              blank: "を入力してください"
-              too_long: "は%{count}文字以内で入力してください"
-            body:
-              blank: "を入力してください"
             image:
               blank: "を選択してください"
-        post_comment:
-          attributes:
-            content:
-              blank: "を入力してください"
         post_favorite:
           attributes:
             post_id:
@@ -152,19 +123,6 @@ ja:
               taken: "は既にないねされています"
             user_id:
               blank: "を選択してください"
-        community:
-          attributes:
-            name:
-              blank: "を入力してください"
-              too_long: "は%{count}文字以内で入力してください"
-            description:
-              blank: "を入力してください"
-              too_long: "は%{count}文字以内で入力してください"
-        community_message:
-          attributes:
-            content:
-              blank: "を入力してください"
-              too_long: "は%{count}文字以内で入力してください"
         participation:
           attributes:
             user_id:
@@ -188,31 +146,15 @@ ja:
               blank: "を選択してください"
             quantity:
               blank: "を選択してください"
-        order:
-          attributes:
-            billing_amount:
-              blank: "を入力してください"
-              not_a_number: "は数値で入力してください"
         order_detail:
           attributes:
             order_id:
               blank: "を選択してください"
             product_id:
               blank: "を選択してください"
-            price:
-              blank: "を入力してください"
-              not_a_number: "は数値で入力してください"
-            quantity:
-              blank: "を入力してください"
-              not_a_number: "は数値で入力してください"
             status:
               blank: "を選択してください"
               inclusion: "が不正です"
-        order_message:
-          attributes:
-            content:
-              blank: "を入力してください"
-              too_long: "は%{count}文字以内で入力してください"
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
         restrict_dependent_destroy:
