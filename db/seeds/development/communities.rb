@@ -1,5 +1,5 @@
 10.times do |n|
-  name = "コミュニティです。#{n}"
+  name = "コミュニティ。#{n}"
   user_id = n+1
   description = "紹介文です。
   "

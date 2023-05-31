@@ -1,5 +1,5 @@
 10.times do |n|
-  name = "農産物なんです。#{n}"
+  name = "農産物です。#{n}"
   user_id = n+1
   description = "説明文です。"
   category = "果物"

@@ -2,7 +2,7 @@ class Product < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   with_options presence: true do
-    validates :name, length: { maximum: 13, allow_blank: true }
+    validates :name, length: { maximum: 10, allow_blank: true }
     validates :user_id
     validates :category
     validates :prefecture
