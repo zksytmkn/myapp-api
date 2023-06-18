@@ -36,6 +36,8 @@ services:
       - ./spec:/spec
       - ./public:/public
       - ./tmp:/tmp
+    ports:
+      - 3000:3000
     depends_on:
       - db
     networks:
@@ -51,7 +53,7 @@ services:
       - ./public:/public
       - ./tmp:/tmp
     ports:
-      - 8000:80
+      - "$WEB_PORT:8000"
     depends_on:
       - app
     networks:
