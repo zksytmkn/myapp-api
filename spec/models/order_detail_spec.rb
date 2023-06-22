@@ -1,5 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe OrderDetail, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    it { should validate_presence_of(:order_id) }
+    it { should validate_presence_of(:product_id) }
+    it { should validate_presence_of(:price) }
+    it { should validate_presence_of(:quantity) }
+    it { should validate_presence_of(:status) }
+    it { should validate_uniqueness_of(:order_id).scoped_to(:product_id) }
+  end
+
+  describe 'associations' do
+    it { should belong_to(:order) }
+    it { should belong_to(:product) }
+  end
 end
