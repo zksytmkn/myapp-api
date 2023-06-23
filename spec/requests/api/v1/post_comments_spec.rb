@@ -5,6 +5,10 @@ RSpec.describe 'Api::V1::PostComments', type: :request do
   let(:post) { create(:post, user: user) }
   let(:post_comment) { create(:post_comment, user: user, post: post) }
 
+  before do
+    allow_any_instance_of(Api::V1::PostCommentsController).to receive(:current_user).and_return(user)
+  end
+
   describe 'GET /index' do
     before do
       get "/api/v1/posts/#{post.id}/post_comments"
