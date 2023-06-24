@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe "Api::V1::Carts", type: :request do
   let(:user) { create(:user) }
   let(:product) { create(:product, stock: 10) }
