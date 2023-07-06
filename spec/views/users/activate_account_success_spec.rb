@@ -1,9 +1,9 @@
 require "rails_helper"
 
-RSpec.describe "user_mailer/activate_account_success" do
+RSpec.describe "users/activate_account_success" do
   context "in html format" do
     before do
-      render template: "user_mailer/activate_account_success.html.erb"
+      render template: "users/activate_account_success"
     end
 
     it "renders the success message" do
