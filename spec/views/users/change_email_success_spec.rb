@@ -1,9 +1,9 @@
 require "rails_helper"
 
-RSpec.describe "user_mailer/change_email_success" do
+RSpec.describe "users/change_email_success" do
   context "in html format" do
     before do
-      render template: "user_mailer/change_email_success.html.erb"
+      render template: "users/change_email_success"
     end
 
     it "renders the success message" do

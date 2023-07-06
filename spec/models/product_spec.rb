@@ -19,3 +19,4 @@ RSpec.describe Product, type: :model do
     it { should have_many(:product_unfavorites).dependent(:destroy) }
     it { should have_many(:carts).dependent(:destroy) }
   end
+end
