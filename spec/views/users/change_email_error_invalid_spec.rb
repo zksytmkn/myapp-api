@@ -1,9 +1,9 @@
 require "rails_helper"
 
-RSpec.describe "user_mailer/change_email_error_invalid" do
+RSpec.describe "users/change_email_error_invalid" do
   context "in html format" do
     before do
-      render template: "user_mailer/change_email_error_invalid.html.erb"
+      render template: "users/change_email_error_invalid"
     end
 
     it "renders the error message" do
