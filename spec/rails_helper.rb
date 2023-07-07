@@ -63,4 +63,5 @@ RSpec.configure do |config|
 
   # Add this line to include the RequestSpecHelper in request specs
   config.include RequestSpecHelper, type: :request
+  config.include FactoryBot::Syntax::Methods
 end
