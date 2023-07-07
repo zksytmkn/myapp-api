@@ -8,7 +8,7 @@ RSpec.describe "user_mailer/send_contact_email" do
     before do
       assign(:name, name)
       assign(:content, content)
-      render template: "user_mailer/send_contact_email.html.erb"
+      render template: "user_mailer/send_contact_email", formats: [:html]
     end
 
     it "renders the name" do
@@ -29,7 +29,7 @@ RSpec.describe "user_mailer/send_contact_email" do
     before do
       assign(:name, name)
       assign(:content, content)
-      render template: "user_mailer/send_contact_email.text.erb"
+      render template: "user_mailer/send_contact_email", formats: [:text]
     end
 
     it "renders the name" do
