@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "user_mailer/send_password_reset_confirmation" do
+  include FactoryBot::Syntax::Methods
+
   let(:user) { create(:user) }
 
   before do
@@ -9,7 +11,7 @@ RSpec.describe "user_mailer/send_password_reset_confirmation" do
 
   context "in html format" do
     before do
-      render template: "user_mailer/send_password_reset_confirmation.html.erb"
+      render template: "user_mailer/send_password_reset_confirmation", formats: [:html]
     end
 
     it "renders the user name" do
@@ -24,7 +26,7 @@ RSpec.describe "user_mailer/send_password_reset_confirmation" do
 
   context "in text format" do
     before do
-      render template: "user_mailer/send_password_reset_confirmation.text.erb"
+      render template: "user_mailer/send_password_reset_confirmation", formats: [:text]
     end
 
     it "renders the user name" do
