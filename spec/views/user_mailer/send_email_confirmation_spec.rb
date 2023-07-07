@@ -9,7 +9,7 @@ RSpec.describe "user_mailer/send_email_confirmation" do
 
   context "in html format" do
     before do
-      render template: "user_mailer/send_email_confirmation.html.erb"
+      render template: "user_mailer/send_email_confirmation", formats: [:html]
     end
 
     it "renders the user name" do
@@ -29,7 +29,7 @@ RSpec.describe "user_mailer/send_email_confirmation" do
 
   context "in text format" do
     before do
-      render template: "user_mailer/send_email_confirmation.text.erb"
+      render template: "user_mailer/send_email_confirmation", formats: [:text]
     end
 
     it "renders the user name" do
