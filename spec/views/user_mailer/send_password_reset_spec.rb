@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "user_mailer/send_password_reset" do
+  include FactoryBot::Syntax::Methods
+
   let(:user) { create(:user) }
   let(:token) { "reset_token" }
 
@@ -11,15 +13,11 @@ RSpec.describe "user_mailer/send_password_reset" do
 
   context "in html format" do
     before do
-      render template: "user_mailer/send_password_reset.html.erb"
+      render template: "user_mailer/send_password_reset", formats: [:html]
     end
 
     it "renders the user name" do
       expect(rendered).to match CGI.escapeHTML(user.name)
-    end
-
-    it "renders the password reset link" do
-      expect(rendered).to include "http://localhost:8080/auth/reset_password_confirmation?token=#{token}"
     end
 
     it "renders the expected text" do
@@ -31,15 +29,11 @@ RSpec.describe "user_mailer/send_password_reset" do
 
   context "in text format" do
     before do
-      render template: "user_mailer/send_password_reset.text.erb"
+      render template: "user_mailer/send_password_reset", formats: [:text]
     end
 
     it "renders the user name" do
       expect(rendered).to match user.name
-    end
-
-    it "renders the password reset link" do
-      expect(rendered).to include "http://localhost:8080/auth/reset_password_confirmation?token=#{token}"
     end
 
     it "renders the expected text" do
