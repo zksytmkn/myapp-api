@@ -26,7 +26,6 @@ class User < ApplicationRecord
   has_many :followed_relationships, class_name: 'Relationship', :foreign_key => 'followed_id'
   has_many :carts, dependent: :destroy
   has_many :orders, dependent: :destroy
-  has_many :order_details, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 10, allow_blank: true }, uniqueness: { case_sensitive: false }
 

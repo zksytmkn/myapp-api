@@ -40,15 +40,15 @@ class Api::V1::UsersController < ApplicationController
       UserMailer.send_account_deletion_confirmation(current_user).deliver_later
       begin
         current_user.destroy!
+        render json: { message: 'アカウントを削除しました' }, status: :no_content
       rescue ActiveRecord::RecordNotDestroyed => e
         render json: { error: 'アカウントを削除できませんでした' }, status: :unprocessable_entity
         return
       end
-      render json: { message: 'アカウントを削除しました' }, status: :ok
     else
       render json: { error: 'アカウントが見つかりません' }, status: :not_found
     end
-  end
+  end  
 
   def send_email_reset_confirmation
     unless params[:current_password].present? && params[:email].present?
