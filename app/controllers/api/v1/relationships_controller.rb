@@ -3,6 +3,7 @@ class Api::V1::RelationshipsController < ApplicationController
     relationship_params_with_current_user = relationship_params.merge(following_id: current_user.id)
     begin
       Relationship.create!(relationship_params_with_current_user)
+      render json: {}, status: :created
     rescue ActiveRecord::RecordInvalid => e
       render json: { error: e.record.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
@@ -16,6 +17,7 @@ class Api::V1::RelationshipsController < ApplicationController
     end
     begin
       relationship.destroy!
+      render json: {}, status: :no_content
     rescue ActiveRecord::RecordNotDestroyed => e
       render json: { error: 'フォローを解除できませんでした' }, status: :unprocessable_entity
     end
