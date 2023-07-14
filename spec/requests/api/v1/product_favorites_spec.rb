@@ -1,9 +1,7 @@
-require 'rails_helper'
-
 RSpec.describe "Api::V1::ProductFavorites", type: :request do
   let(:user) { create(:user) }
   let(:product) { create(:product) }
-  let!(:product_favorite) { create(:product_favorite, user: user, product: product) }
+  let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
 
   before do
     allow_any_instance_of(Api::V1::ProductFavoritesController).to receive(:current_user).and_return(user)
@@ -11,7 +9,8 @@ RSpec.describe "Api::V1::ProductFavorites", type: :request do
 
   describe "GET /index" do
     before do
-      get "/api/v1/product_favorites"
+      create(:product_favorite, user: user, product: product)
+      get "/api/v1/product_favorites", headers: headers
     end
 
     it "returns a list of favorite products" do
@@ -23,33 +22,34 @@ RSpec.describe "Api::V1::ProductFavorites", type: :request do
   describe "POST /create" do
     context "with valid parameters" do
       before do
-        post "/api/v1/product_favorites", params: { product_favorite: { product_id: product.id } }
+        post "/api/v1/product_favorites", params: { product_favorite: { product_id: product.id } }, headers: headers
       end
 
       it "creates a new favorite product" do
         expect(response).to have_http_status(:created)
-        expect(ProductFavorite.count).to eq(2)
+        expect(ProductFavorite.count).to eq(1)
       end
     end
 
     context "with invalid parameters" do
       before do
-        post "/api/v1/product_favorites", params: { product_favorite: { product_id: nil } }
+        post "/api/v1/product_favorites", params: { product_favorite: { product_id: nil } }, headers: headers
       end
 
       it "does not create a new favorite product" do
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(ProductFavorite.count).to eq(1)
+        expect(ProductFavorite.count).to eq(0)
       end
     end
   end
 
   describe "DELETE /destroy" do
     before do
-      delete "/api/v1/product_favorites/#{product_favorite.product_id}"
+      product_favorite = create(:product_favorite, user: user, product: product)
+      delete "/api/v1/product_favorites/#{product.id}/user", headers: headers
     end
 
-    it "unfavorites the product" do
+    it "deletes the product_favorite" do
       expect(response).to have_http_status(:no_content)
       expect(ProductFavorite.count).to eq(0)
     end
