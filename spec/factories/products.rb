@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :product do
-    name { "Product Name" }
-    category { "Product Category" }
-    prefecture { "Product Prefecture" }
+    name { "農産物" }
+    category { "野菜" }
+    prefecture { "東京都" }
     price { 100 }
     stock { 10 }
-    description { "Product Description" }
+    description { "説明文" }
     user
   end
 end
