@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Api::V1::Participations', type: :request do
   let(:user) { create(:user) }
   let(:community) { create(:community) }
+  let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
 
   before do
     allow_any_instance_of(Api::V1::ParticipationsController).to receive(:current_user).and_return(user)
@@ -11,7 +12,7 @@ RSpec.describe 'Api::V1::Participations', type: :request do
   describe 'GET /index' do
     before do
       create(:participation, user: user, community: community)
-      get '/api/v1/participations'
+      get '/api/v1/participations', headers: headers
     end
 
     it 'returns a successful response' do
@@ -24,7 +25,7 @@ RSpec.describe 'Api::V1::Participations', type: :request do
 
     context 'with valid attributes' do
       before do
-        post '/api/v1/participations', params: valid_attributes
+        post '/api/v1/participations', params: valid_attributes, headers: headers
       end
 
       it 'creates a new participation' do
@@ -34,7 +35,7 @@ RSpec.describe 'Api::V1::Participations', type: :request do
 
     context 'with invalid attributes' do
       before do
-        post '/api/v1/participations', params: { participation: { community_id: nil } }
+        post '/api/v1/participations', params: { participation: { community_id: nil } }, headers: headers
       end
 
       it 'does not create a new participation' do
@@ -47,7 +48,7 @@ RSpec.describe 'Api::V1::Participations', type: :request do
     let!(:participation) { create(:participation, user: user, community: community) }
 
     before do
-      delete "/api/v1/participations/#{participation.community_id}"
+      delete "/api/v1/participations/#{participation.community_id}", headers: headers
     end
 
     it 'deletes the participation' do
