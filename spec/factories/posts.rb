@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :post do
-    title { "MyPostTitle" }
-    body { "This is the body of my post" }
+    title { "つぶやき" }
+    body { "つぶやきです。" }
     user
   end
 end

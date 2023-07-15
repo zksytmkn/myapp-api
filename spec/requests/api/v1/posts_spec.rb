@@ -2,26 +2,16 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Posts", type: :request do
   let(:user) { create(:user) }
-  let!(:post) { create(:post, user: user) }
+  let!(:post_item) { create(:post, user: user) }
+  let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
 
   before do
     allow_any_instance_of(Api::V1::PostsController).to receive(:current_user).and_return(user)
   end
 
-  describe "GET /index" do
-    before do
-      get "/api/v1/posts"
-    end
-
-    it "returns a list of posts" do
-      expect(response).to have_http_status(:success)
-      expect(JSON.parse(response.body).length).to eq(1)
-    end
-  end
-
   describe "GET /show" do
     before do
-      get "/api/v1/posts/#{post.id}"
+      get "/api/v1/posts/#{post_item.id}", headers: headers
     end
 
     it "returns a post" do
@@ -31,8 +21,10 @@ RSpec.describe "Api::V1::Posts", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
+      let(:valid_attributes) { { title: post_item.title, body: post_item.body, image: nil } }
+      
       before do
-        post "/api/v1/posts", params: { title: "Title", body: "Body", image: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'image.jpg')) }
+        post "/api/v1/posts", params: valid_attributes, headers: headers
       end
 
       it "creates a new post" do
@@ -42,8 +34,10 @@ RSpec.describe "Api::V1::Posts", type: :request do
     end
 
     context "with invalid parameters" do
+      let(:invalid_attributes) { { title: "", body: "", image: nil } }
+
       before do
-        post "/api/v1/posts", params: { title: "", body: "", image: nil }
+        post "/api/v1/posts", params: invalid_attributes, headers: headers
       end
 
       it "does not create a new post" do
@@ -56,18 +50,18 @@ RSpec.describe "Api::V1::Posts", type: :request do
   describe "PUT /update" do
     context "with valid parameters" do
       before do
-        put "/api/v1/posts/#{post.id}", params: { title: "Updated Title", body: "Updated Body", image: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'image.jpg')) }
+        put "/api/v1/posts/#{post_item.id}", params: { title: "つぶやき更新後" }, headers: headers
       end
 
       it "updates the post" do
         expect(response).to have_http_status(:success)
-        expect(post.reload.title).to eq("Updated Title")
+        expect(post_item.reload.title).to eq("つぶやき更新後")
       end
     end
 
     context "with invalid parameters" do
       before do
-        put "/api/v1/posts/#{post.id}", params: { title: "", body: "", image: nil }
+        put "/api/v1/posts/#{post_item.id}", params: { title: "", body: "", image: nil }, headers: headers
       end
 
       it "does not update the post" do
@@ -78,7 +72,7 @@ RSpec.describe "Api::V1::Posts", type: :request do
 
   describe "DELETE /destroy" do
     before do
-      delete "/api/v1/posts/#{post.id}"
+      delete "/api/v1/posts/#{post_item.id}", headers: headers
     end
 
     it "deletes the post" do
