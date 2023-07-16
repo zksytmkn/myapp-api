@@ -4,14 +4,19 @@ RSpec.describe "Api::V1::OrderMessages", type: :request do
   let(:user) { create(:user) }
   let(:order) { create(:order, user: user) }
   let!(:order_message) { create(:order_message, user: user, order: order) }
+  let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
 
   before do
     allow_any_instance_of(Api::V1::OrderMessagesController).to receive(:current_user).and_return(user)
   end
 
+  def json_response
+    JSON.parse(response.body)
+  end
+
   describe 'GET #index' do
     before do
-      get "/api/v1/orders/#{order.id}/order_messages"
+      get "/api/v1/orders/#{order.id}/order_messages", headers: headers
     end
 
     it 'returns a successful response' do
@@ -26,10 +31,10 @@ RSpec.describe "Api::V1::OrderMessages", type: :request do
 
   describe 'POST #create' do
     context 'with valid parameters' do
-      let(:valid_params) { { order_message: { content: 'Test message' } } }
+      let(:valid_params) { { order_message: { content: 'メッセージ' } } }
 
       before do
-        post "/api/v1/orders/#{order.id}/order_messages", params: valid_params
+        post "/api/v1/orders/#{order.id}/order_messages", params: valid_params, headers: headers
       end
 
       it 'creates a new order message' do
@@ -45,7 +50,7 @@ RSpec.describe "Api::V1::OrderMessages", type: :request do
       let(:invalid_params) { { order_message: { content: '' } } }
 
       before do
-        post "/api/v1/orders/#{order.id}/order_messages", params: invalid_params
+        post "/api/v1/orders/#{order.id}/order_messages", params: invalid_params, headers: headers
       end
 
       it 'does not create a new order message' do
