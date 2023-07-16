@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe "Api::V1::Users", type: :request do
   let(:user) { create(:user) }
   let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
@@ -18,7 +20,7 @@ RSpec.describe "Api::V1::Users", type: :request do
 
   describe "GET /index" do
     before do
-      get api_v1_users_path, headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      get api_v1_users_path, headers: headers
     end
 
     it "returns a successful response" do
@@ -32,7 +34,7 @@ RSpec.describe "Api::V1::Users", type: :request do
 
   describe "GET /show" do
     before do
-      get api_v1_user_path(user), headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      get api_v1_user_path(user), headers: headers
     end
 
     it "returns a successful response" do

@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "Api::V1::Contacts", type: :request do
+  let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+
   describe "POST /create" do
     let(:valid_attributes) { { contact: { name: 'Test User', email: 'test@example.com', content: 'Test content' } } }
 
     context "when the email is sent successfully" do
       before do
         expect(UserMailer).to receive_message_chain(:send_contact_email, :deliver_now)
-        post "/api/v1/contacts", params: valid_attributes
+        post "/api/v1/contacts", params: valid_attributes, headers: headers
       end
 
       it 'returns a successful response' do
@@ -19,7 +21,7 @@ RSpec.describe "Api::V1::Contacts", type: :request do
     context "when the email fails to send" do
       before do
         expect(UserMailer).to receive_message_chain(:send_contact_email, :deliver_now).and_raise('error')
-        post "/api/v1/contacts", params: valid_attributes
+        post "/api/v1/contacts", params: valid_attributes, headers: headers
       end
 
       it 'returns an error response' do
@@ -29,12 +31,12 @@ RSpec.describe "Api::V1::Contacts", type: :request do
     end
 
     context "when the request has invalid parameters" do
-      let(:invalid_attributes) { { contact: { name: '', email: 'test@example.com', content: 'Test content' } } }
+      let(:invalid_attributes) { { contact: { name: '', email: 'test@example.com', content: 'お問い合わせ内容です。' } } }
 
       it "returns an error response" do
-        post "/api/v1/contacts", params: invalid_attributes
+        post "/api/v1/contacts", params: invalid_attributes, headers: headers
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.body).to include('param is missing or the value is empty: contact')
+        expect(response.body).to include('名前、メールアドレス、内容を入力してください。')
       end
     end
   end
