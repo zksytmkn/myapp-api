@@ -38,5 +38,5 @@ RSpec.describe "Api::V1::OrderDetails", type: :request do
         expect(response.body).to include('注文詳細が見つかりません')
       end
     end
-  ecd nd
+  end
 end
