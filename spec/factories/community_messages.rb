@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :community_message do
-    content { 'Test message' }
+    content { 'メッセージ' }
     user
     community
   end

@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::CommunityMessages", type: :request do
   let(:user) { create(:user) }
   let(:community) { create(:community) }
+  let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
 
   before do
     allow_any_instance_of(Api::V1::CommunityMessagesController).to receive(:current_user).and_return(user)
@@ -13,7 +14,7 @@ RSpec.describe "Api::V1::CommunityMessages", type: :request do
     let!(:community_message2) { create(:community_message, user: user, community: community, content: "Message 2") }
 
     before do
-      get "/api/v1/communities/#{community.id}/community_messages"
+      get "/api/v1/communities/#{community.id}/community_messages", headers: headers
     end
 
     it 'returns a successful response' do
@@ -36,7 +37,7 @@ RSpec.describe "Api::V1::CommunityMessages", type: :request do
 
     context "with valid attributes" do
       before do
-        post "/api/v1/communities/#{community.id}/community_messages", params: valid_attributes
+        post "/api/v1/communities/#{community.id}/community_messages", params: valid_attributes, headers: headers
       end
 
       it 'creates a new community message' do
@@ -47,13 +48,13 @@ RSpec.describe "Api::V1::CommunityMessages", type: :request do
 
     context "with invalid attributes" do
       let(:invalid_attributes) { { community_message: { content: '' } } }
-
+    
       it 'does not create a new community message' do
         expect {
-          post "/api/v1/communities/#{community.id}/community_messages", params: invalid_attributes
+          post "/api/v1/communities/#{community.id}/community_messages", params: invalid_attributes, headers: headers
         }.to_not change(CommunityMessage, :count)
-        expect(response).tohave_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)['error']).to include('Content can\'t be blank')
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(JSON.parse(response.body)['error']).to include('メッセージを入力してください')
       end
     end
   end
