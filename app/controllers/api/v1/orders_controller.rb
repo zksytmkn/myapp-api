@@ -28,6 +28,7 @@ class Api::V1::OrdersController < ApplicationController
     if order.save
       create_order_details(order.id)
       current_user.carts.destroy_all
+      render json: order, status: :created
     else
       render json: { error: order.errors.full_messages }, status: :unprocessable_entity
     end
