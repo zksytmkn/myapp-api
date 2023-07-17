@@ -4,6 +4,7 @@ RSpec.describe "Api::V1::Communities", type: :request do
   let!(:user) { create(:user) }
   let!(:community1) { create(:community, user: user) }
   let!(:community2) { create(:community, user: user) }
+  let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
 
   before do
     allow_any_instance_of(Api::V1::CommunitiesController).to receive(:current_user).and_return(user)
@@ -11,7 +12,7 @@ RSpec.describe "Api::V1::Communities", type: :request do
 
   describe "GET /index" do
     before do
-      get '/api/v1/communities'
+      get '/api/v1/communities', headers: headers
     end
 
     it 'returns a successful response' do
@@ -25,7 +26,7 @@ RSpec.describe "Api::V1::Communities", type: :request do
 
   describe "GET /show" do
     before do
-      get "/api/v1/communities/#{community1.id}"
+      get "/api/v1/communities/#{community1.id}", headers: headers
     end
 
     it 'returns a successful response' do
@@ -40,33 +41,33 @@ RSpec.describe "Api::V1::Communities", type: :request do
   end
 
   describe "POST /create" do
-    let(:valid_params) { { name: 'New Community', description: 'New community description', image: 'new_image.jpg' } }
-
+    let(:valid_params) { { name: 'コミュニティ', description: '説明文です。' } }
+  
     context 'when valid params are sent' do
       before do
-        post '/api/v1/communities', params: valid_params
+        post '/api/v1/communities', params: valid_params, headers: headers
       end
-
+  
       it 'returns a successful response' do
         expect(response).to have_http_status(:created)
       end
-
+  
       it 'creates a new community' do
         expect(Community.count).to eq(3)
       end
     end
-
+  
     context 'when invalid params are sent' do
-      let(:invalid_params) { { name: '', description: 'New community description', image: 'new_image.jpg' } }
-
+      let(:invalid_params) { { name: '', description: '' } }
+  
       before do
-        post '/api/v1/communities', params: invalid_params
+        post '/api/v1/communities', params: invalid_params, headers: headers
       end
-
+  
       it 'returns an error response' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
-
+  
       it 'does not create a new community' do
         expect(Community.count).to eq(2)
       end
@@ -74,10 +75,10 @@ RSpec.describe "Api::V1::Communities", type: :request do
   end
 
   describe "PATCH /update" do
-    let(:valid_params) { { name: 'Updated Community' } }
+    let(:valid_params) { { name: 'コミュニティ更新後' } }
 
     before do
-      patch "/api/v1/communities/#{community1.id}", params: valid_params
+      patch "/api/v1/communities/#{community1.id}", params: valid_params, headers: headers
     end
 
     it 'returns a successful response' do
@@ -85,13 +86,13 @@ RSpec.describe "Api::V1::Communities", type: :request do
     end
 
     it 'updates the community' do
-      expect(community1.reload.name).to eq('Updated Community')
+      expect(community1.reload.name).to eq('コミュニティ更新後')
     end
   end
 
   describe "DELETE /destroy" do
     before do
-      delete "/api/v1/communities/#{community1.id}"
+      delete "/api/v1/communities/#{community1.id}", headers: headers
     end
 
     it 'returns a successful response' do
