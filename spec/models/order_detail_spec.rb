@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe OrderDetail, type: :model do
   describe 'validations' do
+    subject { create(:order_detail) }
+
     it { should validate_presence_of(:order_id) }
     it { should validate_presence_of(:product_id) }
     it { should validate_presence_of(:price) }
