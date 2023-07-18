@@ -73,4 +73,8 @@ RSpec.configure do |config|
   # Add this line to include the RequestSpecHelper in request specs
   config.include RequestSpecHelper, type: :request
   config.include FactoryBot::Syntax::Methods
+
+  config.before(:each) do
+    Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+  end
 end
