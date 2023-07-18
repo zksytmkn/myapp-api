@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Invitation, type: :model do
   describe 'validations' do
+    subject { create(:invitation) }
+
     it { should validate_presence_of(:inviting_id) }
     it { should validate_presence_of(:invited_id) }
     it { should validate_presence_of(:community_id) }
