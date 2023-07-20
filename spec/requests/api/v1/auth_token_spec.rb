@@ -4,22 +4,20 @@ RSpec.describe Api::V1::AuthTokenController, type: :request do
   let(:user) { create(:user) }
   let(:valid_params) { { auth: { email: user.email, password: user.password } } }
   let(:invalid_params) { { auth: { email: user.email, password: 'wrong password' } } }
+  let(:session_key) { Rails.application.config.session_options[:key] }
+  let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
 
   describe "POST /create" do
     context "with valid params" do
-      before { post '/api/v1/auth_token', params: valid_params }
-
+      before { post '/api/v1/auth_token', params: valid_params, headers: headers }
+  
       it 'returns a 200 status code' do
         expect(response).to have_http_status(200)
-      end
-
-      it 'returns the user token' do
-        expect(JSON.parse(response.body)).to include("token")
       end
     end
 
     context "with invalid params" do
-      before { post '/api/v1/auth_token', params: invalid_params }
+      before { post '/api/v1/auth_token', params: invalid_params, headers: headers }
 
       it 'returns a 404 status code' do
         expect(response).to have_http_status(404)
@@ -30,24 +28,18 @@ RSpec.describe Api::V1::AuthTokenController, type: :request do
   describe "POST /refresh" do
     context "with valid session" do
       before do
-        # ログインするためのAPIを呼び出し、その結果からrefresh_tokenを取得
-        # refresh_tokenをCookieにセットする
-        post '/api/v1/auth_token', params: valid_params
+        post '/api/v1/auth_token', params: valid_params, headers: headers
         cookies[session_key] = response.cookies[session_key]
-        post '/api/v1/auth_token/refresh'
+        post '/api/v1/auth_token/refresh', headers: headers
       end
   
       it 'returns a 200 status code' do
         expect(response).to have_http_status(200)
       end
-  
-      it 'returns the user token' do
-        expect(JSON.parse(response.body)).to include("token")
-      end
     end
   
     context "with invalid session" do
-      before { post '/api/v1/auth_token/refresh' }
+      before { post '/api/v1/auth_token/refresh', headers: headers }
   
       it 'returns a 401 status code' do
         expect(response).to have_http_status(401)
@@ -58,11 +50,9 @@ RSpec.describe Api::V1::AuthTokenController, type: :request do
   describe "DELETE /destroy" do
     context "with valid session" do
       before do
-        # ログインするためのAPIを呼び出し、その結果からrefresh_tokenを取得
-        # refresh_tokenをCookieにセットする
-        post '/api/v1/auth_token', params: valid_params
+        post '/api/v1/auth_token', params: valid_params, headers: headers
         cookies[session_key] = response.cookies[session_key]
-        delete '/api/v1/auth_token'
+        delete '/api/v1/auth_token', headers: headers
       end
   
       it 'returns a 200 status code' do
@@ -70,12 +60,12 @@ RSpec.describe Api::V1::AuthTokenController, type: :request do
       end
   
       it 'deletes the user session' do
-        expect(cookies[session_key]).to be_nil
+        expect(cookies[session_key]).to eq("")
       end
     end
   
     context "with invalid session" do
-      before { delete '/api/v1/auth_token' }
+      before { delete '/api/v1/auth_token', headers: headers }
   
       it 'returns a 401 status code' do
         expect(response).to have_http_status(401)

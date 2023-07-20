@@ -1,5 +1,5 @@
 10.times do |n|
-  name = "useruser#{n}"
+  name = "user#{n}"
   email = "#{name}@example.com"
   prefecture = "東京都"
   zipcode = "104-0061"
