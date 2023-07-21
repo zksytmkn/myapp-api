@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       end
 
       #guest_users
-      resources :guest_sessions, only: %i[create]
+      resources :guest_sessions, only: %i[create destroy]
 
       #follows
       resources :relationships, only: %i[create destroy] do

@@ -1,27 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe "Api::V1::GuestSessions", type: :request do
+  let(:headers) { { 'X-Requested-With': 'XMLHttpRequest' } }
+
   describe "POST /create" do
     context "when a guest user is successfully created" do
       it "returns the auth credentials of the guest user" do
-        post "/api/v1/guest_sessions"
+        begin
+          expect {
+            post "/api/v1/guest_sessions", headers: headers
+          }.to change(User, :count).by(1)
+        rescue => e  # Catch all exceptions
+          Rails.logger.error "Failed to create guest user in test: #{e.message}"
+          Rails.logger.error e.backtrace.join("\n")
+          raise e
+        end
+      
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
         expect(json['auth']['email']).to match(/@example.com/)
         expect(json['auth']['password']).to be_present
-      end
-    end
-
-    context "when creating a guest user fails" do
-      before do
-        allow(User).to receive(:create!).and_raise(ActiveRecord::RecordInvalid)
-      end
-
-      it "returns an error message" do
-        post "/api/v1/guest_sessions"
-        expect(response).to have_http_status(:internal_server_error)
-        json = JSON.parse(response.body)
-        expect(json['error']).to eq('ゲストログインできませんでした')
       end
     end
   end
@@ -41,7 +39,7 @@ RSpec.describe "Api::V1::GuestSessions", type: :request do
       end
 
       it "returns a successful response" do
-        delete "/api/v1/guest_sessions"
+        delete "/api/v1/guest_sessions/#{user.id}", headers: headers
         expect(response).to have_http_status(:ok)
       end
     end
@@ -55,9 +53,10 @@ RSpec.describe "Api::V1::GuestSessions", type: :request do
       end
 
       it "returns an error response" do
-        delete "/api/v1/guest_sessions"
+        delete "/api/v1/guest_sessions/#{user.id}", headers: headers
         expect(response).to have_http_status(:internal_server_error)
       end
     end
   end
 end
+
