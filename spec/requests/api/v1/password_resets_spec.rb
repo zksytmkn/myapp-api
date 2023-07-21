@@ -8,13 +8,13 @@ RSpec.describe 'Api::V1::PasswordResets', type: :request do
     context 'with valid reset password token and password' do
       before do
         user.update!(reset_password_token: 'valid_token', reset_password_expires_at: 1.hour.from_now)
-        put '/api/v1/password_resets', params: { token: 'valid_token', password: 'new_password' }, headers: headers
+        put '/api/v1/password_resets', params: { token: 'valid_token', password: 'P@ssw0rd' }, headers: headers
       end
 
       it 'updates the password' do
         expect(response).to have_http_status(:ok)
         user.reload
-        expect(user.authenticate('new_password')).to be_truthy
+        expect(user.authenticate('P@ssw0rd')).to be_truthy
       end
     end
 
@@ -69,7 +69,7 @@ RSpec.describe 'Api::V1::PasswordResets', type: :request do
       end
 
       it 'returns error' do
-        expect(response).to have_http_status(:redirect)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 
@@ -78,9 +78,10 @@ RSpec.describe 'Api::V1::PasswordResets', type: :request do
         user.update!(reset_password_token: 'expired_token', reset_password_expires_at: 1.hour.ago)
         get '/api/v1/password_resets/reset_password_confirmation', params: { token: 'expired_token' }, headers: headers
       end
-
-      it 'returns error' do
-        expect(response).to have_http_status(:redirect)
+    
+      it 'returns a new reset password token' do
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)['reset_password_token']).not_to be_nil
       end
     end
   end

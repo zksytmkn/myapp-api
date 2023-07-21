@@ -21,6 +21,11 @@ Rails.application.routes.draw do
         end
       end
 
+      #password_resets
+      resource :password_resets, only: [:update] do
+        get :reset_password_confirmation, on: :collection
+      end
+
       #guest_users
       resources :guest_sessions, only: %i[create destroy]
 

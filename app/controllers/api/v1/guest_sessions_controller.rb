@@ -2,7 +2,7 @@ class Api::V1::GuestSessionsController < ApplicationController
   include UserSessionizeService
 
   def generate_password
-    length = 10
+    length = 8
     symbols = '!@#$%^&*()-=_+[]{}|;:,.<>?/`~'
     charset = Array('A'..'Z') + Array('a'..'z') + Array('0'..'9') + symbols.split('')
     password = Array.new(length - 4) { charset.sample }

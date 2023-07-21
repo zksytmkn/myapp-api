@@ -1,5 +1,6 @@
 class Api::V1::PasswordResetsController < ApplicationController
-  skip_before_action :verify_authenticity_token
+
+  require 'validator/password_validator'
 
   def update
     @token = params[:token]
@@ -26,8 +27,10 @@ class Api::V1::PasswordResetsController < ApplicationController
 
     if user && !user.reset_password_expired?
       render :reset_password_confirmation
-    else
+    elsif user
       regenerate_password_reset_link(user)
+    else
+      render json: { message: 'リンクが無効か期限切れです。もう一度パスワードリセット手続きを行ってください。' }, status: :unprocessable_entity
     end
   end
 
@@ -37,6 +40,6 @@ class Api::V1::PasswordResetsController < ApplicationController
     token = SecureRandom.urlsafe_base64
     user.update!(reset_password_token: token, reset_password_expires_at: Time.zone.now + 1.hour)
     UserMailer.send_password_reset(user, token).deliver_later
-    redirect_to new_password_reset_path, notice: '新しいパスワード再設定リンクをメールで送信しました。'
+    render json: { message: '新しいパスワード再設定リンクをメールで送信しました。', reset_password_token: token }, status: :ok
   end
 end

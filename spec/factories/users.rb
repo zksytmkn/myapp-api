@@ -8,6 +8,6 @@ FactoryBot.define do
     building { "北区アパート101" }
     profile_text { "プロフィール文" }
     confirmation_status { "confirmed" }
-    password { "Passw0rd!" }
+    password { "P@ssw0rd" }
   end
 end
