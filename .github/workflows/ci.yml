@@ -47,7 +47,7 @@ jobs:
       - name: Build and test with Rake
         env:
           RAILS_ENV: test
-          DATABASE_URL: mysql2://root:rootpassword@127.0.0.1:3306/tes
+          DATABASE_URL: mysql2://root:rootpassword@127.0.0.1:3306/app_test
         run: |
           bundle exec rails db:create
           bundle exec rails db:schema:load
