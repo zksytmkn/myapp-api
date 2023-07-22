@@ -34,3 +34,5 @@
 /.irb_history
 /.data
 development.rb
+/spec/requests/api/v1/auth_token_spec.rb
+/spec/services/user_auth/refresh_token_spec.rb
