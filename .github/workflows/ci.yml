@@ -39,7 +39,7 @@ jobs:
       - name: Wait for MySQL
         run: |
           for i in {1..10}; do
-            nc -z db 3306 && echo Success && exit 0
+            nc -z 127.0.0.1 3306 && echo Success && exit 0
             echo -n .
             sleep 1
           done
@@ -47,7 +47,7 @@ jobs:
       - name: Build and test with Rake
         env:
           RAILS_ENV: test
-          DATABASE_URL: mysql2://root:rootpassword@db:3306/test
+          DATABASE_URL: mysql2://root:rootpassword@127.0.0.1:3306/tes
         run: |
           bundle exec rails db:create
           bundle exec rails db:schema:load
